@@ -20,9 +20,15 @@ int main() {
 	// Module: Interrupt
 	enableInterrupt();
 	
-	// Run the scheduler/OS
+	// HERRO WORLD
+	puts("Hello World");
+	
+	// Run the scheduler
 	// Module: Scheduler
 	run();
+	
+	
+	
 	
 	return 0;
 }
