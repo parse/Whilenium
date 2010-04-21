@@ -34,12 +34,12 @@ SIMICS=${HOME}/simics-workspace
 
 #### RULE USED TO START SIMICS 
 
-doBoot: bin/_Boot 
+doBoot: boot 
 	./scripts/run.sh $(SIMICS) $<
 
 #### RULES TO BUILD BINARIES FROM OBJECT FILES
 
-bin/_Boot: $(addprefix build/, _Boot.o Boot.o API.o Interrupt.o Memory.o Process.o Scheduler.o IOHandler.o) 
+boot: $(addprefix build/, _Boot.o Boot.o API.o Interrupt.o Memory.o Process.o Scheduler.o IOHandler.o) 
 	$(LD) $(ARCH) -o $@ $^
 
 bin/boot_tty1: build/boot_tty1.o 
