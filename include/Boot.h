@@ -3,9 +3,9 @@
 
 #include "types.h" 
 
+#include "Scheduler.h"
 #include "Process.h"
 #include "IOHandler.h"
-#include "Scheduler.h"
 #include "Interrupt.h"
 
 int main();

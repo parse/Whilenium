@@ -22,7 +22,7 @@ int main() {
 	
 	// Run the scheduler/OS
 	// Module: Scheduler
-	runScheduler();
+	run();
 	
 	return 0;
 }
