@@ -4,6 +4,6 @@
 #include "Process.h"
 
 
-void run();
+void runScheduler();
 
 #endif

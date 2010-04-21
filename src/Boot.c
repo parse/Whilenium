@@ -22,21 +22,7 @@ int main() {
 	
 	// Run the scheduler/OS
 	// Module: Scheduler
-	//run();
-	
-	//--------------------------------------------------------
-	
-	
-	// Test code to check in the registry while running simics
-	int a;
-	a = 3+3;
-	
-	int b = 0;
-	
-	while(1) {
-		if (b < 1000)
-			b++;
-	}
+	runScheduler();
 	
 	return 0;
 }
