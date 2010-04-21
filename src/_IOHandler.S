@@ -55,8 +55,8 @@ _start:
 
 
 	la	sp, kernel_boot_stack_high_limit
-	
-	j	tty_test
+	nop
+	# j	tty_test
 	
 	
 

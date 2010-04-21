@@ -39,7 +39,7 @@ doBoot: bin/_Boot
 
 #### RULES TO BUILD BINARIES FROM OBJECT FILES
 
-bin/_Boot: $(addprefix build/, _Boot.o Boot.o) 
+bin/_Boot: $(addprefix build/, _Boot.o Boot.o API.o Interrupt.o Memory.o Process.o Scheduler.o IOHandler.o) 
 	$(LD) $(ARCH) -o $@ $^
 
 bin/boot_tty1: build/boot_tty1.o 
@@ -54,6 +54,9 @@ bin/boot_tty%: $(addprefix build/, boot_tty%.o tty%.o)
 #### Add dependency on headerfile of various tty.o files
 
 build/Boot.o: src/Boot.c include/Boot.h
+	$(CC) $(ARCH) $(CFLAGS)  -c $< -o $@
+	
+build/IOHandler.o: src/IOHandler.c include/IOHandler.h
 	$(CC) $(ARCH) $(CFLAGS)  -c $< -o $@	
 	
 build/tty%.o: tty%.c include/tty%.h

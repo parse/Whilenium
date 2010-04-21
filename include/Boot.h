@@ -8,7 +8,7 @@
 #include "Scheduler.h"
 #include "Interrupt.h"
 
-void main();
+int main();
 
 
 

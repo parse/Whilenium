@@ -7,23 +7,22 @@
  * first essential functions of the OS
  * This function will never reach its end, since run is a non terminating function.
  */
-void main() {
+int main() {
 	// Initiate the I/O-devices needed
 	// Module: IOHandler
-	extern void initIO();
+	initIO();
 	
 	// Initiate the OS essentials (including the first process/PCB)
 	// Module: Process
-	extern void initOS();
+	initOS();
 	
 	// Enable the interrupt bit and the interrupt handler
 	// Module: Interrupt
-	extern void enableInterrupt();
+	enableInterrupt();
 	
 	// Run the scheduler/OS
 	// Module: Scheduler
-	extern void run();
-	
+	//run();
 	
 	//--------------------------------------------------------
 	
@@ -31,4 +30,13 @@ void main() {
 	// Test code to check in the registry while running simics
 	int a;
 	a = 3+3;
+	
+	int b = 0;
+	
+	while(1) {
+		if (b < 1000)
+			b++;
+	}
+	
+	return 0;
 }

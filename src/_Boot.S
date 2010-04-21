@@ -13,6 +13,8 @@
 		.data
 
 kernel_boot_stack_low_limit:
+	# MUST ALIGN THE STACK on a 2^2 = 4 byte word bondary!	
+	.align 2   
         .space  KERNEL_BOOT_STACK_SIZE
 kernel_boot_stack_high_limit:
 
@@ -36,5 +38,17 @@ kernel_boot_stack_high_limit:
 # -------------------------------------------------------------------------
 _start:
 
+	# Set the UART word length to 8 bits.
+	
+	li	t0, 0xB80003f8	# UART Base address
+	lb	t1, 0x03(t0)	# Line Status register
+
+	# Set word length to 8 bits (two least significant bits to 1), see TTY manual, page 14 and 15.
+	
+	ori	t1, t1, 0x03    
+	sb	t1, 0x03(t0)
+
+
 	la	sp, kernel_boot_stack_high_limit
+	
 	j	main

@@ -23,5 +23,5 @@ void puts(const char* text) {
  * Initiates the IO-devices needed at the start of the OS, such as a terminal for output to the user
  */
 void initIO() {
-	
+	putc('a');
 }
