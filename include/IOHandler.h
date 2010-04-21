@@ -2,8 +2,7 @@
 #define __IOHANDLER__
 
 #include "Process.h"
-
-typedef unsigned char uint8_t;
+#include "types.h"
 
 typedef struct {
   uint8_t thr; /* 0x00: Transmitter Holding Register */
