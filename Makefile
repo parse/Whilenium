@@ -2,7 +2,8 @@
 
 MIPS_PREFIX=/it/sw/cross/mips-idt/bin/mips-idt-elf
 
-EXECUTABLES=Boot
+EXECUTABLES=$(addprefix bin/, _Boot)
+
 
 # gcc flags for the MIPS architecture:
 #  -EL     : Little endian
@@ -14,7 +15,7 @@ ARCH=-EL -G0 -mips32
 
 # Other gcc flags
 
-CFLAGS	+= -ggdb -Wall -fno-builtin -I/include
+CFLAGS	+= -ggdb -Wall -fno-builtin -I include
 
 # Compiler and linker commands
 
@@ -29,27 +30,49 @@ LD=$(MIPS_PREFIX)-ld -Ttext 80020000
 SIMICS=/home/dale2453/simics-workspace 
 
 
-###### MAKE EXECUTABLES AND EXECUTE ######
 
-_Boot: Boot.o _Boot.o
+
+#### RULE USED TO START SIMICS 
+
+doBoot: bin/boot 
+	./scripts/run.sh $(SIMICS) $<
+
+#### RULES TO BUILD BINARIES FROM OBJECT FILES
+
+bin/_Boot: $(addprefix build/, _Boot.o Boot.o) 
 	$(LD) $(ARCH) -o $@ $^
 
-doBoot: _Boot
-	./scripts/run.sh $(SIMICS) $<
+bin/boot_tty1: build/boot_tty1.o 
+	$(LD) $(ARCH) -o $@ $^
+
+bin/boot_tty3: $(addprefix build/, boot_tty2.o tty3.o)
+	$(LD) $(ARCH) -o $@ $^
+
+bin/boot_tty%: $(addprefix build/, boot_tty%.o tty%.o)
+	$(LD) $(ARCH) -o $@ $^
+
+#### Add dependency on headerfile of various tty.o files
+
+build/Boot.o: src/Boot.c include/Boot.h
+	$(CC) $(ARCH) $(CFLAGS)  -c $< -o $@	
+	
+build/tty%.o: tty%.c include/tty%.h
+	$(CC) $(ARCH) $(CFLAGS)  -c $< -o $@	
+
 
 ###### GENERIC BUILD PATTERNS ########
 
-%.o: %.c
+build/%.o: src/%.c
 	$(CC) $(ARCH) $(CFLAGS)  -c $< -o $@	
 
-%.o: %.S
+build/%.o: src/%.S
 	$(CC) $(ARCH) $(CFLAGS)  -c $< -o $@
 
 
 clean: 
 	pwd
-	rm -f *.o
-	rm -f *~
-	rm -f \#* *\#
+	rm -f build/*.o
+	rm -f include/*~ include/#* include/*#
+	rm -f src/*~ src/#* src/*#
+	rm -f scripts/*~ scripts/#* scripts/*#
 	rm -f ${EXECUTABLES}	
-	rm -f scripts/#* scripts/*~
