@@ -25,6 +25,9 @@ typedef struct {
   
 } tty_t;
 
+
+void putc(char c);
+void puts(const char* text);
 void initIO();
 
 #endif
