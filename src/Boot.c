@@ -10,19 +10,19 @@
 void main() {
 	// Initiate the I/O-devices needed
 	// Module: IOHandler
-	initIO();
+	extern void initIO();
 	
 	// Initiate the OS essentials (including the first process/PCB)
 	// Module: Process
-	initOS();
+	extern void initOS();
 	
 	// Enable the interrupt bit and the interrupt handler
 	// Module: Interrupt
-	enableInterrupt();
+	extern void enableInterrupt();
 	
 	// Run the scheduler/OS
 	// Module: Scheduler
-	run();
+	extern void run();
 	
 	
 	//--------------------------------------------------------

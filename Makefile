@@ -34,7 +34,7 @@ SIMICS=${HOME}/simics-workspace
 
 #### RULE USED TO START SIMICS 
 
-doBoot: bin/boot 
+doBoot: bin/_Boot 
 	./scripts/run.sh $(SIMICS) $<
 
 #### RULES TO BUILD BINARIES FROM OBJECT FILES
