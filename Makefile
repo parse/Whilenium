@@ -27,7 +27,7 @@ LD=$(MIPS_PREFIX)-ld -Ttext 80020000
 
 # Path to Simics installation
 
-SIMICS=/home/dale2453/simics-workspace 
+SIMICS=${HOME}/simics-workspace 
 
 
 
