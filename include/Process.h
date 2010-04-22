@@ -6,7 +6,7 @@
 #include "API.h"
 #include "Scheduler.h"
 #include "Memory.h"
-
+/*
 typedef struct PCB {
 	int PID, // Unique identifier
 	int memMax, // Max memory access space
@@ -19,9 +19,9 @@ typedef struct PCB {
 	char* state // State of the PCB-entry (New, Running, Waiting, Blocked, Ready, Terminated)
 };
 
-/*
+
 TODO: Make it public (and maybe move it)
-*/
+
 typedef struct Process {
 	int PID, // Unique identifier
 	char* name, // Name of the program
@@ -29,7 +29,7 @@ typedef struct Process {
 	char* state, // State of the PCB-entry (New, Running, Waiting, Blocked, Ready, Terminated)
 	char* programName // Name of the program
 };
-
+*/
 void initOS();
 
 #endif

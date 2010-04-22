@@ -9,7 +9,7 @@
 # -------------------------------------------------------------------------
 
 #define	KERNEL_BOOT_STACK_SIZE		0x4000
-
+#define PROCESS_MEMORY				0x100000
 		.data
 
 kernel_boot_stack_low_limit:
@@ -17,6 +17,7 @@ kernel_boot_stack_low_limit:
 	.align 2   
         .space  KERNEL_BOOT_STACK_SIZE
 kernel_boot_stack_high_limit:
+
 
 
 			
