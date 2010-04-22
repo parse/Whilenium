@@ -3,13 +3,13 @@
 # -------------------------------------------------------------------------
 
 #include "regdef.h"
+#include "Settings.h"
 	
 # -------------------------------------------------------------------------
 # Data segment
 # -------------------------------------------------------------------------
 
 #define	KERNEL_BOOT_STACK_SIZE		0x4000
-#define PROCESS_MEMORY_SIZE			0x524288
 
 		.data
 
@@ -19,13 +19,12 @@ kernel_boot_stack_low_limit:
         .space  KERNEL_BOOT_STACK_SIZE
 kernel_boot_stack_high_limit:
 
-process_mem_min:
+memory_min:
 	.align 2
-		.space PROCESS_MEMORY_SIZE
-process_mem_max:
+		.space MEMORY_SIZE
+memory_max:
 
 
-			
 # -------------------------------------------------------------------------
 # Code segment
 # -------------------------------------------------------------------------
@@ -57,4 +56,7 @@ _start:
 
 	la	sp, kernel_boot_stack_high_limit
 	
-	j	main
+	la	a0, memory_min
+	li a1, MEMORY_SIZE
+	
+	j	OS
