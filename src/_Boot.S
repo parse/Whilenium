@@ -15,7 +15,7 @@
 
 kernel_boot_stack_low_limit:
 	# MUST ALIGN THE STACK on a 2^2 = 4 byte word bondary!	
-	.align 2    
+	.align 2   
         .space  KERNEL_BOOT_STACK_SIZE
 kernel_boot_stack_high_limit:
 
@@ -60,3 +60,4 @@ _start:
 	li a1, MEMORY_SIZE
 	
 	j	OS
+	
