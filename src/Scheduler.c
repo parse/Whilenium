@@ -1,6 +1,5 @@
 #include "Scheduler.h"
 
-
 /**
  * run()
  * The scheduler starts its work from the place where it stopped. (If it has not been running, it
@@ -33,5 +32,7 @@ int insertPCB (PCB* entry) {
 		current->prev = entry;
 	}
 
+	puts(entry->name);
+	
 	return 0;
 }

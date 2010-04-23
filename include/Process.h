@@ -8,6 +8,7 @@
 #include "Memory.h"
 #include "Settings.h"
 #include "types.h"
+#include "stdlib.h"
 
 enum states {
 	New,

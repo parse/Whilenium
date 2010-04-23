@@ -3,6 +3,7 @@
 
 #include "types.h"
 #include "Process.h"
+#include "IOHandler.h"
 #include "Settings.h"
 
 typedef struct _Priority {
@@ -11,6 +12,7 @@ typedef struct _Priority {
 } Priority;
 
 Priority PriorityArray[PRIORITIES];
+int curPID = 0;
 
 void run();
 int insertPCB(PCB* entry);

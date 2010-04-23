@@ -9,7 +9,7 @@
 # Data segment
 # -------------------------------------------------------------------------
 
-#define	KERNEL_BOOT_STACK_SIZE		0x4000
+#define	KERNEL_BOOT_STACK_SIZE		0x50000
 
 		.data
 
@@ -60,4 +60,5 @@ _start:
 	li a1, MEMORY_SIZE
 	
 	j	OS
+	
 	
