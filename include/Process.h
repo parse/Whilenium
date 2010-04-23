@@ -13,10 +13,10 @@ enum states {
 	Waiting,
 	Blocked,
 	Ready,
-	Terminated
+	Terminated 
 };
  
-struct _PCB {
+typedef struct _PCB {
 	int PID; // Unique identifier
 	int memMax; // Max memory access space
 	int memMin; // Min memory access space, start value
