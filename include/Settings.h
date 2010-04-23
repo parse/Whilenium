@@ -10,4 +10,8 @@
 #define PROCESSES 1
 #define MEMORY_SIZE 524288
 
+
+// Number of priorities in the system
+#define PRIORITIES 1
+
 #endif
