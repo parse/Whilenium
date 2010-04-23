@@ -11,7 +11,7 @@ enum states {
 	New,
 	Running,
 	Waiting,
-	Blocked,
+	Blocked, 
 	Ready,
 	Terminated 
 };
@@ -24,7 +24,7 @@ typedef struct _PCB {
 	struct PCB* nextPCB; // Address to the next PCB to "run"
 //	IOList* IOList, // List of devices that the PCB is using
 	int PC; // Program counter
-	char* name; // Human readable name
+	char* name[50]; // Human readable name
 	enum states state; // State of the PCB-entry (New, Running, Waiting, Blocked, Ready, Terminated)
 } PCB;
 
