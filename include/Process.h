@@ -18,6 +18,8 @@ enum states {
 };
  
 typedef struct _PCB {
+	struct _PCB* next;
+	struct _PCB* prev;
 	int PID; // Unique identifier
 	int memMax; // Max memory access space
 	int memMin; // Min memory access space, start value

@@ -12,7 +12,10 @@ void run() {
 }
 
 
-
-/*int insertPCB (PCB* entry) {
-	
-}*/
+/**
+ * insertPCB(PCB)
+ * inserts the PCB in the priority queue
+ */
+int insertPCB (PCB* entry) {
+	PCBQueue* current = PriorityArray[PCB->];
+}

@@ -1,5 +1,4 @@
 #include "Process.h"
-#include <string.h>
 
 /**
  * initOS()
@@ -28,5 +27,7 @@ void initPCBTable(int memoryMin) {
 		PCBTable[i].name[2] = 'c';
 		PCBTable[i].name[3] = 'k';
 		PCBTable[i].name[4] = '\0';
+		
+		insertPCB(PCBTable[i], i);
 	}
 }
