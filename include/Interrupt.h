@@ -3,6 +3,7 @@
 
 #include "IOHandler.h"
 #include "Process.h"
+#include "types.h"
 
 void enableInterrupt();
 

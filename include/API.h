@@ -2,7 +2,7 @@
 #define __SCHEDULER__
 
 #include "Interrupt.h"
-
+#include "types.h"
 
 
 

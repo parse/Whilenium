@@ -28,6 +28,6 @@ void initPCBTable(int memoryMin) {
 		PCBTable[i].name[3] = 'k';
 		PCBTable[i].name[4] = '\0';
 		
-		insertPCB(PCBTable[i], i);
+		insertPCB(PCBTable[i]);
 	}
 }

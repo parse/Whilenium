@@ -7,6 +7,7 @@
 #include "Scheduler.h"
 #include "Memory.h"
 #include "Settings.h"
+#include "types.h"
 
 enum states {
 	New,

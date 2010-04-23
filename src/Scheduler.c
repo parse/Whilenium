@@ -15,7 +15,23 @@ void run() {
 /**
  * insertPCB(PCB)
  * inserts the PCB in the priority queue
+ * returns 0 if succeded
  */
 int insertPCB (PCB* entry) {
-	PCBQueue* current = PriorityArray[PCB->];
+	PCB* current = PriorityArray[entry->prio].current;
+	
+	if (current == NULL) {
+		current = entry;
+		entry->next = entry;
+		entry->prev = entry;
+	} else {
+		PCB* last = current->prev;
+		
+		last->next = entry;
+		entry->next = current;
+		entry->prev = last;
+		current->prev = entry;
+	}
+
+	return 0;
 }

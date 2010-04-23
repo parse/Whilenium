@@ -1,8 +1,9 @@
 #ifndef __SCHEDULER__
 #define __SCHEDULER__
 
+#include "types.h"
 #include "Process.h"
-#include "Settings.h";
+#include "Settings.h"
 
 typedef struct _Priority {
 	PCB* current; // First process
