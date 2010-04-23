@@ -7,6 +7,15 @@
 #include "Scheduler.h"
 #include "Memory.h"
 
+enum states {
+	New,
+	Running,
+	Waiting,
+	Blocked,
+	Ready,
+	Terminated
+};
+ 
 struct _PCB {
 	int PID; // Unique identifier
 	int memMax; // Max memory access space
@@ -16,7 +25,7 @@ struct _PCB {
 //	IOList* IOList, // List of devices that the PCB is using
 	int PC; // Program counter
 	char* name; // Human readable name
-	char* state; // State of the PCB-entry (New, Running, Waiting, Blocked, Ready, Terminated)
+	enum states state; // State of the PCB-entry (New, Running, Waiting, Blocked, Ready, Terminated)
 } PCB;
 
 /*
