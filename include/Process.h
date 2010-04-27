@@ -9,6 +9,7 @@
 #include "Settings.h"
 #include "types.h"
 #include "stdlib.h"
+#include "UserPrograms.h"
 
 enum states {
 	New,

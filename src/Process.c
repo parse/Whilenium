@@ -11,11 +11,11 @@ void initOS(int memoryMin) {
 	
 	puts("Running: ");
 	puts(PCBTable[0].name);
+	
 }
 
 void initPCBTable(int memoryMin) {
 	PCB* PCBTable = (PCB*)memoryMin;
-	int i;
 	
 	PCBTable[0].PID = -1;
 	PCBTable[0].memMax = 0;
@@ -25,7 +25,9 @@ void initPCBTable(int memoryMin) {
 	PCBTable[0].name = "Test";
 	insertPCB(PCBTable[0]);
 	
-/*	for (i = 0; i < PROCESSES; i++) {
+/*	
+	int i;
+	for (i = 0; i < PROCESSES; i++) {
 		PCBTable[i].PID = -1;
 		PCBTable[i].memMax = 0;
 		PCBTable[i].memMin = 0;
