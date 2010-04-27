@@ -27,7 +27,7 @@ typedef struct _PCB {
 	int memMin; // Min memory access space, start value
 	int prio; // Integer value describing the process priority
 	int PC; // Program counter
-	char name[50]; // Human readable name
+	char* name; // Human readable name
 	enum states state; // State of the PCB-entry (New, Running, Waiting, Blocked, Ready, Terminated)
 } PCB;
 

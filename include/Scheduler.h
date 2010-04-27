@@ -12,9 +12,9 @@ typedef struct _Priority {
 } Priority;
 
 Priority PriorityArray[PRIORITIES];
-int curPID = 0;
+//int currentPID = 0;
 
-void run();
+void run(int memoryMin);
 int insertPCB(PCB* entry);
 
 #endif

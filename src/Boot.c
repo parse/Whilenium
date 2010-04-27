@@ -10,7 +10,7 @@ int OS(int memoryMin) {
 	// Initiate the I/O-devices needed
 	// Module: IOHandler
 	initIO();
-	
+		
 	// Initiate the OS essentials (including the first process/PCB)
 	// Module: Process
 	initOS(memoryMin);
