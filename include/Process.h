@@ -21,7 +21,7 @@ enum states {
 };
 
 typedef struct _stack {
-	char space[(MEMORY_SIZE/PROCESSES)-40];
+	char space[(MEMORY_SIZE/PROCESSES)-56];
 } Stack;
  
 typedef struct _PCB {
@@ -33,7 +33,7 @@ typedef struct _PCB {
 	Stack program;//Stack program;
 	int prio; // Integer value describing the process priority
 	int PC; // Program counter
-	char* name; // Human readable name
+	char name[20]; // Human readable name
 	enum states state; // State of the PCB-entry (New, Running, Waiting, Blocked, Ready, Terminated)
 } PCB;
 
@@ -50,5 +50,6 @@ typedef struct _Process {
 
 void initOS(int memoryMin);
 void initPCBTable(int memoryMin);
+int newPCB(int prio, int PC, char* name);
 
 #endif

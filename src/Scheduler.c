@@ -6,6 +6,35 @@
  * starts the scheduler from the beginning.)
  */
 void run(int memoryMin) {
+	puts("Run:\n");
+	PCB* current = PriorityArray[1].current;
+	PCB* first = current;
+	
+	int i = 0;
+	char buf[10];
+	
+	while (current != NULL) {
+		puts("Queue elem #");
+		puts(itoa(i, buf, 10));
+		i++;
+		puts(" PID: ");
+		puts(itoa(current->PID, buf, 10));
+		puts(" Prio: ");
+		puts(itoa(current->prio, buf, 10));
+		puts(" Current: ");
+		puts(itoa(current, buf, 10));
+		puts(" Next: ");
+		puts(itoa(current->next, buf, 10));
+		puts(" Name: ");
+		puts(current->name);
+		puts("_\n");
+		
+		if (current->next == first)
+			break;
+		else
+			current = current->next;
+	}	
+	
 	while(1) {
 	}
 }
@@ -17,18 +46,41 @@ void run(int memoryMin) {
  * returns 0 if succeded
  */
 int insertPCB (PCB* entry) {
+	char tmp[10];
+	puts("\nPrio: ");
+	puts(entry->name);
+	puts(itoa(entry->prio, tmp, 10));
+	puts("\n");
+	
 	PCB* current = PriorityArray[entry->prio].current;
 	
 	if (current == NULL) {
-		current = entry;
+		PriorityArray[entry->prio].current = entry;
 		entry->next = entry;
 		entry->prev = entry;
 	} else {
-		PCB* last = current->prev;
-		last->next = entry;
+		//PCB* last = current->prev;
+		current->prev->next = entry;
 		entry->next = current;
-		entry->prev = last;
+		entry->prev = current->prev;
 		current->prev = entry;
 	}
 	return 0;
+}
+
+// This is not a safe move - We take away a PCB from the free queue and do not make sure it gets in a new queue.
+// It is the responsibility of the Process module to put it in a new queue with insertP.
+PCB* getFreePCB() {
+	PCB* ret = PriorityArray[0].current;
+	PCB* prev = ret->prev;
+	PCB* next = ret->next;
+	
+	PriorityArray[0].current = next;
+	prev->next = next;
+	next->prev = prev;
+	
+	ret->next = NULL;
+	ret->prev = NULL;
+	
+	return ret;
 }

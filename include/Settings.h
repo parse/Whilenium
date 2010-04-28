@@ -7,7 +7,7 @@
 // PROCESSES_MEMORY_SIZE is the total size of the PCB array we are using as memory
 // ###############
 
-#define PROCESSES 10
+#define PROCESSES 4
 #define MEMORY_SIZE 524288
 
 

@@ -11,9 +11,7 @@ typedef struct _Priority {
 	int spinTimes; // Stores the number of iterations
 } Priority;
 
-Priority PriorityArray[PRIORITIES];
-
-//int currentPID = 0;
+Priority PriorityArray[PRIORITIES+1];
 
 void run(int memoryMin);
 int insertPCB(PCB* entry);

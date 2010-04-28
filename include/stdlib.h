@@ -6,6 +6,6 @@ typedef unsigned int size_t;
 char *itoa(int number, char *buffer, int radix);
 size_t strlen(const char *str);
 char *strrev(char *str);
-
+char *strcpy(char *target, const char *source);
 
 #endif
