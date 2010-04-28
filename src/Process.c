@@ -15,15 +15,25 @@ void initOS(int memoryMin) {
 }
 
 void initPCBTable(int memoryMin) {
-	PCB* PCBTable = (PCB*)memoryMin;
+	PCB PCBTable[PROCESSES];
+	//PCB* PCBTable = (PCB*)memoryMin;
 	
 	PCBTable[0].PID = -1;
-	PCBTable[0].memMax = 0;
-	PCBTable[0].memMin = 0;
-	PCBTable[0].prio = -1;
+	PCBTable[0].memMax = memoryMin+(MEMORY_SIZE/PROCESSES)-1;
+	PCBTable[0].memMin = memoryMin;
+	PCBTable[0].prio = 1;
 	PCBTable[0].PC = 0;
 	PCBTable[0].name = "Test";
 	insertPCB(PCBTable[0]);
+	
+	PCBTable[1].PID = -1;
+	PCBTable[1].memMax = memoryMin+2*(MEMORY_SIZE/PROCESSES)-1;
+	PCBTable[1].memMin = memoryMin+(MEMORY_SIZE/PROCESSES);
+	PCBTable[1].prio = 1;
+	PCBTable[1].PC = 0;
+	PCBTable[1].name = "Snorboll";
+	insertPCB(PCBTable[1]);
+	
 	
 /*	
 	int i;
