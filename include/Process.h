@@ -19,6 +19,10 @@ enum states {
 	Ready,
 	Terminated 
 };
+
+typedef struct _stack {
+	char space[(MEMORY_SIZE/PROCESSES)-40];
+} Stack;
  
 typedef struct _PCB {
 	struct _PCB* next;
@@ -26,6 +30,7 @@ typedef struct _PCB {
 	int PID; // Unique identifier
 	int memMax; // Max memory access space
 	int memMin; // Min memory access space, start value
+	Stack program;//Stack program;
 	int prio; // Integer value describing the process priority
 	int PC; // Program counter
 	char* name; // Human readable name

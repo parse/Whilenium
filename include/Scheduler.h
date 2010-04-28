@@ -12,6 +12,7 @@ typedef struct _Priority {
 } Priority;
 
 Priority PriorityArray[PRIORITIES];
+
 //int currentPID = 0;
 
 void run(int memoryMin);
