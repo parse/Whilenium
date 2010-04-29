@@ -28,10 +28,14 @@ void initOS(int memoryMin) {
 	i = newPCB(1, 0, "Process #1");
 	i = newPCB(2, 0, "Process #2");
 	puts("\nnewPCB done: ");
-	puts(itoa(i, buf, 10));
-	
+	puts(itoa(i, buf, 10));	
 }
 
+/**
+ * initPCBTable(int memoryMin)
+ * Initialize PCB table
+ * @param int memoryMin - The "start" memory address
+ */
 void initPCBTable(int memoryMin) {
 	PCB* PCBTable = (PCB*)memoryMin;
 	
@@ -66,8 +70,14 @@ void initPCBTable(int memoryMin) {
 	puts("\n");
 }
 
-// WE MUST INSERT THE PCB FROM getFreePCB INTO A NEW QUEUE WITH insertPCB
-// PRE: prio > 0
+/**
+ * newPCB(int prio, int PC, char* name)
+ * Important! We must insert the PCB from getFreePCB into a new queue with insertPCB
+ * Pre: prio > 0
+ * @param int prio - The priority to set
+ * @param int PC - Program counter to set
+ * @param char* name - Program name to set
+ */
 int newPCB(int prio, int PC, char* name) {
 	PCB* pcb = getFreePCB();
 	
