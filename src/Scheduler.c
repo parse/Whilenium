@@ -7,8 +7,9 @@
  * @param int memoryMin - The "start" memory address
  */
 void run(int memoryMin) {
+	/*
 	putsln("Run:");
-	PCB* current = 0x1f233434;//PriorityArray[1].current; 
+	PCB* current = PriorityArray[1].current; 
 	PCB* first = current;
 	
 	int i = 0;
@@ -35,6 +36,7 @@ void run(int memoryMin) {
 		else
 			current = current->next;
 	}	
+	*/
 	
 	/*
 	PCB* p = getPCB(2);
@@ -42,10 +44,11 @@ void run(int memoryMin) {
 	puts(p->name);
 	*/
 	
+	/*
 	Process p = getProcess(2);
 	puts("GetProcess() test");
 	puts(p.name);
-	
+	*/
 	while(1) {
 	}
 }

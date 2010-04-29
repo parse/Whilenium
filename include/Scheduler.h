@@ -8,10 +8,11 @@
 
 typedef struct _Priority {
 	PCB* current; // First process
-	int spinTimes; // Stores the number of iterations
+	char spinTimes; // Stores the number of iterations
 } Priority;
 
 Priority PriorityArray[PRIORITIES+1];
+//PCB* lastPCB;
 
 void run(int memoryMin);
 int insertPCB(PCB* entry);
