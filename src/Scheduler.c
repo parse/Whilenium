@@ -7,7 +7,7 @@
  * @param int memoryMin - The "start" memory address
  */
 void run(int memoryMin) {
-	puts("Run:\n");
+	putsln("Run:");
 	PCB* current = 0x1f233434;//PriorityArray[1].current; 
 	PCB* first = current;
 	
