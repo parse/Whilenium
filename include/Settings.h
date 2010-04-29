@@ -12,6 +12,6 @@
 
 
 // Number of priorities in the system
-#define PRIORITIES 1
+#define PRIORITIES 2
 
 #endif

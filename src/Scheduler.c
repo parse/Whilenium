@@ -35,9 +35,15 @@ void run(int memoryMin) {
 			current = current->next;
 	}	
 	
+	/*
 	PCB* p = getPCB(2);
 	puts("GetPCB test: ");
 	puts(p->name);
+	*/
+	
+	Process p = getProcess(2);
+	puts("GetProcess() test");
+	puts(p.name);
 	
 	while(1) {
 	}
@@ -107,4 +113,17 @@ PCB* getPCB(int PID) {
 	}
 	
 	return -1;
+}
+
+Process getProcess(int PID) {
+	PCB* entry = getPCB(PID);
+	
+	Process p;
+	p.PID = entry->PID;
+	p.name = entry->name;
+	p.prio = entry->prio;
+	p.state = entry->state;
+	p.programName = entry->name;
+	
+	return p;
 }

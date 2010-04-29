@@ -26,7 +26,7 @@ void initOS(int memoryMin) {
 	//puts(itoa(sizeof(PCB), buf, 10));
 
 	i = newPCB(1, 0, "Process #1");
-	i = newPCB(1, 0, "Process #2");
+	i = newPCB(2, 0, "Process #2");
 	puts("\nnewPCB done: ");
 	puts(itoa(i, buf, 10));
 	

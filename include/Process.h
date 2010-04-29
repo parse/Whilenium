@@ -44,7 +44,7 @@ typedef struct _Process {
 	int PID; // Unique identifier
 	char* name; // Name of the program
 	int prio; // Integer value describing the process priority
-	char* state; // State of the PCB-entry (New, Running, Waiting, Blocked, Ready, Terminated)
+	enum states state;// State of the PCB-entry (New, Running, Waiting, Blocked, Ready, Terminated)
 	char* programName; // Name of the program
 } Process;
 
