@@ -25,6 +25,7 @@ typedef struct {
   
 } tty_t;
 
+static volatile tty_t* const tty = (tty_t*) 0xb80003f8;
 
 void putc(char c);
 void puts(const char* text);

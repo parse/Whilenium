@@ -1,7 +1,10 @@
 #include "IOHandler.h"
 
-static volatile tty_t* const tty = (tty_t*) 0xb80003f8;
-
+/**
+ * putc(char c)
+ * Output character c
+ * @param char c - Character to output
+ */
 void putc(char c) {
 	// Poll until ready to transmit.
 	while ( !tty->lsr.thre ) {}		
@@ -10,6 +13,11 @@ void putc(char c) {
 	tty->thr = c;		    	  
 }
 
+/**
+ * puts(char* text)
+ * Output string text
+ * @param const char* text - String to output
+ */
 void puts(const char* text) {
 	while (text[0] != '\0') {
 		putc(text[0]);
@@ -17,15 +25,19 @@ void puts(const char* text) {
   	}
 }
 
+/**
+ * putsln(char* text)
+ * Output text with line-break
+ * @param const char* text - String to output
+ */
 void putsln(const char* text) {
 	puts(text);
 	putc('\n');
-	//putc('\0');
 }
 
 /**
  * initIO()
- * Initiates the IO-devices needed at the start of the OS, such as a terminal for output to the user
+ * Initialize I/O
  */
 void initIO() {
 	/* 
