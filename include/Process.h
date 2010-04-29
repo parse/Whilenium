@@ -48,6 +48,14 @@ typedef struct _Process {
 	char* programName; // Name of the program
 } Process;
 
+/*
+TODO:
+typedef struct _ProcessTable {
+	PCB* next;
+	Process p;
+} ProcessTable;
+*/
+
 void initOS(int memoryMin);
 void initPCBTable(int memoryMin);
 int newPCB(int prio, int PC, char* name);

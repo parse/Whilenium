@@ -147,6 +147,16 @@ Process getProcess(int PID) {
 }
 
 /**
+ * getProcessTable()
+ * Get the Process table
+ * @return First process in PriorityQueue
+ * TODO!
+
+ProcessTable getProcessTable() {
+	PCB* entry = getPCB(PID);
+} */
+
+/**
  * freePID(int PID)
  * Reset prio, pid and PC for PID
  * @param int PID - The PID to free

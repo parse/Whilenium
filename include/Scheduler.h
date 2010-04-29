@@ -18,5 +18,6 @@ int insertPCB(PCB* entry);
 PCB* getPCB(int PID);
 Process getProcess(int PID);
 void freePID(int PID);
+// TODO: ProcessTable* getProcessTable();
 
 #endif
