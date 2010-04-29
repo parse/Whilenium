@@ -15,5 +15,6 @@ Priority PriorityArray[PRIORITIES+1];
 
 void run(int memoryMin);
 int insertPCB(PCB* entry);
+PCB* getPCB(int PID);
 
 #endif

@@ -7,7 +7,7 @@
  */
 void run(int memoryMin) {
 	puts("Run:\n");
-	PCB* current = PriorityArray[1].current;
+	PCB* current = PriorityArray[1].current; 
 	PCB* first = current;
 	
 	int i = 0;
@@ -34,6 +34,10 @@ void run(int memoryMin) {
 		else
 			current = current->next;
 	}	
+	
+	PCB* p = getPCB(2);
+	puts("GetPCB test: ");
+	puts(p->name);
 	
 	while(1) {
 	}
@@ -83,4 +87,24 @@ PCB* getFreePCB() {
 	ret->prev = NULL;
 	
 	return ret;
+}
+
+PCB* getPCB(int PID) {
+	int i;
+	for (i = 1; i <= PRIORITIES; i++) {
+		PCB* current = PriorityArray[i].current; 
+		PCB* first = current;
+		
+		while (current != NULL) {
+			if (current->PID == PID)
+				return current;
+			
+			if (current->next == first)
+				break;
+			else
+				current = current->next;
+		}
+	}
+	
+	return -1;
 }
