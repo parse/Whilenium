@@ -127,3 +127,11 @@ Process getProcess(int PID) {
 	
 	return p;
 }
+
+void freePID(int PID) {
+	PCB* entry = getPCB(PID);
+	
+	entry->prio = 0;
+	entry->PID = -1;
+	entry->PC = 0;
+}

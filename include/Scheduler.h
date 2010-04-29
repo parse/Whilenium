@@ -17,5 +17,6 @@ void run(int memoryMin);
 int insertPCB(PCB* entry);
 PCB* getPCB(int PID);
 Process getProcess(int PID);
+void freePID(int PID);
 
 #endif
