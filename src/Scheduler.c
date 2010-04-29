@@ -8,7 +8,7 @@
  */
 void run(int memoryMin) {
 	puts("Run:\n");
-	PCB* current = PriorityArray[1].current; 
+	PCB* current = 0x1f233434;//PriorityArray[1].current; 
 	PCB* first = current;
 	
 	int i = 0;

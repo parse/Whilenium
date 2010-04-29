@@ -39,7 +39,7 @@ doBoot: boot
 
 #### RULES TO BUILD BINARIES FROM OBJECT FILES
 
-boot: $(addprefix build/, _Boot.o Boot.o API.o Interrupt.o Memory.o Process.o Scheduler.o IOHandler.o stdlib.o UserPrograms.o) 
+boot: $(addprefix build/, _Boot.o Boot.o API.o Interrupt.o Memory.o Process.o Scheduler.o IOHandler.o stdlib.o UserPrograms.o _Process.o) 
 	$(LD) $(ARCH) -o $@ $^
 
 bin/boot_tty1: build/boot_tty1.o 
