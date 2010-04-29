@@ -1,5 +1,8 @@
 #include "Scheduler.h"
 
+PCB* previousPCB = NULL;
+
+
 /**
  * run()
  * The scheduler starts its work from the place where it stopped. (If it has not been running, it
@@ -7,6 +10,7 @@
  * @param int memoryMin - The "start" memory address
  */
 void run(int memoryMin) {
+	
 	/*
 	putsln("Run:");
 	PCB* current = PriorityArray[1].current; 
@@ -49,6 +53,39 @@ void run(int memoryMin) {
 	puts("GetProcess() test");
 	puts(p.name);
 	*/
+	//PriorityArray[i].spinTimes++;
+	int i;
+	PCB* cur;
+	
+	int prevPC;
+	int prevSP;
+	
+	for (i = 1; i <= PRIORITIES; i++) {
+		cur = PriorityArray[i].current;
+		
+		if (cur != NULL) {
+			// Changes the PC and SP to the new values and gets the old values
+			prevPC = changeEPC(cur->PC);
+			prevSP = changeSP(cur->SP);
+		
+			break;
+		}
+	}
+	
+	if (previousPCB != NULL) {
+		// Sets the previous PCB SP and PC to the values of PC and SP
+		previousPCB->PC = prevPC;
+		previousPCB->SP = prevSP;
+	}
+	
+	if (cur != NULL) {
+		// Sets previous to the one that is to be run
+		previousPCB = PriorityArray[i].current;
+	
+		// Current changes to the next PCB in queue to be run next time
+		PriorityArray[i].current = cur->next;
+	}
+	
 	while(1) {
 	}
 }

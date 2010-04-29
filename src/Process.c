@@ -44,15 +44,16 @@ void initPCBTable(int memoryMin) {
 	for (i = 0; i < PROCESSES; i++) {
 		puts("Inserted PCB: 0x");
 		int pcb = (int)&PCBTable[i];
-		pcb += 2147483648;
+		//pcb += 2147483648;
 		puts(itoa(pcb, tmp, 16));
 		puts(" ");
 		
 		PCBTable[i].PID = -1;
 		PCBTable[i].memMax = 0;
-		PCBTable[i].memMin = 0;
+		PCBTable[i].memMin = pcb;
 		PCBTable[i].prio = 0;
 		PCBTable[i].PC = 0;
+		PCBTable[i].SP = pcb;
 		PCBTable[i].name[0] = 'T';
 		PCBTable[i].name[1] = 'e';
 		PCBTable[i].name[2] = 's';
