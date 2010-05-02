@@ -3,7 +3,7 @@
  * Copyright (c) 1992 Algorithmics Ltd.
  */
 
-#define zero	$0
+#define zero $0
 
 #define AT	$1
 

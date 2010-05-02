@@ -65,8 +65,8 @@ void run(int memoryMin) {
 		
 		if (cur != NULL) {
 			// Changes the PC and SP to the new values and gets the old values
-			prevPC = changeEPC(cur->PC);
-			prevSP = changeSP(cur->SP);
+			//prevPC = changeEPC(cur->PC);
+			//prevSP = changeSP(cur->SP);
 		
 			break;
 		}

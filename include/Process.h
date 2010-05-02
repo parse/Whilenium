@@ -23,10 +23,15 @@ enum states {
 // Disclaimer: Because anders told me to comment, here we go.
 // Size of stack
 typedef struct _stack {
-	char space[(MEMORY_SIZE/PROCESSES)-60];
+	char space[(MEMORY_SIZE/PROCESSES)-180];
 } Stack;
  
+typedef struct _regs {
+	char space[120];
+} Regs;
+
 typedef struct _PCB {
+	Regs registers;
 	Stack program;//Stack program;
 	struct _PCB* next;
 	struct _PCB* prev;
