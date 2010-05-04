@@ -4,6 +4,9 @@ MIPS_PREFIX=/it/sw/cross/mips-idt/bin/mips-idt-elf
 
 EXECUTABLES=$(addprefix bin/, _Boot)
 
+# For testing
+OBJS_TIMER=example_timer.o asm.o debug.o
+
 
 # gcc flags for the MIPS architecture:
 #  -EL     : Little endian
@@ -38,7 +41,6 @@ doBoot: boot
 	./scripts/run.sh $(SIMICS) $<
 
 #### RULES TO BUILD BINARIES FROM OBJECT FILES
-
 boot: $(addprefix build/, _Boot.o Boot.o API.o Interrupt.o Memory.o Process.o Scheduler.o IOHandler.o stdlib.o UserPrograms.o _Interrupt.o) 
 	$(LD) $(ARCH) -o $@ $^
 

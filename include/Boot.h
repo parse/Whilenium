@@ -1,7 +1,8 @@
 #ifndef __BOOT__
 #define __BOOT__
 
-#include "types.h" 
+/* #include "types.h"  */
+#include "mips/asm.h"
 
 #include "Scheduler.h"
 #include "Process.h"
@@ -10,8 +11,7 @@
 #include "Settings.h"
 
 int OS(int memoryMin);
-
-
+void kexception ();
 
 
 #endif
