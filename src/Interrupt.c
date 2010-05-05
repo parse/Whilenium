@@ -1,30 +1,12 @@
 #include "Interrupt.h"
 
-/* example - function that prints a string to the terminal window  */
-static void printstr(char print_array[])
-{
-  int i=0;
-  while(print_array[i] != '\0')
-    {
-      while (!tty->lsr.field.thre);
-      tty->thr = print_array[i];
-      
-      if(print_array[i]=='\n'){ 
-	while (!tty->lsr.field.thre);
-	tty->thr = '\r';
-      }
-      i++;
-    }
-}
-
 /**
  * enableInterrupt()
  * Enables interrupt handling in the registry
  */
 void enableInterrupt() {
  	display_word(1);
-	printstr("\n\nSex\n\n");
-
+	puts("\nSex\n");
 
  	/* Initialise timer to interrupt in 100 ms (simulated time). */
  	kload_timer(100 * timer_msec);
