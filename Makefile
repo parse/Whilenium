@@ -41,7 +41,7 @@ doBoot: boot
 	./scripts/run.sh $(SIMICS) $<
 
 #### RULES TO BUILD BINARIES FROM OBJECT FILES
-boot: $(addprefix build/, _Boot.o Boot.o API.o Interrupt.o Memory.o Process.o Scheduler.o IOHandler.o stdlib.o UserPrograms.o _Interrupt.o) 
+boot: $(addprefix build/, _Boot.o Boot.o API.o Interrupt.o Memory.o Process.o Scheduler.o IOHandler.o stdlib.o UserPrograms.o _Interrupt.o debug.o) 
 	$(LD) $(ARCH) -o $@ $^
 
 bin/boot_tty1: build/boot_tty1.o 

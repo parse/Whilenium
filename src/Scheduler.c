@@ -1,6 +1,7 @@
 #include "Scheduler.h"
 
 PCB* previousPCB = NULL;
+static registers_t regs;
 
 
 /**
@@ -9,51 +10,11 @@ PCB* previousPCB = NULL;
  * starts the scheduler from the beginning.)
  * @param int memoryMin - The "start" memory address
  */
-void run(int memoryMin) {
-	
-	/*
-	putsln("Run:");
-	PCB* current = PriorityArray[1].current; 
-	PCB* first = current;
-	
-	int i = 0;
-	char buf[10];
-	
-	while (current != NULL) {
-		puts("Queue elem #");
-		puts(itoa(i, buf, 10));
-		i++;
-		puts(" PID: ");
-		puts(itoa(current->PID, buf, 10));
-		puts(" Prio: ");
-		puts(itoa(current->prio, buf, 10));
-		puts(" Current: ");
-		puts(itoa(current, buf, 10));
-		puts(" Next: ");
-		puts(itoa(current->next, buf, 10));
-		puts(" Name: ");
-		puts(current->name);
-		puts("_\n");
-		
-		if (current->next == first)
-			break;
-		else
-			current = current->next;
-	}	
-	*/
-	
-	/*
-	PCB* p = getPCB(2);
-	puts("GetPCB test: ");
-	puts(p->name);
-	*/
-	
-	/*
-	Process p = getProcess(2);
-	puts("GetProcess() test");
-	puts(p.name);
-	*/
-	//PriorityArray[i].spinTimes++;
+void run(int memoryMin) {	
+ 	/* Setup storage-area for saving registers on exception. */
+ 	kset_registers(&regs);
+
+
 	int i;
 	PCB* cur;
 	

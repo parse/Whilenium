@@ -6,6 +6,10 @@
  * Your OS should work when NDEBUG is defined.
  */
 
+#include "mips/asm.h"
+#include "mips/debug.h"
+#include "mips/malta.h"
+
 #ifdef NDEBUG
 #define kdebug_putc(n)
 #define kdebug_print(n)

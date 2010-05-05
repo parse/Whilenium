@@ -4,8 +4,11 @@
 #include "IOHandler.h"
 #include "Process.h"
 #include "types.h"
-#include "_Interrupt.h"
+#include "mips/asm.h"
+#include "mips/malta.h"
+#include "mips/debug.h"
 
 void enableInterrupt();
+void kexception();
 
 #endif

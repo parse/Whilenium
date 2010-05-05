@@ -1,7 +1,5 @@
 
-#include "asm.h"
-#include "debug.h"
-#include "malta.h"
+#include "mips/debug.h"
 
 #ifndef NDEBUG
 void kdebug_putc(char c)

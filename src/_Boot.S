@@ -158,7 +158,8 @@ excn_stack:
 
 		la gp, 0x80000000
 		la sp,init_stack-32
-		j  OS
+		jr	ra
+		#j  OS
 
 	# -------------------------------------------------------------------------
 	# On exception: jump to exception handler.
@@ -189,7 +190,11 @@ excn_stack:
 	# -------------------------------------------------------------------------
 
 	exception_handler:
+	
 		lw k0, excn_regs(zero)
+
+			li a0, 'a'
+			jal putc
 		sw k1, REG_AT(k0)
 		sw v0, REG_V0(k0)
 		sw v1, REG_V1(k0)
@@ -219,7 +224,7 @@ excn_stack:
 		sw fp, REG_FP(k0)
 		sw gp, REG_GP(k0)
 		sw ra, REG_RA(k0)
-
+			
 		.set noreorder
 		mfc0 k1, epc
 		nop
@@ -281,18 +286,13 @@ excn_stack:
 #     1. Load the stackpointer 'sp' with top of initial stack.
 #     2. Jump to application-specific 'main' (defined in a C-file).
 # -------------------------------------------------------------------------
-_start:
+_start:	
+	la t0, exceptstub
+	la t2, exceptstubend
+	la t1, 0xa0000180
+	subu t2, t2, t0	#calculate length of handler
 
-	# Set the UART word length to 8 bits.
-	
-	li	t0, 0xB80003f8	# UART Base address
-	lb	t1, 0x03(t0)	# Line Status register
-
-	# Set word length to 8 bits (two least significant bits to 1), see TTY manual, page 14 and 15.
-	
-	ori	t1, t1, 0x03    
-	sb	t1, 0x03(t0)
-
+	jal	copyloop
 
 	la	sp, kernel_boot_stack_high_limit
 	
