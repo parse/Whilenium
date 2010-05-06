@@ -1,18 +1,15 @@
 #include "UserPrograms.h"
 
 void HelloWorld() {
-	while(1)
-		putsln("Hello World");
+	putsln("Hello World");
 }
 
 void HelloWorld2() {
-	while(1)
-		putsln("Second Heroo!!!!");
+	putsln("Second Heroo!!!!");
 }
 
 void HelloWorld3() {
-	while(1)
-		putsln("Third HoN!!!!");
+	putsln("Third HoN!!!!");
 }
 
 /*

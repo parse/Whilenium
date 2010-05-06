@@ -10,48 +10,38 @@ int memoryMin;
  * starts the scheduler from the beginning.)
  * @param int memoryMin - The "start" memory address
  */
-void run() {	
+void run() {		
+	char buf[10];
+	
  	/* Setup storage-area for saving registers on exception. */
- 	//kset_registers(&regs);
-	//copyRegisters((char*)&(previousPCB->registers), (char*)regSpace);
 	if (previousPCB != NULL) {
-		char buf[10];
-		puts("previousPCB != NULL: ");
-		puts(itoa(previousPCB, buf, 10));
-		puts(" ");
-		puts(itoa(&(previousPCB->registers), buf, 10));
-		puts(" ");
-		puts(itoa(regSpace, buf, 10));
-		putsln("");
-		copyRegisters((char*)&(previousPCB->registers), (char*)regSpace);
+		copyRegisters(&(previousPCB->registers), regSpace);
+		
+		// DEBUG CODE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		freePCB(previousPCB);
 	}
 
 	int i;
 	PCB* cur;
 	
-	int prevPC;
-	int prevSP;
-	
 	for (i = 1; i <= PRIORITIES; i++) {
 		cur = PriorityArray[i].current;
 		
 		if (cur != NULL) {
-			// Changes the PC and SP to the new values and gets the old values
-			//prevPC = changeEPC(cur->PC);
-			//prevSP = changeSP(cur->SP);
-			copyRegisters((char*)regSpace, (char*)&(cur->registers));
-			puts("\tFound a process to run! (");
-			puts(cur->name);
-			putsln(")");
+			copyRegisters(regSpace, &(cur->registers));
+			
+			putsln("\n\n\n----------------------------------------------------");
+			puts("Next process: ");
+			putsln(cur->name);
+			puts("\tPrio: ");
+			putsln(itoa(cur->prio, buf, 10));
+			puts("\tPID: ");
+			putsln(itoa(cur->PID, buf, 10));
+			putsln("----------------------------------------------------\n");
+			
 			
 			break;
 		}
-	}
-	
-	if (previousPCB != NULL) {
-		// Sets the previous PCB SP and PC to the values of PC and SP
-		previousPCB->PC = prevPC;
-		previousPCB->SP = prevSP;
 	}
 	
 	if (cur != NULL) {
@@ -60,14 +50,19 @@ void run() {
 	
 		// Current changes to the next PCB in queue to be run next time
 		PriorityArray[i].current = cur->next;
-	}
+	} else
+		previousPCB = NULL;
 }
 
-void copyRegisters(char *target, char *source) {
+void copyRegisters(registers_t *target, registers_t *source) {
 	int i;
+	uint32_t *_target = (int)target;
+	uint32_t *_source = (int)source;
 	
-	for (i = 0; i < 120; i++) {
-		target[i] = source[i];
+	//*target = *source;
+	char buf[10];
+	for (i = 0; i < 30; i++) {
+		_target[i] = _source[i];
 	}
 }
 
@@ -78,13 +73,6 @@ void copyRegisters(char *target, char *source) {
  * @return 0 if succeded
  */
 int insertPCB (PCB* entry) {
-	char tmp[10];
-	puts("Name: ");
-	puts(entry->name);
-	puts(" Prio: ");
-	puts(itoa(entry->prio, tmp, 10));
-	puts("\n");
-	
 	PCB* current = PriorityArray[entry->prio].current;
 	
 	if (current == NULL) {
@@ -112,10 +100,15 @@ PCB* getFreePCB() {
 	PCB* ret = PriorityArray[0].current;
 	PCB* prev = ret->prev;
 	PCB* next = ret->next;
-	
-	PriorityArray[0].current = next;
-	prev->next = next;
-	next->prev = prev;
+	 
+	if (ret != next) {
+		PriorityArray[0].current = next;
+		prev->next = next;
+		next->prev = prev;
+	} else {
+		PriorityArray[0].current = NULL;
+	}
+		
 	
 	ret->next = NULL;
 	ret->prev = NULL;
@@ -180,15 +173,39 @@ ProcessTable getProcessTable() {
 
 /**
  * freePID(int PID)
- * Reset prio, pid and PC for PID
+ * Reset prio, pid for PID
  * @param int PID - The PID to free
  */
 void freePID(int PID) {
 	PCB* entry = getPCB(PID);
 	
+	freePCB(entry);
+}
+
+/**
+ * freePCB(PCB* entry)
+ * Reset prio, pid for PCB
+ * @param PCB* entry - The PCB to free
+ */
+void freePCB(PCB* entry) {	
+	// Remove PCB from queue
+	PCB* prev = entry->prev;
+	PCB* next = entry->next;
+	
+	if (entry != next) {
+		PriorityArray[entry->prio].current = next;
+		prev->next = next;
+		next->prev = prev;
+	} else
+		PriorityArray[entry->prio].current = NULL;
+	
+	entry->next = NULL;
+	entry->prev = NULL;
+	
 	entry->prio = 0;
 	entry->PID = -1;
-	entry->PC = 0;
+
+	insertPCB(entry);
 }
 
 void initScheduler(registers_t *regs, int mem) {

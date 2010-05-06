@@ -28,8 +28,8 @@ memory_max:
 
 # --------- ADDED FROM EXAMPLE FILES! ---------
 
-#define	INIT_STACK_SIZE		0x4000
-#define	EXCN_STACK_SIZE		0x4000
+#define	INIT_STACK_SIZE		0x8000
+#define	EXCN_STACK_SIZE		0x8000
 
 	.data
 

@@ -8,15 +8,14 @@
  */
 void enableInterrupt() {
  	display_word(1);
-	puts("\nSex\n");
 
  	/* Initialise timer to interrupt in 100 ms (simulated time). */
- 	kload_timer(100 * timer_msec);
+ 	kload_timer(1 * timer_msec);
 
  	/* Update the status register to enable timer interrupts. */
  	kset_sr(0xFFBF00E8, 0x10008001);
 	
-	putsln("Interrupts are now enabled!");
+	putsln("enableInterrupt(): Interrupts are now enabled!\n\n");
 }
 
 /* kexception:
@@ -25,11 +24,9 @@ void enableInterrupt() {
  */
 void kexception()
 {
+	static int i = 0;
 	cause_reg_t cause;
 	
-	putsln("Interrupt has arrived!");
-	char buffer[10];
-	putsln(itoa(&HelloWorld, buffer, 10));
 	//Make sure that we are here because of a timer interrupt.
 	cause.reg = kget_cause();
 	
@@ -40,4 +37,7 @@ void kexception()
 	
  	/* Reload timer for another 100 ms (simulated time) */
 	kload_timer(1 * timer_msec);
+	
+	// Inclease marta
+	display_word(++i);
 }

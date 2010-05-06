@@ -15,11 +15,12 @@ Priority PriorityArray[PRIORITIES+1];
 //PCB* lastPCB;
 
 void run();
-void copyRegisters(char* target, char* source);
+void copyRegisters(registers_t *target, registers_t *source);
 int insertPCB(PCB* entry);
 PCB* getPCB(int PID);
 Process getProcess(int PID);
 void freePID(int PID);
+void freePCB(PCB* entry);
 void initScheduler(registers_t *regs, int mem);
 // TODO: ProcessTable* getProcessTable();
 
