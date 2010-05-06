@@ -11,7 +11,6 @@
 #include "Settings.h"
 
 int OS(int memoryMin);
-void kexception ();
-
+void ksyscall_handler(registers_t* reg);
 
 #endif

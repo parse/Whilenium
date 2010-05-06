@@ -24,6 +24,9 @@ int OS(int memoryMin) {
 	// Enable the interrupt bit and the interrupt handler
 	// Module: Interrupt
 	enableInterrupt();
+
+	// Test of 
+	//my_system_call(0x61);
 	
 	while (1);
 	

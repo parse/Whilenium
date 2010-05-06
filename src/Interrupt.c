@@ -18,6 +18,14 @@ void enableInterrupt() {
 	putsln("enableInterrupt(): Interrupts are now enabled!\n\n");
 }
 
+/* Kernels internal definition of my system call (prefix 'k'). */
+void kmy_system_call(uint32_t v)
+{
+  /* Implementation of my_system_call: */
+  /* Displays value of its argument.   */
+  display_word(v);
+}
+
 /* kexception:
  *   Application-specific exception handler, called after registers
  *   have been saved.
@@ -26,18 +34,32 @@ void kexception()
 {
 	static int i = 0;
 	cause_reg_t cause;
+	registers_t* reg;
 	
-	//Make sure that we are here because of a timer interrupt.
 	cause.reg = kget_cause();
 	
-	kdebug_assert(cause.field.exc == 0);	/* External interrupt */
-	kdebug_assert(cause.field.ip & 0x80);   /* Timer interrupt */
-	
-	run();
-	
- 	/* Reload timer for another 100 ms (simulated time) */
-	kload_timer(1 * timer_msec);
-	
-	// Inclease marta
-	display_word(++i);
+	//Make sure that we are here because of a timer interrupt.
+	if ( cause.field.exc == 0 ) {
+		run();
+		
+		/* Reload timer for another 100 ms (simulated time) */
+		kload_timer(1 * timer_msec);
+
+		// Increase marta
+		display_word(++i);
+		
+	// Make sure we're here because of a syscall
+	} else if (cause.field.exc == 8) {
+		/* Get pointer to stored registers. */
+		reg = kget_registers();
+
+		/* Handle the system call (see syscall.S). */
+		ksyscall_handler(reg);
+
+		/* Return from exception to instruction following syscall. */
+		reg->epc_reg += 4;
+
+		/* Acknowledge syscall exception. */
+		kset_cause(~0x60, 0);
+	}
 }

@@ -10,5 +10,6 @@
 
 void enableInterrupt();
 void kexception();
+void my_system_call(uint32_t v);
 
 #endif
