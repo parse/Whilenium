@@ -2,7 +2,7 @@
 #  boot.S
 # -------------------------------------------------------------------------
 
-#include "regdef.h"
+#include "mips/regdef.h"
 #include "Settings.h"
 #include "mips/cp0_regdef.h"
 #include "mips/asm_regs.h"
