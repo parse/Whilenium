@@ -10,6 +10,7 @@
 #include "types.h"
 #include "stdlib.h"
 #include "UserPrograms.h"
+#include "mips/registers.h"
 
 enum states {
 	New,
@@ -25,13 +26,9 @@ enum states {
 typedef struct _stack {
 	char space[(MEMORY_SIZE/PROCESSES)-180];
 } Stack;
- 
-typedef struct _regs {
-	char space[120];
-} Regs;
 
 typedef struct _PCB {
-	Regs registers;
+	registers_t registers;
 	Stack program;//Stack program;
 	struct _PCB* next;
 	struct _PCB* prev;
@@ -67,5 +64,6 @@ typedef struct _ProcessTable {
 void initOS(int memoryMin);
 void initPCBTable(int memoryMin);
 int newPCB(int prio, int PC, char* name);
+void exitProcess();
 
 #endif

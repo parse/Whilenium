@@ -38,7 +38,7 @@ void puts(const char* text)
  */
 void putsln(const char* text) {
 	puts(text);
-	putc('\r');
+	putc('\n');
 }
 
 /* display_word:

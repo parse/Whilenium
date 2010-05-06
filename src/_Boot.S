@@ -190,11 +190,7 @@ excn_stack:
 	# -------------------------------------------------------------------------
 
 	exception_handler:
-	
 		lw k0, excn_regs(zero)
-
-			li a0, 'a'
-			jal putc
 		sw k1, REG_AT(k0)
 		sw v0, REG_V0(k0)
 		sw v1, REG_V1(k0)

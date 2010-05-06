@@ -8,6 +8,8 @@ static registers_t regs;
  * This function will never reach its end, since run is a non terminating function.
  */
 int OS(int memoryMin) {
+	// Initiate spot for registers to be saved
+ 	kset_registers(&regs);
 	
 	// Initiate the I/O-devices needed
 	// Module: IOHandler
@@ -16,6 +18,8 @@ int OS(int memoryMin) {
 	// Initiate the OS essentials (including the first process/PCB)
 	// Module: Process
 	initOS(memoryMin);
+	
+	initScheduler(&regs, memoryMin);
 	
 	// Enable the interrupt bit and the interrupt handler
 	// Module: Interrupt

@@ -25,10 +25,12 @@ void initOS(int memoryMin) {
 	//puts("sizeof(PCB) = ");
 	//puts(itoa(sizeof(PCB), buf, 10));
 
-	i = newPCB(1, 0, "Process #1");
-	i = newPCB(2, 0, "Process #2");
-	puts("\nnewPCB done: ");
-	puts(itoa(i, buf, 10));	
+	newPCB(1, &HelloWorld, "Process #1");
+	newPCB(1, &HelloWorld2, "Process #2");
+	newPCB(1, &HelloWorld3, "Process #3");
+	//i = newPCB(2, 0, "Process #2");
+	//puts("\nnewPCB done: ");
+	//puts(itoa(i, buf, 10));	
 }
 
 /**
@@ -71,6 +73,11 @@ void initPCBTable(int memoryMin) {
 	puts("\n");
 }
 
+void exitProcess() {
+	putsln("A process is terminated!");
+	while (1);
+}
+
 /**
  * newPCB(int prio, int PC, char* name)
  * Important! We must insert the PCB from getFreePCB into a new queue with insertPCB
@@ -93,6 +100,11 @@ int newPCB(int prio, int PC, char* name) {
 	puts("newPCB->prio ");
 	char buf[10];
 	puts(itoa(pcb->prio, buf, 10));
+	
+	pcb->registers.epc_reg = PC;
+	pcb->registers.ra_reg = &exitProcess;
+	pcb->registers.sp_reg = &(pcb->program);
+	//pcb->registers.s_reg[0]
 	
 	insertPCB(pcb);
 	

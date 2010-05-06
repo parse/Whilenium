@@ -1,8 +1,8 @@
 #include "Scheduler.h"
 
 PCB* previousPCB = NULL;
-static registers_t regs;
-
+registers_t *regSpace;
+int memoryMin;
 
 /**
  * run()
@@ -10,10 +10,21 @@ static registers_t regs;
  * starts the scheduler from the beginning.)
  * @param int memoryMin - The "start" memory address
  */
-void run(int memoryMin) {	
+void run() {	
  	/* Setup storage-area for saving registers on exception. */
- 	kset_registers(&regs);
-
+ 	//kset_registers(&regs);
+	//copyRegisters((char*)&(previousPCB->registers), (char*)regSpace);
+	if (previousPCB != NULL) {
+		char buf[10];
+		puts("previousPCB != NULL: ");
+		puts(itoa(previousPCB, buf, 10));
+		puts(" ");
+		puts(itoa(&(previousPCB->registers), buf, 10));
+		puts(" ");
+		puts(itoa(regSpace, buf, 10));
+		putsln("");
+		copyRegisters((char*)&(previousPCB->registers), (char*)regSpace);
+	}
 
 	int i;
 	PCB* cur;
@@ -28,7 +39,11 @@ void run(int memoryMin) {
 			// Changes the PC and SP to the new values and gets the old values
 			//prevPC = changeEPC(cur->PC);
 			//prevSP = changeSP(cur->SP);
-		
+			copyRegisters((char*)regSpace, (char*)&(cur->registers));
+			puts("\tFound a process to run! (");
+			puts(cur->name);
+			putsln(")");
+			
 			break;
 		}
 	}
@@ -46,8 +61,13 @@ void run(int memoryMin) {
 		// Current changes to the next PCB in queue to be run next time
 		PriorityArray[i].current = cur->next;
 	}
+}
+
+void copyRegisters(char *target, char *source) {
+	int i;
 	
-	while(1) {
+	for (i = 0; i < 120; i++) {
+		target[i] = source[i];
 	}
 }
 
@@ -59,8 +79,9 @@ void run(int memoryMin) {
  */
 int insertPCB (PCB* entry) {
 	char tmp[10];
-	puts("\nPrio: ");
+	puts("Name: ");
 	puts(entry->name);
+	puts(" Prio: ");
 	puts(itoa(entry->prio, tmp, 10));
 	puts("\n");
 	
@@ -168,4 +189,9 @@ void freePID(int PID) {
 	entry->prio = 0;
 	entry->PID = -1;
 	entry->PC = 0;
+}
+
+void initScheduler(registers_t *regs, int mem) {
+	regSpace = regs;
+	memoryMin = mem;
 }

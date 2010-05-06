@@ -14,11 +14,13 @@ typedef struct _Priority {
 Priority PriorityArray[PRIORITIES+1];
 //PCB* lastPCB;
 
-void run(int memoryMin);
+void run();
+void copyRegisters(char* target, char* source);
 int insertPCB(PCB* entry);
 PCB* getPCB(int PID);
 Process getProcess(int PID);
 void freePID(int PID);
+void initScheduler(registers_t *regs, int mem);
 // TODO: ProcessTable* getProcessTable();
 
 #endif
