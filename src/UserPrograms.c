@@ -1,4 +1,5 @@
 #include "UserPrograms.h"
+#include "_Boot.h"
 
 void HelloWorld() {
 	putsln("Hello World");
