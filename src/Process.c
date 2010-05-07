@@ -14,7 +14,17 @@ void initOS(int memoryMin) {
 	initPCBTable(memoryMin);
 
 	for (i = 0; i < PROCESSES; i++) {
-		newPCB((i % PRIORITIES) + 1, (int)&HelloWorld, "Executable: Hello World");
+		switch (i % 3) {
+			case 0:
+				newPCB((i % PRIORITIES) + 1, (int)&HelloWorld, "Executable: Hello World");
+				break;
+			case 1:
+				newPCB((i % PRIORITIES) + 1, (int)&HelloWorld2, "Executable: Hello World");
+				break;
+			case 2:
+				newPCB((i % PRIORITIES) + 1, (int)&HelloWorld3, "Executable: Hello World");
+				break;
+		}		
 	}
 }
 
