@@ -5,14 +5,15 @@
 #include "mips/registers.h"
 #include "mips/types.h"
 
-enum states {
+typedef enum _State {
 	New,
 	Running,
 	Waiting,
 	Blocked, 
 	Ready,
-	Terminated 
-};
+	Terminated,
+	Undefined
+} State;
 
 // Disclaimer: Because anders told me to comment, here we go.
 // Size of stack
@@ -32,7 +33,7 @@ typedef struct _PCB {
 	int memMin; // Min memory access space, start value
 	int prio; // Integer value describing the process priority
 	char name[20]; // Human readable name
-	enum states state; // State of the PCB-entry (New, Running, Waiting, Blocked, Ready, Terminated)
+	State state; // State of the PCB-entry (New, Running, Waiting, Blocked, Ready, Terminated)
 } PCB;
 
 
@@ -43,7 +44,7 @@ typedef struct _Process {
 	int PID; // Unique identifier
 	char* name; // Name of the program
 	int prio; // Integer value describing the process priority
-	enum states state;// State of the PCB-entry (New, Running, Waiting, Blocked, Ready, Terminated)
+	State state;// State of the PCB-entry (New, Running, Waiting, Blocked, Ready, Terminated)
 	char* programName; // Name of the program
 } Process;
 #endif

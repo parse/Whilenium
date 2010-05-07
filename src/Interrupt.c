@@ -38,6 +38,7 @@ void kexception()
 	
 	//Make sure that we are here because of a timer interrupt.
 	if ( cause.field.exc == 0 ) {
+		putsln("-------------TIMER INTERRUPT!-------------");
 		run();
 		
 		/* Reload timer for another 100 ms (simulated time) */
@@ -48,16 +49,32 @@ void kexception()
 		
 	// Make sure we're here because of a syscall
 	} else if (cause.field.exc == 8) {
+		putsln("-------------SYSCALL INTERRUPT!-------------");
+		
+		
 		/* Get pointer to stored registers. */
 		reg = kget_registers();
 
 		/* Handle the system call (see syscall.S). */
 		ksyscall_handler(reg);
+		
+		
 
 		/* Return from exception to instruction following syscall. */
 		reg->epc_reg += 4;
 
 		/* Acknowledge syscall exception. */
 		kset_cause(~0x60, 0);
+		
+		// Get state of running process and get a new PCB if current is Terminated
+		State prevState = getPrevState();
+		if (prevState == Terminated) {
+			putsln("DO ANOTHER RUN!");
+			
+			/* Reload timer for another 100 ms (simulated time) */
+			kload_timer(1 * timer_msec);
+			
+			run();
+		}
 	}
 }

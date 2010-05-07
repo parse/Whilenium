@@ -63,6 +63,7 @@ excn_stack:
 	.globl  kexception
 	.globl	kdebug_magic_break		
 	.globl	my_system_call
+	.globl  syscall_die
 	.globl	kmy_system_call
 	.globl 	ksyscall_handler
 	# --------- END OF ADD ----------------
@@ -282,6 +283,12 @@ my_system_call:
 	la v0,kmy_system_call	# Load adress of syscall implementation in v0.
 	syscall			# Enter kernel mode by 'syscall' exception.
 	jr ra			# Back in user mode, return to caller
+
+
+syscall_die:
+	la v0, die
+	syscall
+	jr ra
 
 	# syscall_handler:
 	#   Enables argument passing for up

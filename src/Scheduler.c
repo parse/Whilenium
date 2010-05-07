@@ -18,7 +18,7 @@ void run() {
 		copyRegisters(&(previousPCB->registers), regSpace);
 		
 		// DEBUG CODE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		freePCB(previousPCB);
+		//freePCB(previousPCB);
 	}
 
 	int i;
@@ -52,6 +52,14 @@ void run() {
 		PriorityArray[i].current = cur->next;
 	} else
 		previousPCB = NULL;
+}
+
+void die() {
+	if (previousPCB != NULL) {
+		putsln("DIE!");
+		freePCB(previousPCB);
+		previousPCB->state = Terminated;
+	}
 }
 
 void copyRegisters(registers_t *target, registers_t *source) {
@@ -204,6 +212,15 @@ void freePCB(PCB* entry) {
 	entry->PID = -1;
 
 	insertPCB(entry);
+	
+	previousPCB->state = Terminated;
+}
+
+State getPrevState() {
+	if (previousPCB != NULL)
+		return previousPCB->state;
+	else
+		return Undefined;
 }
 
 void initScheduler(registers_t *regs, int mem) {

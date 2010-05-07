@@ -1,7 +1,5 @@
 #include "Process.h"
 
-int currentPID = 0;
-
 /**
  * initOS()
  * Initiates the OS essentials (including the first process)
@@ -51,6 +49,10 @@ void initPCBTable(int memoryMin) {
 
 void exitProcess() {
 	putsln("\n\t------ Process ended ------");
+	
+	// Kill the process by making the die syscall
+	syscall_die();
+	
 	while (1);
 }
 
@@ -63,6 +65,7 @@ void exitProcess() {
  * @param char* name - Program name to set
  */
 int newPCB(int prio, int PC, char* name) {
+	static int currentPID = 0;
 	PCB* pcb = getFreePCB();
 	
 	pcb->prio = prio;

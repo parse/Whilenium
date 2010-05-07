@@ -41,7 +41,7 @@ doBoot: boot
 	./scripts/run.sh $(SIMICS) $<
 
 #### RULES TO BUILD BINARIES FROM OBJECT FILES
-boot: $(addprefix build/, _Boot.o Boot.o API.o Interrupt.o Memory.o Process.o Scheduler.o IOHandler.o stdlib.o UserPrograms.o debug.o) 
+boot: $(addprefix build/, _Boot.o Boot.o API.o Memory.o Process.o Scheduler.o Interrupt.o IOHandler.o stdlib.o UserPrograms.o debug.o) 
 	$(LD) $(ARCH) -o $@ $^
 
 #### Add dependency on headerfile of various tty.o files

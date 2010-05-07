@@ -8,13 +8,16 @@
 #include "IOHandler.h"
 #include "Settings.h"
 
+
 typedef struct _priority {
 	PCB* current; // First process
 } Priority;
 
 Priority PriorityArray[PRIORITIES+1];
 
+State getPrevState();
 void run();
+void die();
 void copyRegisters(registers_t *target, registers_t *source);
 int insertPCB(PCB* entry);
 PCB* getFreePCB();

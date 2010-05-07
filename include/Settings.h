@@ -7,11 +7,11 @@
 // PROCESSES_MEMORY_SIZE is the total size of the PCB array we are using as memory
 // ###############
 
-#define PROCESSES 20000
-#define MEMORY_SIZE 4000000
+#define PROCESSES 6
+#define MEMORY_SIZE 3000000
 
 
 // Number of priorities in the system
-#define PRIORITIES 200
+#define PRIORITIES 2
 
 #endif

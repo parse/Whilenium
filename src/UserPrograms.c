@@ -3,11 +3,12 @@
 
 void HelloWorld() {
 	putsln("Hello World");
+	my_system_call(150);
 }
 
 void HelloWorld2() {
 	//putsln("Second Heroo!!!!");
-	increment(100);
+	increment(600);
 }
 
 void HelloWorld3() {
@@ -27,10 +28,12 @@ int _fibonacci(int n_1, int n_2, int i) {
 	putsln(itoa(n_1+n_2, buf, 10));
 	
 	if (i <= 0)
-		return;
+		return 0;
 	
 	i--;
 	_fibonacci(n_2, n_1+n_2, i);
+	
+	return 0;
 }
 /*
 void increment(int n);

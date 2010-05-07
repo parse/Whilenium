@@ -14,6 +14,8 @@
 #include "Scheduler.h"
 #include "Memory.h"
 #include "UserPrograms.h"
+#include "_Boot.h"
+
 
 
 /*
@@ -23,7 +25,6 @@ typedef struct _ProcessTable {
 	Process p;
 } ProcessTable;
 */
-
 void initOS(int memoryMin);
 void initPCBTable(int memoryMin);
 int newPCB(int prio, int PC, char* name);
