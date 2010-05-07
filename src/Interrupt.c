@@ -1,7 +1,5 @@
 #include "Interrupt.h"
 
-#include "UserPrograms.h"
-#include "stdlib.h"
 /**
  * enableInterrupt()
  * Enables interrupt handling in the registry

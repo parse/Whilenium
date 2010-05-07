@@ -2,6 +2,8 @@
  * regdef.h : MIPS Rx000 symbolic register names for assembler
  * Copyright (c) 1992 Algorithmics Ltd.
  */
+#ifndef __REGDEF__
+#define __REGDEF__
 
 #define zero	$0
 
@@ -44,3 +46,6 @@
 #define sp	$29
 #define fp	$30
 #define ra	$31
+
+#endif
+

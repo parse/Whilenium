@@ -44,25 +44,37 @@ doBoot: boot
 boot: $(addprefix build/, _Boot.o Boot.o API.o Interrupt.o Memory.o Process.o Scheduler.o IOHandler.o stdlib.o UserPrograms.o debug.o) 
 	$(LD) $(ARCH) -o $@ $^
 
-bin/boot_tty1: build/boot_tty1.o 
-	$(LD) $(ARCH) -o $@ $^
-
-bin/boot_tty3: $(addprefix build/, boot_tty2.o tty3.o)
-	$(LD) $(ARCH) -o $@ $^
-
-bin/boot_tty%: $(addprefix build/, boot_tty%.o tty%.o)
-	$(LD) $(ARCH) -o $@ $^
-
 #### Add dependency on headerfile of various tty.o files
 
 build/Boot.o: src/Boot.c include/Boot.h
 	$(CC) $(ARCH) $(CFLAGS)  -c $< -o $@
 	
 build/IOHandler.o: src/IOHandler.c include/IOHandler.h
-	$(CC) $(ARCH) $(CFLAGS)  -c $< -o $@	
+	$(CC) $(ARCH) $(CFLAGS)  -c $< -o $@
 	
-build/tty%.o: tty%.c include/tty%.h
-	$(CC) $(ARCH) $(CFLAGS)  -c $< -o $@	
+build/API.o: src/API.c include/API.h
+	$(CC) $(ARCH) $(CFLAGS)  -c $< -o $@
+	
+build/Interrupt.o: src/Interrupt.c include/Interrupt.h
+	$(CC) $(ARCH) $(CFLAGS)  -c $< -o $@
+	
+build/Memory.o: src/Memory.c include/Memory.h
+	$(CC) $(ARCH) $(CFLAGS)  -c $< -o $@
+	
+build/Process.o: src/Process.c include/Process.h
+	$(CC) $(ARCH) $(CFLAGS)  -c $< -o $@
+	
+build/Scheduler.o: src/Scheduler.c include/Scheduler.h include/Process.h
+	$(CC) $(ARCH) $(CFLAGS)  -c $< -o $@
+	
+build/stdlib.o: src/stdlib.c include/stdlib.h
+	$(CC) $(ARCH) $(CFLAGS)  -c $< -o $@
+	
+build/UserPrograms.o: src/UserPrograms.c include/UserPrograms.h
+	$(CC) $(ARCH) $(CFLAGS)  -c $< -o $@
+	
+build/_Boot.o: src/_Boot.S include/_Boot.h
+	$(CC) $(ARCH) $(CFLAGS)  -c $< -o $@
 
 
 ###### GENERIC BUILD PATTERNS ########

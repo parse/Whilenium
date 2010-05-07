@@ -1,8 +1,11 @@
-#ifndef __PROCESS__
-#define __PROCESS__
+#ifndef __MEMORY__
+#define __MEMORY__
 
+#include "mips/types.h"
+
+#include "Structs.h"
 #include "Process.h"
-#include "types.h"
+
 
 
 #endif

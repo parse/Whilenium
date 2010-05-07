@@ -56,11 +56,9 @@ void run() {
 
 void copyRegisters(registers_t *target, registers_t *source) {
 	int i;
-	uint32_t *_target = (int)target;
-	uint32_t *_source = (int)source;
+	uint32_t *_target = (uint32_t *)target;
+	uint32_t *_source = (uint32_t *)source;
 	
-	//*target = *source;
-	char buf[10];
 	for (i = 0; i < 30; i++) {
 		_target[i] = _source[i];
 	}
@@ -139,7 +137,7 @@ PCB* getPCB(int PID) {
 		}
 	}
 	
-	return -1;
+	return (PCB*)-1;
 }
 
 /**
@@ -212,3 +210,4 @@ void initScheduler(registers_t *regs, int mem) {
 	regSpace = regs;
 	memoryMin = mem;
 }
+

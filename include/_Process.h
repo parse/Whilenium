@@ -1,8 +1,9 @@
 #ifndef __ASM_PROCESS__
 #define __ASM_PROCESS__
 
-#include "types.h"
+#include "mips/types.h"
 
+#include "Structs.h"
 
 
 /**

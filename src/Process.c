@@ -12,11 +12,9 @@ void initOS(int memoryMin) {
 	int i;
 	
 	initPCBTable(memoryMin);
-	
-	PCB* PCBTable = (PCB*)memoryMin;
 
 	for (i = 0; i < PROCESSES; i++) {
-		newPCB((i % PRIORITIES) + 1, &HelloWorld, "Executable: Hello World");
+		newPCB((i % PRIORITIES) + 1, (int)&HelloWorld, "Executable: Hello World");
 	}
 }
 
@@ -29,13 +27,8 @@ void initPCBTable(int memoryMin) {
 	PCB* PCBTable = (PCB*)memoryMin;
 	
 	int i;	
-	char tmp[10];
 	for (i = 0; i < PROCESSES; i++) {
-		//puts("Inserted PCB: 0x");
 		int pcb = (int)&PCBTable[i];
-		//pcb += 2147483648;
-		//puts(itoa(pcb, tmp, 16));
-		//puts(" ");
 		
 		PCBTable[i].PID = -1;
 		PCBTable[i].memMax = 0;
@@ -70,10 +63,11 @@ int newPCB(int prio, int PC, char* name) {
 	pcb->PID = currentPID;
 	
 	pcb->registers.epc_reg = PC;
-	pcb->registers.sp_reg = &(pcb->stackHighEnd);
-	pcb->registers.ra_reg = &exitProcess;
+	pcb->registers.sp_reg = (uint32_t)&(pcb->stackHighEnd);
+	pcb->registers.ra_reg = (uint32_t)&exitProcess;
 	
 	insertPCB(pcb);
 	
 	return (int)pcb;
 }
+

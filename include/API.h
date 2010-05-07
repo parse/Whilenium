@@ -1,8 +1,10 @@
-#ifndef __SCHEDULER__
-#define __SCHEDULER__
+#ifndef __API__
+#define __API__
 
+#include "mips/types.h"
+
+#include "Structs.h"
 #include "Interrupt.h"
-#include "types.h"
 
 
 

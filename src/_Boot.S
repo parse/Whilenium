@@ -3,9 +3,9 @@
 # -------------------------------------------------------------------------
 
 #include "mips/regdef.h"
-#include "Settings.h"
 #include "mips/cp0_regdef.h"
 #include "mips/asm_regs.h"
+#include "Settings.h"
 	
 # -------------------------------------------------------------------------
 # Data segment
@@ -323,4 +323,3 @@ _start:
 	j	OS
 	
 
-	
