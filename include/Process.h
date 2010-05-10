@@ -16,15 +16,6 @@
 #include "UserPrograms.h"
 #include "_Boot.h"
 
-
-
-/*
-TODO:
-typedef struct _ProcessTable {
-	PCB* next;
-	Process p;
-} ProcessTable;
-*/
 void initOS(int memoryMin);
 void initPCBTable(int memoryMin);
 int newPCB(int prio, int PC, char* name);

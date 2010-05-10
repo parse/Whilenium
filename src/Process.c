@@ -47,6 +47,10 @@ void initPCBTable(int memoryMin) {
 	}
 }
 
+/*
+ * exitProcess()
+ * Takes care of the process ended
+ */
 void exitProcess() {
 	putsln("\n\t------ Process ended ------");
 	

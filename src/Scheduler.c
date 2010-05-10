@@ -54,6 +54,10 @@ void run() {
 		previousPCB = NULL;
 }
 
+/*
+ * die()
+ * Takes care of a dying process by removing it from our queue and update state
+ */
 void die() {
 	if (previousPCB != NULL) {
 		putsln("DIE!");
@@ -62,6 +66,10 @@ void die() {
 	}
 }
 
+/*
+ * copyRegisters (registers_t *target, registers_t *source)
+ * Copy one register to another register, uses a max size of 30
+ */
 void copyRegisters(registers_t *target, registers_t *source) {
 	int i;
 	uint32_t *_target = (uint32_t *)target;

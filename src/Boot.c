@@ -25,14 +25,10 @@ int OS(int memoryMin) {
 	// Module: Interrupt
 	enableInterrupt();
 
-	// Test of 
-	//my_system_call(0x61);
-	
 	while (1);
 	
 	// Run the scheduler
 	// Module: Scheduler
-	//HelloWorld();
 	//run(memoryMin);
 	
 	return memoryMin;
