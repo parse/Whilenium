@@ -60,7 +60,6 @@ void run() {
  */
 void die() {
 	if (previousPCB != NULL) {
-		putsln("DIE!");
 		freePCB(previousPCB);
 		previousPCB->state = Terminated;
 	}

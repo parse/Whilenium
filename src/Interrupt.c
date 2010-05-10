@@ -65,8 +65,6 @@ void kexception()
 		// Get state of running process and get a new PCB if current is Terminated. Reload the timer to reset the next timer interrupt.
 		State prevState = getPrevState();
 		if (prevState == Terminated) {
-			putsln("DO ANOTHER RUN!");
-			
 			/* Reload timer for another 100 ms (simulated time) */
 			kload_timer(1 * timer_msec);
 			

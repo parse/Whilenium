@@ -52,7 +52,7 @@ void initPCBTable(int memoryMin) {
  * Takes care of the process ended
  */
 void exitProcess() {
-	putsln("\n\t------ Process ended ------");
+	//putsln("\n\t------ Process ended ------");
 	
 	// Kill the process by making the die syscall
 	syscall_die();

@@ -28,7 +28,6 @@ memory_max:
 
 # --------- ADDED FROM EXAMPLE FILES! ---------
 
-#define	INIT_STACK_SIZE		0x8000
 #define	EXCN_STACK_SIZE		0x8000
 
 	.data
@@ -36,8 +35,6 @@ memory_max:
 excn_regs:  .word	0
 cause_reg:  .word	0
 
-	.space	INIT_STACK_SIZE
-init_stack:
 	.space	EXCN_STACK_SIZE
 excn_stack:
 
@@ -160,7 +157,7 @@ copyloop:
 	bgez t2, copyloop
 
 	la gp, 0x80000000
-	la sp,init_stack-32
+	
 	jr	ra
 	#j  OS
 

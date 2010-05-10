@@ -6,12 +6,10 @@ void HelloWorld() {
 }
 
 void HelloWorld2() {
-	//putsln("Second Heroo!!!!");
 	increment(600);
 }
 
 void HelloWorld3() {
-	//putsln("Third HoN!!!!");
 	fibonacci(20);
 }
 
