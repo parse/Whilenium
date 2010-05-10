@@ -2,7 +2,7 @@
 
 void HelloWorld() {
 	putsln("Hello World");
-	syscall_display_word(150);
+	syscall_display_c('A', 3);
 }
 
 void HelloWorld2() {

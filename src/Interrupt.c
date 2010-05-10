@@ -5,7 +5,10 @@
  * Enables interrupt handling in the registry
  */
 void enableInterrupt() {
- 	displayWord(1);
+	int i;
+	for (i = 0; i < 8; i++) {
+		displayC(' ', i);	
+	}
 
  	// Initialise timer to interrupt in 100 ms (simulated time).
  	kload_timer(1 * timer_msec);
@@ -15,14 +18,6 @@ void enableInterrupt() {
 	
 	putsln("enableInterrupt(): Interrupts are now enabled!\n\n");
 }
-
-/* Kernels internal definition of my system call (prefix 'k'). */
-/*void syscall_display(uint32_t v)
-{
-  // Implementation of my_system_call:
-  // Displays value of its argument.  
-  displayWord(v);
-}*/
 
 /* kexception:
  *   Application-specific exception handler, called after registers
@@ -36,7 +31,6 @@ void kexception()
 	registers_t* reg;
 	
 	cause.reg = kget_cause();
-	
 	//Make sure that we are here because of a timer interrupt.
 	if ( cause.field.exc == 0 ) {
 		run();
@@ -44,14 +38,13 @@ void kexception()
 		/* Reload timer for another 100 ms (simulated time) */
 		kload_timer(1 * timer_msec);
 
-		// Increase marta
-		displayWord(++i);
+		// Show on malta
+		displayC('A', 2);
 		
 	// Make sure it's a UART interrupt
 	} else if (cause.field.ip & 4) {
-		
 		if (tty->lsr.field.dr) {
-			/* Data ready: add character to buffer */
+			// Data ready: add character to buffer
 			ch = tty->rbr;
 			bfifo_put(&bfifo, ch);
 			if (ch == '\r') {
@@ -60,14 +53,14 @@ void kexception()
 		}
 		
 		if (bfifo.length > 0 && tty->lsr.field.thre) {
-			/* Transmitter idle: transmit buffered character */
+			//Transmitter idle: transmit buffered character
 			tty->thr = bfifo_get(&bfifo);
 
-			/* Determine if we should be notified when transmitter becomes idle */
+			//Determine if we should be notified when transmitter becomes idle
 			tty->ier.field.etbei = (bfifo.length > 0);
 		}
 		
-		/* Acknowledge UART interrupt. */
+		// Acknowledge UART interrupt.
 		kset_cause(~0x1000, 0);
 		
 	// Make sure we're here because of a syscall

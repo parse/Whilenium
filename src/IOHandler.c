@@ -6,7 +6,7 @@
  * @param char c - Character to output
  */
 void putc(char c) {
-	//syscall_putc(c);
+//	syscall_putc();
 	// Write character to Transmitter Holding Register
     while (!tty->lsr.field.thre);
     	tty->thr = c;
@@ -14,7 +14,7 @@ void putc(char c) {
     if(c == '\n') { 
 		while (!tty->lsr.field.thre);
 		tty->thr = '\r';
-    }	    	  
+    }	   	  
 }
 
 /**
@@ -34,6 +34,36 @@ void puts(const char* text)
 }
 
 /**
+ * putc(char c)
+ * Output character c
+ * @param char c - Character to output
+ */
+void putc2(char c) {
+	while (!tty->lsr.field.thre);
+    	tty->thr = c;
+      
+    if(c == '\n') { 
+		while (!tty->lsr.field.thre);
+		tty->thr = '\r';
+    }	   	  
+}
+
+/**
+ * puts(char* text)
+ * Output string text
+ * @param const char* text - String to output
+ */
+void puts2(const char* text)
+{
+	int i = 0;
+	while(text[i] != '\0')
+	{
+		putc(text[i]);
+    	i++;
+	}
+}
+
+/**
  * putsln(char* text)
  * Output text with line-break
  * @param const char* text - String to output
@@ -43,20 +73,29 @@ void putsln(const char* text) {
 	putc('\n');
 }
 
-/* display_word:
- *   Display a value on the Malta display.
+/* displayC:
+ *   Display a char on the Malta display.
  */
-void displayWord(uint32_t word)
+void displayC(uint8_t word, uint8_t pos)
 {
 	int i;
 	malta->ledbar.reg = 0xFF;
 	
-	for (i = 7; i >= 0; --i) {
+    malta->asciipos[pos].value = word;
+}
+
+/* displayNumber
+ *   Display a value on the Malta display.
+ */
+void displayNumber(uint32_t word)
+{
+	int i;
+	malta->ledbar.reg = 0xFF;
+		for (i = 7; i >= 0; --i) {
     	malta->asciipos[i].value = '0' + word % 10;	
 		word /= 10;
 	}
 }
-
 
 /* bfifo_put: Inserts a character at the end of the queue. */
 void bfifo_put(struct bounded_fifo* bfifo, uint8_t ch)
@@ -117,7 +156,7 @@ void initIO() {
 	or.field.ie   = 1;   // Enable interrupts
 	or.field.im   = 4;   // Enable HW interrupt 0
 	or.field.cu0  = 1;   // Coprocessor 0 usable
-
+	
 	kset_sr(and.reg, or.reg);
 	
 	// Generate interrupts when data is received by UART.
@@ -125,5 +164,4 @@ void initIO() {
 
 	// Some obscure bit that need to be set for UART interrupts to work. 
 	tty->mcr.field.out2 = 1;
-	
 }

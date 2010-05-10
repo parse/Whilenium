@@ -58,9 +58,11 @@ excn_stack:
 .globl  kset_registers
 .globl  kget_registers
 .globl  kexception
-.globl	kdebug_magic_break		
-.globl	syscall_display_word
+.globl	kdebug_magic_break
+.globl	syscall_display_c
+.globl	syscall_display_number
 .globl  syscall_die
+.globl  syscall_putc
 .globl 	ksyscall_handler
 # --------- END OF ADD ----------------
 
@@ -275,8 +277,13 @@ exception_handler:
 	.set at
 	.set reorder
 
-syscall_display_word:
-	la v0, displayWord		# Load adress of syscall implementation in v0.
+syscall_display_c:
+	la v0, displayC		# Load adress of syscall implementation in v0.
+	syscall					# Enter kernel mode by 'syscall' exception.
+	jr ra					# Back in user mode, return to caller
+
+syscall_display_number:
+	la v0, displayNumber		# Load adress of syscall implementation in v0.
 	syscall					# Enter kernel mode by 'syscall' exception.
 	jr ra					# Back in user mode, return to caller
 
