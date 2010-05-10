@@ -62,9 +62,8 @@ excn_stack:
 .globl  kget_registers
 .globl  kexception
 .globl	kdebug_magic_break		
-.globl	my_system_call
+.globl	syscall_display_word
 .globl  syscall_die
-.globl	kmy_system_call
 .globl 	ksyscall_handler
 # --------- END OF ADD ----------------
 
@@ -279,10 +278,10 @@ exception_handler:
 	.set at
 	.set reorder
 
-my_system_call:
-	la v0,kmy_system_call	# Load adress of syscall implementation in v0.
-	syscall			# Enter kernel mode by 'syscall' exception.
-	jr ra			# Back in user mode, return to caller
+syscall_display_word:
+	la v0, displayWord		# Load adress of syscall implementation in v0.
+	syscall					# Enter kernel mode by 'syscall' exception.
+	jr ra					# Back in user mode, return to caller
 
 # -------------------------------------------------------------------------
 # Redirects our syscall to the correct function in Scheduler.c

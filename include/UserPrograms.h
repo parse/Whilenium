@@ -3,6 +3,7 @@
 
 #include "Structs.h"
 #include "IOHandler.h"
+#include "_Boot.h"
 #include "stdlib.h"
 
 void HelloWorld();

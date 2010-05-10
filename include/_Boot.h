@@ -3,7 +3,7 @@
 
 void ksyscall_handler(registers_t* reg);
 void syscall_die();
-void my_system_call(uint32_t v);
+void syscall_display_word(uint32_t v);
 
 #endif
 

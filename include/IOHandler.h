@@ -12,7 +12,7 @@ void putc(char c);
 void puts(const char* text);
 void putsln(const char* text);
 
-void display_word(uint32_t word);
+void displayWord(uint32_t word);
 
 void initIO();
 

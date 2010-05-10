@@ -44,7 +44,7 @@ void putsln(const char* text) {
 /* display_word:
  *   Display a value on the Malta display.
  */
-void display_word(uint32_t word)
+void displayWord(uint32_t word)
 {
 	int i;
 	malta->ledbar.reg = 0xFF;

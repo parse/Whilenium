@@ -1,9 +1,8 @@
 #include "UserPrograms.h"
-#include "_Boot.h"
 
 void HelloWorld() {
 	putsln("Hello World");
-	my_system_call(150);
+	syscall_display_word(150);
 }
 
 void HelloWorld2() {

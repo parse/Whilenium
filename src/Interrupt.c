@@ -5,24 +5,24 @@
  * Enables interrupt handling in the registry
  */
 void enableInterrupt() {
- 	display_word(1);
+ 	displayWord(1);
 
- 	/* Initialise timer to interrupt in 100 ms (simulated time). */
+ 	// Initialise timer to interrupt in 100 ms (simulated time).
  	kload_timer(1 * timer_msec);
 
- 	/* Update the status register to enable timer interrupts. */
+ 	// Update the status register to enable timer interrupts.
  	kset_sr(0xFFBF00E8, 0x10008001);
 	
 	putsln("enableInterrupt(): Interrupts are now enabled!\n\n");
 }
 
 /* Kernels internal definition of my system call (prefix 'k'). */
-void kmy_system_call(uint32_t v)
+/*void syscall_display(uint32_t v)
 {
-  /* Implementation of my_system_call: */
-  /* Displays value of its argument.   */
-  display_word(v);
-}
+  // Implementation of my_system_call:
+  // Displays value of its argument.  
+  displayWord(v);
+}*/
 
 /* kexception:
  *   Application-specific exception handler, called after registers
@@ -38,20 +38,16 @@ void kexception()
 	
 	//Make sure that we are here because of a timer interrupt.
 	if ( cause.field.exc == 0 ) {
-		putsln("-------------TIMER INTERRUPT!-------------");
 		run();
 		
 		/* Reload timer for another 100 ms (simulated time) */
 		kload_timer(1 * timer_msec);
 
 		// Increase marta
-		display_word(++i);
+		displayWord(++i);
 		
 	// Make sure we're here because of a syscall
 	} else if (cause.field.exc == 8) {
-		putsln("-------------SYSCALL INTERRUPT!-------------");
-		
-		
 		/* Get pointer to stored registers. */
 		reg = kget_registers();
 
@@ -66,7 +62,7 @@ void kexception()
 		/* Acknowledge syscall exception. */
 		kset_cause(~0x60, 0);
 		
-		// Get state of running process and get a new PCB if current is Terminated
+		// Get state of running process and get a new PCB if current is Terminated. Reload the timer to reset the next timer interrupt.
 		State prevState = getPrevState();
 		if (prevState == Terminated) {
 			putsln("DO ANOTHER RUN!");
