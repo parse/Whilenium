@@ -288,6 +288,12 @@ syscall_die:
 	syscall
 	jr ra
 
+syscall_putc:
+	la v0, putc
+	syscall
+	jr ra
+	
+	
 # syscall_handler:
 #   Enables argument passing for up
 #   to four parameters of a system call.

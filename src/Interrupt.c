@@ -31,6 +31,7 @@ void enableInterrupt() {
 void kexception()
 {
 	static int i = 0;
+	uint8_t ch;
 	cause_reg_t cause;
 	registers_t* reg;
 	
@@ -46,6 +47,29 @@ void kexception()
 		// Increase marta
 		displayWord(++i);
 		
+	// Make sure it's a UART interrupt
+	} else if (cause.field.ip & 4) {
+		
+		if (tty->lsr.field.dr) {
+			/* Data ready: add character to buffer */
+			ch = tty->rbr;
+			bfifo_put(&bfifo, ch);
+			if (ch == '\r') {
+				bfifo_put(&bfifo, '\n');
+			}
+		}
+		
+		if (bfifo.length > 0 && tty->lsr.field.thre) {
+			/* Transmitter idle: transmit buffered character */
+			tty->thr = bfifo_get(&bfifo);
+
+			/* Determine if we should be notified when transmitter becomes idle */
+			tty->ier.field.etbei = (bfifo.length > 0);
+		}
+		
+		/* Acknowledge UART interrupt. */
+		kset_cause(~0x1000, 0);
+		
 	// Make sure we're here because of a syscall
 	} else if (cause.field.exc == 8) {
 		/* Get pointer to stored registers. */
@@ -53,8 +77,6 @@ void kexception()
 
 		/* Handle the system call (see syscall.S). */
 		ksyscall_handler(reg);
-		
-		
 
 		/* Return from exception to instruction following syscall. */
 		reg->epc_reg += 4;

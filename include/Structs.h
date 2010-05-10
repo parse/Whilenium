@@ -47,5 +47,14 @@ typedef struct _Process {
 	State state;// State of the PCB-entry (New, Running, Waiting, Blocked, Ready, Terminated)
 	char* programName; // Name of the program
 } Process;
+
+/* A simple FIFO queue of bounded size. */
+struct bounded_fifo {
+  uint8_t  buf[FIFO_SIZE];
+  uint32_t length;
+};
+
+struct bounded_fifo bfifo;
+
 #endif
 
