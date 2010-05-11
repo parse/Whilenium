@@ -14,7 +14,7 @@ typedef struct _priority {
 } Priority;
 
 Priority PriorityArray[PRIORITIES+1];
-
+ 
 State getPrevState();
 void run();
 void die();
@@ -26,6 +26,7 @@ Process getProcess(int PID);
 void freePID(int PID);
 void freePCB(PCB* entry);
 void initScheduler(registers_t *regs, int mem);
+void setSleep(PCB* entry, int sleepTime);
 // TODO: ProcessTable* getProcessTable();
 
 #endif

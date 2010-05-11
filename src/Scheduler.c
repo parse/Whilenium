@@ -13,7 +13,7 @@ int memoryMin;
 void run() {		
 	char buf[10];
 	
- 	/* Setup storage-area for saving registers on exception. */
+ 	// Setup storage-area for saving registers on exception. 
 	if (previousPCB != NULL) {
 		copyRegisters(&(previousPCB->registers), regSpace);
 		
@@ -27,7 +27,6 @@ void run() {
 	int i;
 	PCB* cur;
 	PCB* firstTested;
-	//firstTested = PriorityArray[1].current;
 	cur = NULL;
 	
 	for (i = 1; i <= PRIORITIES; i++) {
@@ -50,7 +49,7 @@ void run() {
 					putsln("Break it!");
 					break;
 				}
-				
+				 
 				firstTime = 0;
 				cur = cur->next;
 			}
