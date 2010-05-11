@@ -14,13 +14,13 @@ void initOS(int memoryMin) {
 	for (i = 0; i < PROCESSES; i++) {
 		switch (i % 3) {
 			case 0:
-				newPCB((i % PRIORITIES) + 1, (int)&HelloWorld, "Executable: Hello World");
+				newPCB((i % PRIORITIES) + 1, (int)&HelloWorld, "Executable: Hello World", Blocked, 0);
 				break;
 			case 1:
-				newPCB((i % PRIORITIES) + 1, (int)&HelloWorld2, "Executable: Hello World");
+				newPCB((i % PRIORITIES) + 1, (int)&HelloWorld2, "Executable: Hello World", Waiting, 100);
 				break;
 			case 2:
-				newPCB((i % PRIORITIES) + 1, (int)&HelloWorld3, "Executable: Hello World");
+				newPCB((i % PRIORITIES) + 1, (int)&HelloWorld3, "Executable: Hello World", Ready, 0);
 				break;
 		}		
 	}
@@ -42,6 +42,7 @@ void initPCBTable(int memoryMin) {
 		PCBTable[i].memMax = 0;
 		PCBTable[i].memMin = pcb;
 		PCBTable[i].prio = 0;
+		PCBTable[i].state = New;
 		
 		insertPCB(&PCBTable[i]);
 	}
@@ -68,7 +69,7 @@ void exitProcess() {
  * @param int PC - Program counter to set
  * @param char* name - Program name to set
  */
-int newPCB(int prio, int PC, char* name) {
+int newPCB(int prio, int PC, char* name, State state, int sleep) {
 	static int currentPID = 0;
 	PCB* pcb = getFreePCB();
 	
@@ -83,6 +84,8 @@ int newPCB(int prio, int PC, char* name) {
 	pcb->registers.sp_reg = (uint32_t)&(pcb->stackHighEnd);
 	pcb->registers.ra_reg = (uint32_t)&exitProcess;
 	
+	pcb->state = state;
+	pcb->sleep = timer_msec + sleep;
 	insertPCB(pcb);
 	
 	return (int)pcb;

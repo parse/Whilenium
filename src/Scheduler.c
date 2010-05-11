@@ -17,19 +17,46 @@ void run() {
 	if (previousPCB != NULL) {
 		copyRegisters(&(previousPCB->registers), regSpace);
 		
+		if (previousPCB->state == Running)
+			previousPCB->state = Ready;
+			
 		// DEBUG CODE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		//freePCB(previousPCB);
 	}
 
 	int i;
 	PCB* cur;
+	PCB* firstTested;
+	//firstTested = PriorityArray[1].current;
+	cur = NULL;
 	
 	for (i = 1; i <= PRIORITIES; i++) {
-		cur = PriorityArray[i].current;
+		if (cur != NULL) {
+			if (i > 1)
+				putsln("!= null");
+				
+			cur->state = Running;
+			break;
+		}
+		
+		cur = firstTested = PriorityArray[i].current;
+		char firstTime = 1;
 		
 		if (cur != NULL) {
-			copyRegisters(regSpace, &(cur->registers));
+
+			while (cur->state == Blocked/* || (cur->state == Waiting && cur->sleep > timer_msec)*/) {
+				if (cur == firstTested && firstTime == 0) {
+					cur = NULL;
+					putsln("Break it!");
+					break;
+				}
+				
+				firstTime = 0;
+				cur = cur->next;
+			}
 			
+			copyRegisters(regSpace, &(cur->registers));
+		
 			putsln("\n\n\n----------------------------------------------------");
 			puts("Next process: ");
 			putsln(cur->name);
@@ -38,9 +65,7 @@ void run() {
 			puts("\tPID: ");
 			putsln(itoa(cur->PID, buf, 10));
 			putsln("----------------------------------------------------\n");
-			
-			
-			break;
+			break; 
 		}
 	}
 	
@@ -64,6 +89,12 @@ void die() {
 		previousPCB->state = Terminated;
 	}
 }
+
+void setSleep(PCB* entry, int sleepTime) {
+	int cpuTime = timer_msec;
+	entry->sleep = cpuTime + sleepTime;
+}
+
 
 /*
  * copyRegisters (registers_t *target, registers_t *source)
@@ -219,8 +250,6 @@ void freePCB(PCB* entry) {
 	entry->PID = -1;
 
 	insertPCB(entry);
-	
-	previousPCB->state = Terminated;
 }
 
 State getPrevState() {
