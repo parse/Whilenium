@@ -6,11 +6,15 @@ void HelloWorld() {
 }
 
 void HelloWorld2() {
-	increment(600);
+	putsln("\n----------Increment 300:");
+	increment(300);
+	putsln("----------Increment done!\n");
 }
 
 void HelloWorld3() {
-	fibonacci(20);
+	putsln("\n----------Fibonacci 25:");
+	fibonacci(25);
+	putsln("----------Fibonacci done!\n");
 }
 
 

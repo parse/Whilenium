@@ -10,72 +10,60 @@ int memoryMin;
  * starts the scheduler from the beginning.)
  * @param int memoryMin - The "start" memory address
  */
-void run() {		
-	char buf[10];
-	
+void run() {	
  	// Setup storage-area for saving registers on exception. 
 	if (previousPCB != NULL) {
 		copyRegisters(&(previousPCB->registers), regSpace);
 		
 		if (previousPCB->state == Running)
 			previousPCB->state = Ready;
-			
-		// DEBUG CODE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		//freePCB(previousPCB);
 	}
-
-	int i;
-	PCB* cur;
-	PCB* firstTested;
-	cur = NULL;
 	
-	for (i = 1; i <= PRIORITIES; i++) {
-		if (cur != NULL) {
-			if (i > 1)
-				putsln("!= null");
+	
+	PCB* cur = NULL;
+	PCB* firstCheck = NULL;
+	int first;
+	int i;
+	
+	for (i=1; i<=PRIORITIES; i++) {
+		cur = firstCheck = PriorityArray[i].current;
+		first = 1;
+		
+		while (cur->state == Blocked || (cur->state == Waiting && cur->sleep > timeCount)) {
+			if (first == 0 && cur == firstCheck) {
+				cur = NULL;
+				break;
+			}
 				
-			cur->state = Running;
+			
+			PriorityArray[i].current = cur->next;
+			cur = PriorityArray[i].current;
+			
+			first = 0;
+		}
+		
+		if (cur != NULL) {
 			break;
 		}
-		
-		cur = firstTested = PriorityArray[i].current;
-		char firstTime = 1;
-		
-		if (cur != NULL) {
-
-			while (cur->state == Blocked/* || (cur->state == Waiting && cur->sleep > timer_msec)*/) {
-				if (cur == firstTested && firstTime == 0) {
-					cur = NULL;
-					putsln("Break it!");
-					break;
-				}
-				 
-				firstTime = 0;
-				cur = cur->next;
-			}
-			
-			copyRegisters(regSpace, &(cur->registers));
-		
-			putsln("\n\n\n----------------------------------------------------");
-			puts("Next process: ");
-			putsln(cur->name);
-			puts("\tPrio: ");
-			putsln(itoa(cur->prio, buf, 10));
-			puts("\tPID: ");
-			putsln(itoa(cur->PID, buf, 10));
-			putsln("----------------------------------------------------\n");
-			break; 
-		}
 	}
 	
+	
 	if (cur != NULL) {
+		preparePCB(cur);
+		
 		// Sets previous to the one that is to be run
 		previousPCB = PriorityArray[i].current;
-	
+
 		// Current changes to the next PCB in queue to be run next time
 		PriorityArray[i].current = cur->next;
 	} else
 		previousPCB = NULL;
+}
+
+void preparePCB(PCB* entry) {
+	copyRegisters(regSpace, &(entry->registers));
+	
+	entry->state = Running;
 }
 
 /*

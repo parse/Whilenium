@@ -10,17 +10,20 @@ void initOS(int memoryMin) {
 	int i;
 	
 	initPCBTable(memoryMin);
+	//newPCB(1, (int)&HelloWorld, "Increment 1, wait", Waiting, 2000);
+	//newPCB(1, (int)&HelloWorld, "Increment 2", Ready, 0);
+	//newPCB(2, (int)&HelloWorld, "Increment 3", Ready, 0);
 
 	for (i = 0; i < PROCESSES; i++) {
 		switch (i % 3) {
 			case 0:
-				newPCB((i % PRIORITIES) + 1, (int)&HelloWorld, "Executable: Hello World", Blocked, 0);
+				newPCB((i % PRIORITIES) + 1, (int)&HelloWorld2, "Increment 1", Ready, 0);
 				break;
 			case 1:
-				newPCB((i % PRIORITIES) + 1, (int)&HelloWorld2, "Executable: Hello World", Waiting, 100);
+				newPCB((i % PRIORITIES) + 1, (int)&HelloWorld3, "Increment 2", Waiting, 40);
 				break;
 			case 2:
-				newPCB((i % PRIORITIES) + 1, (int)&HelloWorld3, "Executable: Hello World", Ready, 0);
+				newPCB((i % PRIORITIES) + 1, (int)&HelloWorld, "Hello", Blocked, 0);
 				break;
 		}		
 	}
@@ -85,7 +88,7 @@ int newPCB(int prio, int PC, char* name, State state, int sleep) {
 	pcb->registers.ra_reg = (uint32_t)&exitProcess;
 	
 	pcb->state = state;
-	pcb->sleep = timer_msec + sleep;
+	pcb->sleep = timeCount + sleep;
 	insertPCB(pcb);
 	
 	return (int)pcb;

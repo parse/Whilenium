@@ -2,6 +2,7 @@
 #define __SCHEDULER__
 
 #include "mips/types.h"
+#include "mips/malta.h"
 
 #include "Structs.h"
 #include "Process.h"
@@ -27,6 +28,7 @@ void freePID(int PID);
 void freePCB(PCB* entry);
 void initScheduler(registers_t *regs, int mem);
 void setSleep(PCB* entry, int sleepTime);
+void preparePCB(PCB* entry);
 // TODO: ProcessTable* getProcessTable();
 
 #endif

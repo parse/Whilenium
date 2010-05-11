@@ -78,7 +78,6 @@ void putsln(const char* text) {
  */
 void displayC(uint8_t word, uint8_t pos)
 {
-	int i;
 	malta->ledbar.reg = 0xFF;
 	
     malta->asciipos[pos].value = word;

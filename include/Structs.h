@@ -57,5 +57,8 @@ struct bounded_fifo {
 
 struct bounded_fifo bfifo;
 
+int timeCount;
+
+
 #endif
 

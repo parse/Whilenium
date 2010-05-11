@@ -25,12 +25,14 @@ void enableInterrupt() {
  */
 void kexception()
 {
-	static int i = 0;
+	//static int i = 0;
 	uint8_t ch;
 	cause_reg_t cause;
 	registers_t* reg;
 	
 	cause.reg = kget_cause();
+	
+	timeCount++;
 	//Make sure that we are here because of a timer interrupt.
 	if ( cause.field.exc == 0 ) {
 		run();
