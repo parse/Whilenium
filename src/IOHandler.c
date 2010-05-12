@@ -5,11 +5,7 @@
  * Output character c
  * @param char c - Character to output
  */
-void putc(char c) {
-//	syscall_putc();
-/*	putc2(c);
-	return;*/
-	
+void putcDebug(char c) {
 	// Write character to Transmitter Holding Register
     while (!tty->lsr.field.thre);
     	tty->thr = c;
@@ -25,12 +21,8 @@ void putc(char c) {
  * Output string text
  * @param const char* text - String to output
  */
-void puts(const char* text)
+void putsDebug(char* text)
 {
-	/*puts2(text);
-	return;*/
-	
-	//syscall_puts(&text);
 	int i = 0;
 	while(text[i] != '\0')
 	{
@@ -44,15 +36,11 @@ void puts(const char* text)
  * Output character c
  * @param char c - Character to output
  */
-void putc2(char c) {
-	syscall_putc(&bFifoOut, c);
-	/*while (!tty->lsr.field.thre);
-    	tty->thr = c;
-      
-    if(c == '\n') { 
-		while (!tty->lsr.field.thre);
-		tty->thr = '\r';
-    }*/	   	  
+void putc(char c) {	
+	syscall_put(&bFifoOut, c);
+	
+	if (c == '\n')
+		syscall_put(&bFifoOut, '\r');
 }
 
 /**
@@ -60,15 +48,9 @@ void putc2(char c) {
  * Output string text
  * @param const char* text - String to output
  */
-void puts2(const char* text)
+void puts(char* text)
 {
-	syscall_puts(&bFifoOut, &text);
-	/*int i = 0;
-	while(text[i] != '\0')
-	{
-		putc(text[i]);
-    	i++;
-	}*/
+	syscall_puts(&bFifoOut, text);
 }
 
 /**
@@ -76,9 +58,19 @@ void puts2(const char* text)
  * Output text with line-break
  * @param const char* text - String to output
  */
-void putsln(const char* text) {
+void putsln(char* text) {
 	puts(text);
 	putc('\n');
+}
+
+/**
+ * getc()
+ * If there is a char on the buffer it is returned, else while loop until char ready
+ */
+char getc() {
+	while (bFifoIn.length == 0);
+	
+	return bfifo_get(&bFifoIn);
 }
 
 /* displayC:
@@ -104,20 +96,29 @@ void displayNumber(uint32_t word) {
 }
 
 /* bfifo_put: Inserts a character at the end of the queue. */
-void bfifo_put(struct bounded_fifo* bfifo, uint8_t ch) {
-  /* Make sure the 'bfifo' pointer is not 0. */
+void bfifo_put(struct bounded_fifo* bfifo, uint8_t ch, char output) {
+	/* Make sure the 'bfifo' pointer is not 0. */
 	kdebug_assert(bfifo != 0);
 
-	if (bfifo->length < FIFO_SIZE) {
-		bfifo->buf[(bfifo->length)++] = ch;
-  	}
+	while (bfifo->length > FIFO_SIZE);
+	
+	bfifo->buf[(bfifo->length)++] = ch;
+
+	if (output && tty->lsr.field.thre) {
+		//Transmitter idle: transmit buffered character
+		tty->thr = bfifo_get(bfifo);
+
+		//Determine if we should be notified when transmitter becomes idle
+		tty->ier.field.etbei = (bfifo->length > 0);
+	}
 }
 
-void bfifo_puts(struct bounded_fifo* bfifo, char* str) {
+void bfifo_puts(struct bounded_fifo* bfifo, uint32_t s) {
+	char* str = (char*)s;
 	int i = 0;
 	
 	while (str[i] != '\0') {
-		bfifo_put(bfifo, str[i]);
+		bfifo_put(bfifo, str[i], 1);
 		i++;
 	}
 }
@@ -149,6 +150,7 @@ void initIO() {
 	
 	status_reg_t and, or;
 	bFifoOut.length = 0;
+	bFifoIn.length = 0;
 	
 	/* Set UART word length ('3' meaning 8 bits).
 	* Do this early to enable debug printouts (e.g. kdebug_print).

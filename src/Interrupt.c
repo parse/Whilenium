@@ -26,33 +26,24 @@ void enableInterrupt() {
 void kexception()
 {
 	//static int i = 0;
-	uint8_t ch;
 	cause_reg_t cause;
 	registers_t* reg;
-	
 	cause.reg = kget_cause();
 	
-	//Make sure that we are here because of a timer interrupt.
-	if ( cause.field.exc == 0 ) {
-		timeCount++;
-		run();
+	timeCount++;
+	
+	// Check if we are here because of UART interrupt	
+	if (cause.field.ip & 4) {
+		uint8_t c;
 		
-		/* Reload timer for another 100 ms (simulated time) */
-		kload_timer(1 * timer_msec);
-
-		// Show on malta
-		displayC('A', 2);
-		
-	// Make sure it's a UART interrupt
-	} else if (cause.field.ip & 4) {
 		if (tty->lsr.field.dr) {
 			// Data ready: add character to buffer
-			ch = tty->rbr;
-			bfifo_put(&bFifoIn, ch);
-			bfifo_put(&bFifoOut, ch);
-			if (ch == '\r') {
-				bfifo_put(&bFifoIn, '\n');
-				bfifo_put(&bFifoOut, '\n');
+			c = tty->rbr;
+			bfifo_put(&bFifoIn, c, 0);
+			//bfifo_put(&bFifoOut, c, 1);
+			if (c == '\r') {
+				bfifo_put(&bFifoIn, '\n', 0);
+				//bfifo_put(&bFifoOut, '\n', 1);
 			}
 		}
 		
@@ -66,9 +57,14 @@ void kexception()
 		
 		// Acknowledge UART interrupt.
 		kset_cause(~0x1000, 0);
-		
-	// Make sure we're here because of a syscall
-	} else if (cause.field.exc == 8) {
+	} //Make sure that we are here because of a timer interrupt.
+	else if ( cause.field.exc == 0 ) {
+			run();
+
+			/* Reload timer for another 100 ms (simulated time) */
+			kload_timer(1 * timer_msec);
+	} // Make sure we're here because of a syscall
+	else if (cause.field.exc == 8) {
 		/* Get pointer to stored registers. */
 		reg = kget_registers();
 

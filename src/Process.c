@@ -5,7 +5,7 @@
  * Initiates the OS essentials (including the first process)
  */
 void initOS(int memoryMin) {
-	puts("ALERT ALERT!!! INITIALIZING THE OS!\n\n");
+	putsDebug("ALERT ALERT!!! INITIALIZING THE OS!\n\n");
 	
 	int i;
 		
@@ -17,11 +17,11 @@ void initOS(int memoryMin) {
 		
 		switch (i % 3) {
 			case 0:
-				argv[0] = 300;
+				argv[0] = 5;
 				newPCB((i % PRIORITIES) + 1, (int)&Increment, "Increment", argv, Ready, 0);
 				break;
 			case 1:
-				argv[0] = 10;
+				argv[0] = 6;
 				newPCB((i % PRIORITIES) + 1, (int)&Fibonacci, "Fibonacci", argv, Ready, 0);
 				break;
 			case 2:
@@ -75,7 +75,6 @@ void exitProcess() {
  * @param char* name - Program name to set
  */
 int newPCB(int prio, int PC, char* name, uint32_t* argv, State state, int sleep) {
-	static int currentPID = 0;
 	PCB* pcb = getFreePCB();
 	
 	pcb->prio = prio;

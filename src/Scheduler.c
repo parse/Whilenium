@@ -55,8 +55,13 @@ void run() {
 
 		// Current changes to the next PCB in queue to be run next time
 		PriorityArray[i].current = cur->next;
-	} else
+	} else {
 		previousPCB = NULL;
+		//char buf[10];
+		//puts("Ready: ");
+		//puts(itoa(currentPID, buf, 10));
+		//putsln("");
+	}
 }
 
 void preparePCB(PCB* entry) {

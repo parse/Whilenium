@@ -58,6 +58,7 @@ typedef struct bounded_fifo {
 BFifo bFifoOut;
 BFifo bFifoIn;
 
+int currentPID;
 int timeCount;
 
 

@@ -78,7 +78,7 @@ typedef struct
           uint8_t pe   : 1;  /* bit 2: Parity Error                 */
           uint8_t fe   : 1;  /* bit 3: Framing Error                */
           uint8_t bi   : 1;  /* bit 4: Break Interrupt              */
-          uint8_t thre : 1;  /* bit 5: Transmitter Holding Register */
+          uint8_t thre : 1;  /* bit 5: Transmitter Holding Register Empty */
           uint8_t temt : 1;  /* bit 6: Transmitter Empty            */
       } field;
   } lsr;

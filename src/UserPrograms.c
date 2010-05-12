@@ -1,14 +1,18 @@
 #include "UserPrograms.h"
 
 void HelloWorld() {
-	//putsln("Hello World");
-	//syscall_display_c('A', 3);
-	
-	//while(1)
-	//	putc('S');
-	putsln("\n----------Hello:");
+	putsln("\n----------Hello World");
 	putsln("Hello World!");
-	putsln("----------Hello done!\n");
+	putsln("------------Hello World done!\n");
+	
+	/*char c;
+	char i;
+	while (c != '\n') {
+		putc(c = getc());
+		
+		displayC(c, i);
+		i = (i + 1)%8;
+	}*/
 }
 
 void Increment(int a) {

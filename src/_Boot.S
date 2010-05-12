@@ -62,7 +62,7 @@ excn_stack:
 .globl	syscall_display_c
 .globl	syscall_display_number
 .globl  syscall_die
-.globl  syscall_putc
+.globl  syscall_put
 .globl	syscall_puts
 .globl 	ksyscall_handler
 # --------- END OF ADD ----------------
@@ -279,12 +279,12 @@ exception_handler:
 	.set reorder
 
 syscall_display_c:
-	la v0, displayC		# Load adress of syscall implementation in v0.
+	la v0, displayC			# Load adress of syscall implementation in v0.
 	syscall					# Enter kernel mode by 'syscall' exception.
 	jr ra					# Back in user mode, return to caller
 
 syscall_display_number:
-	la v0, displayNumber		# Load adress of syscall implementation in v0.
+	la v0, displayNumber	# Load adress of syscall implementation in v0.
 	syscall					# Enter kernel mode by 'syscall' exception.
 	jr ra					# Back in user mode, return to caller
 
@@ -296,7 +296,7 @@ syscall_die:
 	syscall
 	jr ra
 
-syscall_putc:
+syscall_put:
 	la v0, bfifo_put
 	syscall
 	jr ra
