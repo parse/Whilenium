@@ -16,7 +16,7 @@ void enableInterrupt() {
  	// Update the status register to enable timer interrupts.
  	kset_sr(0xFFBF00E8, 0x10008001);
 	
-	putsln("enableInterrupt(): Interrupts are now enabled!\n\n");
+	//putsln("enableInterrupt(): Interrupts are now enabled!\n\n");
 }
 
 /* kexception:
@@ -32,9 +32,9 @@ void kexception()
 	
 	cause.reg = kget_cause();
 	
-	timeCount++;
 	//Make sure that we are here because of a timer interrupt.
 	if ( cause.field.exc == 0 ) {
+		timeCount++;
 		run();
 		
 		/* Reload timer for another 100 ms (simulated time) */
@@ -48,18 +48,20 @@ void kexception()
 		if (tty->lsr.field.dr) {
 			// Data ready: add character to buffer
 			ch = tty->rbr;
-			bfifo_put(&bfifo, ch);
+			bfifo_put(&bFifoIn, ch);
+			bfifo_put(&bFifoOut, ch);
 			if (ch == '\r') {
-				bfifo_put(&bfifo, '\n');
+				bfifo_put(&bFifoIn, '\n');
+				bfifo_put(&bFifoOut, '\n');
 			}
 		}
 		
-		if (bfifo.length > 0 && tty->lsr.field.thre) {
+		if (bFifoOut.length > 0 && tty->lsr.field.thre) {
 			//Transmitter idle: transmit buffered character
-			tty->thr = bfifo_get(&bfifo);
+			tty->thr = bfifo_get(&bFifoOut);
 
 			//Determine if we should be notified when transmitter becomes idle
-			tty->ier.field.etbei = (bfifo.length > 0);
+			tty->ier.field.etbei = (bFifoOut.length > 0);
 		}
 		
 		// Acknowledge UART interrupt.

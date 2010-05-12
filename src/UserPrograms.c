@@ -1,8 +1,14 @@
 #include "UserPrograms.h"
 
 void HelloWorld() {
-	putsln("Hello World");
-	syscall_display_c('A', 3);
+	//putsln("Hello World");
+	//syscall_display_c('A', 3);
+	
+	//while(1)
+	//	putc('S');
+	putsln("\n----------Hello:");
+	putsln("Hello World!");
+	putsln("----------Hello done!\n");
 }
 
 void HelloWorld2() {

@@ -7,6 +7,9 @@
  */
 void putc(char c) {
 //	syscall_putc();
+	putc2(c);
+	return;
+	
 	// Write character to Transmitter Holding Register
     while (!tty->lsr.field.thre);
     	tty->thr = c;
@@ -24,6 +27,9 @@ void putc(char c) {
  */
 void puts(const char* text)
 {
+	puts2(text);
+	return;
+	
 	//syscall_puts(&text);
 	int i = 0;
 	while(text[i] != '\0')
@@ -39,13 +45,14 @@ void puts(const char* text)
  * @param char c - Character to output
  */
 void putc2(char c) {
-	while (!tty->lsr.field.thre);
+	syscall_putc(&bFifoOut, c);
+	/*while (!tty->lsr.field.thre);
     	tty->thr = c;
       
     if(c == '\n') { 
 		while (!tty->lsr.field.thre);
 		tty->thr = '\r';
-    }	   	  
+    }*/	   	  
 }
 
 /**
@@ -55,12 +62,13 @@ void putc2(char c) {
  */
 void puts2(const char* text)
 {
-	int i = 0;
+	syscall_puts(&bFifoOut, &text);
+	/*int i = 0;
 	while(text[i] != '\0')
 	{
 		putc(text[i]);
     	i++;
-	}
+	}*/
 }
 
 /**
@@ -86,25 +94,32 @@ void displayC(uint8_t word, uint8_t pos)
 /* displayNumber
  *   Display a value on the Malta display.
  */
-void displayNumber(uint32_t word)
-{
+void displayNumber(uint32_t word) {
 	int i;
 	malta->ledbar.reg = 0xFF;
 		for (i = 7; i >= 0; --i) {
-    	malta->asciipos[i].value = '0' + word % 10;	
-		word /= 10;
+    		malta->asciipos[i].value = '0' + word % 10;	
+			word /= 10;
 	}
 }
 
 /* bfifo_put: Inserts a character at the end of the queue. */
-void bfifo_put(struct bounded_fifo* bfifo, uint8_t ch)
-{
+void bfifo_put(struct bounded_fifo* bfifo, uint8_t ch) {
   /* Make sure the 'bfifo' pointer is not 0. */
-  kdebug_assert(bfifo != 0);
+	kdebug_assert(bfifo != 0);
 
-  if (bfifo->length < FIFO_SIZE) {
-    bfifo->buf[(bfifo->length)++] = ch;
-  }
+	if (bfifo->length < FIFO_SIZE) {
+		bfifo->buf[(bfifo->length)++] = ch;
+  	}
+}
+
+void bfifo_puts(struct bounded_fifo* bfifo, char* str) {
+	int i = 0;
+	
+	while (str[i] != '\0') {
+		bfifo_put(bfifo, str[i]);
+		i++;
+	}
 }
 
 /* bfifo_get: Returns a character removed from the front of the queue. */
@@ -133,7 +148,7 @@ void initIO() {
 	// If there are any commands needed to be executed for IO to work, do them here...
 	
 	status_reg_t and, or;
-	bfifo.length = 0;
+	bFifoOut.length = 0;
 	
 	/* Set UART word length ('3' meaning 8 bits).
 	* Do this early to enable debug printouts (e.g. kdebug_print).

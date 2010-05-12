@@ -50,12 +50,13 @@ typedef struct _Process {
 } Process;
 
 /* A simple FIFO queue of bounded size. */
-struct bounded_fifo {
+typedef struct bounded_fifo {
   uint8_t  buf[FIFO_SIZE];
   uint32_t length;
-};
+} BFifo;
 
-struct bounded_fifo bfifo;
+BFifo bFifoOut;
+BFifo bFifoIn;
 
 int timeCount;
 

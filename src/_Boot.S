@@ -63,6 +63,7 @@ excn_stack:
 .globl	syscall_display_number
 .globl  syscall_die
 .globl  syscall_putc
+.globl	syscall_puts
 .globl 	ksyscall_handler
 # --------- END OF ADD ----------------
 
@@ -296,7 +297,12 @@ syscall_die:
 	jr ra
 
 syscall_putc:
-	la v0, putc
+	la v0, bfifo_put
+	syscall
+	jr ra
+
+syscall_puts:
+	la v0, bfifo_puts
 	syscall
 	jr ra
 	

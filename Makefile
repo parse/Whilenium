@@ -46,34 +46,34 @@ boot: $(addprefix build/, _Boot.o Boot.o API.o Memory.o Process.o Scheduler.o In
 
 #### Add dependency on headerfile of various tty.o files
 
-build/Boot.o: src/Boot.c include/Boot.h
+build/Boot.o: src/Boot.c include/Boot.h include/Settings.h
 	$(CC) $(ARCH) $(CFLAGS)  -c $< -o $@
 	
-build/IOHandler.o: src/IOHandler.c include/IOHandler.h
+build/IOHandler.o: src/IOHandler.c include/IOHandler.h include/Settings.h
 	$(CC) $(ARCH) $(CFLAGS)  -c $< -o $@
 	
 build/API.o: src/API.c include/API.h
 	$(CC) $(ARCH) $(CFLAGS)  -c $< -o $@
 	
-build/Interrupt.o: src/Interrupt.c include/Interrupt.h
+build/Interrupt.o: src/Interrupt.c include/Interrupt.h include/Settings.h
 	$(CC) $(ARCH) $(CFLAGS)  -c $< -o $@
 	
-build/Memory.o: src/Memory.c include/Memory.h
+build/Memory.o: src/Memory.c include/Memory.h include/Settings.h
 	$(CC) $(ARCH) $(CFLAGS)  -c $< -o $@
 	
-build/Process.o: src/Process.c include/Process.h
+build/Process.o: src/Process.c include/Process.h include/Settings.h
 	$(CC) $(ARCH) $(CFLAGS)  -c $< -o $@
 	
-build/Scheduler.o: src/Scheduler.c include/Scheduler.h include/Process.h
+build/Scheduler.o: src/Scheduler.c include/Scheduler.h include/Process.h include/Settings.h
 	$(CC) $(ARCH) $(CFLAGS)  -c $< -o $@
 	
-build/stdlib.o: src/stdlib.c include/stdlib.h
+build/stdlib.o: src/stdlib.c include/stdlib.h include/Settings.h
 	$(CC) $(ARCH) $(CFLAGS)  -c $< -o $@
 	
-build/UserPrograms.o: src/UserPrograms.c include/UserPrograms.h
+build/UserPrograms.o: src/UserPrograms.c include/UserPrograms.h include/Settings.h
 	$(CC) $(ARCH) $(CFLAGS)  -c $< -o $@
 	
-build/_Boot.o: src/_Boot.S include/_Boot.h
+build/_Boot.o: src/_Boot.S include/_Boot.h include/Settings.h
 	$(CC) $(ARCH) $(CFLAGS)  -c $< -o $@
 
 

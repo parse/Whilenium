@@ -10,20 +10,17 @@ void initOS(int memoryMin) {
 	int i;
 	
 	initPCBTable(memoryMin);
-	//newPCB(1, (int)&HelloWorld, "Increment 1, wait", Waiting, 2000);
-	//newPCB(1, (int)&HelloWorld, "Increment 2", Ready, 0);
-	//newPCB(2, (int)&HelloWorld, "Increment 3", Ready, 0);
 
 	for (i = 0; i < PROCESSES; i++) {
 		switch (i % 3) {
 			case 0:
-				newPCB((i % PRIORITIES) + 1, (int)&HelloWorld2, "Increment 1", Ready, 0);
+				newPCB((i % PRIORITIES) + 1, (int)&HelloWorld2, "Increment 1", Waiting, 50);
 				break;
 			case 1:
 				newPCB((i % PRIORITIES) + 1, (int)&HelloWorld3, "Increment 2", Waiting, 40);
 				break;
 			case 2:
-				newPCB((i % PRIORITIES) + 1, (int)&HelloWorld, "Hello", Blocked, 0);
+				newPCB((i % PRIORITIES) + 1, (int)&HelloWorld, "Hello", Waiting, 10);
 				break;
 		}		
 	}

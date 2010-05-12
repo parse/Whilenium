@@ -10,7 +10,7 @@ int memoryMin;
  * starts the scheduler from the beginning.)
  * @param int memoryMin - The "start" memory address
  */
-void run() {	
+void run() {
  	// Setup storage-area for saving registers on exception. 
 	if (previousPCB != NULL) {
 		copyRegisters(&(previousPCB->registers), regSpace);
@@ -29,12 +29,11 @@ void run() {
 		cur = firstCheck = PriorityArray[i].current;
 		first = 1;
 		
-		while (cur->state == Blocked || (cur->state == Waiting && cur->sleep > timeCount)) {
+		while (cur != NULL && (cur->state == Blocked || (cur->state == Waiting && cur->sleep > timeCount))) {
 			if (first == 0 && cur == firstCheck) {
 				cur = NULL;
 				break;
 			}
-				
 			
 			PriorityArray[i].current = cur->next;
 			cur = PriorityArray[i].current;
