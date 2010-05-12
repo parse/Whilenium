@@ -1,5 +1,8 @@
 #include "UserPrograms.h"
 
+int _fibonacci(int n_1, int n_2, int i);
+void increment(int i);
+
 void HelloWorld() {
 	putsln("\n----------Hello World");
 	putsln("Hello World!");
@@ -13,6 +16,10 @@ void HelloWorld() {
 		displayC(c, i);
 		i = (i + 1)%8;
 	}*/
+}
+
+void Scroller(char* msg) {
+	
 }
 
 void Shell() {
@@ -72,5 +79,19 @@ void increment(int n) {
 		puts("Increment: ");
 		putsln(itoa(i, buf, 10));
 	}
+}
+
+void initUserPrograms() {
+	userProgramsAddresses[0] = (int)&HelloWorld;
+	userProgramsAddresses[1] = (int)&Scroller;
+	userProgramsAddresses[2] = (int)&Increment;
+	userProgramsAddresses[3] = (int)&Fibonacci;
+	userProgramsAddresses[4] = (int)&Shell;
+	
+	userProgramsNames[0] = "HelloWorld";
+	userProgramsNames[1] = "Scroller";
+	userProgramsNames[2] = "Increment";
+	userProgramsNames[3] = "Fibonacci";
+	userProgramsNames[4] = "Shell";
 }
 

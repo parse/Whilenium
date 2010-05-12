@@ -14,4 +14,7 @@
 // Number of priorities in the system
 #define PRIORITIES 4
 
+// Names of available user programs are stored in the tables at the bottom
+#define USERPROGRAMS 5
+
 #endif

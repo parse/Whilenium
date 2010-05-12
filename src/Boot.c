@@ -11,6 +11,9 @@ int OS(int memoryMin) {
 	// Initiate spot for registers to be saved
  	kset_registers(&regs);
 	
+	// Initiate User Program tables
+	initUserPrograms();
+	
 	// Initiate the I/O-devices needed
 	// Module: IOHandler
 	initIO();

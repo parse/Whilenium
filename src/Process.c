@@ -47,6 +47,7 @@ void initPCBTable(int memoryMin) {
 	for (i = 0; i < PROCESSES; i++) {
 		int pcb = (int)&PCBTable[i];
 		
+		PCBTable[i].ID = i;
 		PCBTable[i].PID = -1;
 		PCBTable[i].memMax = 0;
 		PCBTable[i].memMin = pcb;
@@ -102,3 +103,8 @@ int newPCB(int prio, int PC, char* name, uint32_t* argv, State state, int sleep)
 	return (int)pcb;
 }
 
+void parser(char* s) {
+	// Split the string into arguments [0] = program name, [1],... = arguments
+	
+	// Check which program to run and pass arguments by comparing strings in the Userprogram table
+}

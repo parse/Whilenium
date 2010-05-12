@@ -6,10 +6,9 @@
 #include "_Boot.h"
 #include "stdlib.h"
 
-int _fibonacci(int n_1, int n_2, int i);
-void increment(int i);
-
+// User programs
 void HelloWorld();
+void Scroller(char* msg);
 void Increment(int a);
 void Fibonacci(int a);
 void Shell();

@@ -28,6 +28,7 @@ typedef struct _PCB {
 	int stackHighEnd;
 	struct _PCB* next;
 	struct _PCB* prev;
+	int ID;
 	int PID; // Unique identifier
 	int sleep; // Sleeptime
 	int memMax; // Max memory access space
@@ -61,6 +62,9 @@ BFifo bFifoIn;
 int currentPID;
 int timeCount;
 
+// Tables of user programs and table containing addresses
+int userProgramsAddresses[USERPROGRAMS];
+char* userProgramsNames[USERPROGRAMS];
 
 #endif
 
