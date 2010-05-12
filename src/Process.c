@@ -11,24 +11,28 @@ void initOS(int memoryMin) {
 		
 	initPCBTable(memoryMin);
 	
+	uint32_t argv[4];
+	
 	for (i = 0; i < PROCESSES; i++) {
-		uint32_t argv[4];
 		argv[0] = 0;
 		
 		switch (i % 3) {
 			case 0:
 				argv[0] = 5;
-				newPCB((i % PRIORITIES) + 1, (int)&Increment, "Increment", argv, Ready, 0);
+				newPCB((i % PRIORITIES-1) + 1, (int)&Increment, "Increment", argv, Ready, 0);
 				break;
 			case 1:
 				argv[0] = 6;
-				newPCB((i % PRIORITIES) + 1, (int)&Fibonacci, "Fibonacci", argv, Ready, 0);
+				newPCB((i % PRIORITIES-1) + 1, (int)&Fibonacci, "Fibonacci", argv, Ready, 0);
 				break;
 			case 2:
-				newPCB((i % PRIORITIES) + 1, (int)&HelloWorld, "Hello World", argv, Ready, 00);
+				newPCB((i % PRIORITIES-1) + 1, (int)&HelloWorld, "Hello World", argv, Ready, 00);
 				break;
 		}		
 	}
+	
+	argv[0] = 0;
+	newPCB(PRIORITIES, (int)&Shell, "Shell", argv, Ready, 0);
 }
 
 /**

@@ -12,5 +12,6 @@ void increment(int i);
 void HelloWorld();
 void Increment(int a);
 void Fibonacci(int a);
+void Shell();
 
 #endif
