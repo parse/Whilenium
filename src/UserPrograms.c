@@ -11,21 +11,21 @@ void HelloWorld() {
 	putsln("----------Hello done!\n");
 }
 
-void HelloWorld2() {
-	putsln("\n----------Increment 300:");
-	increment(300);
+void Increment(int a) {
+	char buf[10];
+	puts("\n----------Increment to ");
+	putsln(itoa(a, buf, 10));
+	
+	increment(a);
 	putsln("----------Increment done!\n");
 }
 
-void HelloWorld3() {
-	putsln("\n----------Fibonacci 25:");
-	fibonacci(25);
+void Fibonacci(int a) {
+	char buf[10];
+	puts("\n----------Fibonacci to ");
+	putsln(itoa(a, buf, 10));
+	_fibonacci(1, 1, a);
 	putsln("----------Fibonacci done!\n");
-}
-
-
-void fibonacci(int i) {
-	_fibonacci(1, 1, i);
 }
 
 int _fibonacci(int n_1, int n_2, int i) {
@@ -42,16 +42,6 @@ int _fibonacci(int n_1, int n_2, int i) {
 	
 	return 0;
 }
-/*
-void increment(int n);
-
-int incr_main(int argc, char** argv) {
-	if (argc != 2)
-		return 0;
-	else
-		increment(atoi(argv[1]));
-}
-*/
 
 void increment(int n) {
 	int i;

@@ -7,8 +7,8 @@
  */
 void putc(char c) {
 //	syscall_putc();
-	putc2(c);
-	return;
+/*	putc2(c);
+	return;*/
 	
 	// Write character to Transmitter Holding Register
     while (!tty->lsr.field.thre);
@@ -27,8 +27,8 @@ void putc(char c) {
  */
 void puts(const char* text)
 {
-	puts2(text);
-	return;
+	/*puts2(text);
+	return;*/
 	
 	//syscall_puts(&text);
 	int i = 0;

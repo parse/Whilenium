@@ -8,19 +8,24 @@ void initOS(int memoryMin) {
 	puts("ALERT ALERT!!! INITIALIZING THE OS!\n\n");
 	
 	int i;
-	
+		
 	initPCBTable(memoryMin);
-
+	
 	for (i = 0; i < PROCESSES; i++) {
+		uint32_t argv[4];
+		argv[0] = 0;
+		
 		switch (i % 3) {
 			case 0:
-				newPCB((i % PRIORITIES) + 1, (int)&HelloWorld2, "Increment 1", Waiting, 50);
+				argv[0] = 300;
+				newPCB((i % PRIORITIES) + 1, (int)&Increment, "Increment", argv, Ready, 0);
 				break;
 			case 1:
-				newPCB((i % PRIORITIES) + 1, (int)&HelloWorld3, "Increment 2", Waiting, 40);
+				argv[0] = 10;
+				newPCB((i % PRIORITIES) + 1, (int)&Fibonacci, "Fibonacci", argv, Ready, 0);
 				break;
 			case 2:
-				newPCB((i % PRIORITIES) + 1, (int)&HelloWorld, "Hello", Waiting, 10);
+				newPCB((i % PRIORITIES) + 1, (int)&HelloWorld, "Hello World", argv, Ready, 00);
 				break;
 		}		
 	}
@@ -69,7 +74,7 @@ void exitProcess() {
  * @param int PC - Program counter to set
  * @param char* name - Program name to set
  */
-int newPCB(int prio, int PC, char* name, State state, int sleep) {
+int newPCB(int prio, int PC, char* name, uint32_t* argv, State state, int sleep) {
 	static int currentPID = 0;
 	PCB* pcb = getFreePCB();
 	
@@ -79,9 +84,12 @@ int newPCB(int prio, int PC, char* name, State state, int sleep) {
 	
 	currentPID++;
 	pcb->PID = currentPID;
-	
 	pcb->registers.epc_reg = PC;
 	pcb->registers.sp_reg = (uint32_t)&(pcb->stackHighEnd);
+	pcb->registers.a_reg[0] = argv[0];
+	pcb->registers.a_reg[1] = 0;
+	pcb->registers.a_reg[2] = 0;
+	pcb->registers.a_reg[3] = 0;
 	pcb->registers.ra_reg = (uint32_t)&exitProcess;
 	
 	pcb->state = state;
