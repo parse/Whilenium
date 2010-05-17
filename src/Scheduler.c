@@ -81,6 +81,27 @@ void die() {
 	}
 }
 
+
+void kBlock(int pid) {
+	putsDebug("----------Block\n");
+}
+
+void kUnblock(int pid) {
+	;
+}
+
+void kKill(int pid) {
+	putsDebug("Kill!\n");
+}
+
+void kSleep(int pid, int sleepTime) {
+	;
+}
+
+void kChangePrio(int pid, int prio) {
+	;
+}
+
 void setSleep(PCB* entry, int sleepTime) {
 	int cpuTime = timer_msec;
 	entry->sleep = cpuTime + sleepTime;

@@ -65,6 +65,8 @@ void kexception()
 			kload_timer(1 * timer_msec);
 	} // Make sure we're here because of a syscall
 	else if (cause.field.exc == 8) {
+		putsDebug("---SYSCALL!\n");
+		
 		/* Get pointer to stored registers. */
 		reg = kget_registers();
 

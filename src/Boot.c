@@ -27,7 +27,7 @@ int OS(int memoryMin) {
 	// Enable the interrupt bit and the interrupt handler
 	// Module: Interrupt
 	enableInterrupt();
-
+		
 	while (1);
 	
 	// Run the scheduler

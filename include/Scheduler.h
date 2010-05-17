@@ -31,4 +31,11 @@ void setSleep(PCB* entry, int sleepTime);
 void preparePCB(PCB* entry);
 // TODO: ProcessTable* getProcessTable();
 
+
+void kBlock(int pid);
+void kUnblock(int pid);
+void kKill(int pid);
+void kSleep(int pid, int sleepTime);
+void kChangePrio(int pid, int prio);
+
 #endif

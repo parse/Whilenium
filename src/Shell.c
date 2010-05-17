@@ -11,6 +11,7 @@
 #define TAB 0x9
 
 void Shell() {
+	syscall_kill(1);
 	putsln("\nShell");
 
 	char c;

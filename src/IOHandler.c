@@ -26,7 +26,7 @@ void putsDebug(char* text)
 	int i = 0;
 	while(text[i] != '\0')
 	{
-		putc(text[i]);
+		putcDebug(text[i]);
     	i++;
 	}
 }

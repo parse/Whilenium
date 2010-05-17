@@ -62,6 +62,14 @@ excn_stack:
 .globl	syscall_display_c
 .globl	syscall_display_number
 .globl  syscall_die
+
+.globl	syscall_schedule
+.globl	syscall_block
+.globl	syscall_unblock
+.globl	syscall_kill
+.globl	syscall_sleep
+.globl	syscall_prio
+
 .globl  syscall_put
 .globl	syscall_puts
 .globl 	ksyscall_handler
@@ -305,7 +313,36 @@ syscall_puts:
 	la v0, bfifo_puts
 	syscall
 	jr ra
+
+syscall_schedule:
+	la v0, run
+	syscall
+	jr ra
+
+syscall_block:
+	la v0, kBlock
+	syscall
+	jr ra
+
+syscall_unblock:
+	la v0, kUnblock
+	syscall
+	jr ra
+
+syscall_kill:
+	la v0, kSleep
+	syscall
+	jr ra
+
+syscall_sleep:
+	la v0, kSleep
+	syscall
+	jr ra
 	
+syscall_prio:
+	la v0, kChangePrio
+	syscall
+	jr ra	
 	
 # syscall_handler:
 #   Enables argument passing for up
