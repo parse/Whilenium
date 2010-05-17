@@ -22,23 +22,6 @@ void Scroller(char* msg) {
 	
 }
 
-void Shell() {
-	putsln("\nShell");
-
-	char c;
-	//char i;
-	
-	while (1) {
-		c = 0;
-		puts(">");
-		while (c != '\n') {
-			putc(c = getc());
-		}
-	}
-	
-	putsln("Shell ending!");
-}
-
 void Increment(int a) {
 	char buf[10];
 	puts("\n----------Increment to ");

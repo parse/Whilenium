@@ -14,6 +14,7 @@
 #include "Scheduler.h"
 #include "Memory.h"
 #include "UserPrograms.h"
+#include "Shell.h"
 #include "_Boot.h"
 
 void initOS(int memoryMin);

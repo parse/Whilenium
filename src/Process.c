@@ -13,7 +13,7 @@ void initOS(int memoryMin) {
 	
 	uint32_t argv[4];
 	
-	for (i = 0; i < PROCESSES; i++) {
+	/*for (i = 0; i < PROCESSES; i++) {
 		argv[0] = 0;
 		
 		switch (i % 3) {
@@ -29,7 +29,7 @@ void initOS(int memoryMin) {
 				newPCB((i % PRIORITIES-1) + 1, (int)&HelloWorld, "Hello World", argv, Ready, 00);
 				break;
 		}		
-	}
+	}*/
 	
 	argv[0] = 0;
 	newPCB(PRIORITIES, (int)&Shell, "Shell", argv, Ready, 0);
