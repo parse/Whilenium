@@ -1,20 +1,38 @@
 #include "Shell.h"
 
+// PILAR FUNKAR EJ! (inte chars)
+#define RIGHTARROW 0x1b5b43
+#define LEFTARROW 0x1b5b44
+#define UPARROW 0x1b5b41
+#define DOWNARROW 0x1b5b42
+
+#define ESCAPE 0x1b
+#define BACKSPACE 0x8
+#define TAB 0x9
+
 void Shell() {
 	putsln("\nShell");
 
 	char c;
 	char buf[200];
 	int i = 0;
+	char buf2[10];
+	char backSpace[4] = {0x8, ' ', 0x8, '\0'};
 	
 	while (1) {
 		c = 0;
 		puts(">");
 		while (c != '\n') {
-			putc(c = getc());
+			c = getc();
 			
-			buf[i] = c;
-			i++;
+			if (c == BACKSPACE) {
+				puts(backSpace);
+				i--;
+			} else {
+				putc(c);
+				buf[i] = c;
+				i++;
+			}
 		}
 		
 		buf[i] = '\0';
@@ -89,7 +107,6 @@ void split(char* cmd, char* args[512]) {
 	
 	if (cmd[0] != '\0') {
 		args[i] = cmd;
-		//next = strchr(cmd, '\0');
 		++i; 
 	}
 	
