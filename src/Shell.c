@@ -76,7 +76,30 @@ void parseCommand(char* str) {
 			putsln("Error: Not sufficient arguments!");
 	}
 	else if (strcmp(argv[0], userProgramsNames[4])) {	// Shell
-		newPCB(2, userProgramsAddresses[4], userProgramsNames[4], 0, New, 0);
+		newPCB(3, userProgramsAddresses[4], userProgramsNames[4], 0, New, 0);
+	}	
+	else if (strcmp(argv[0], "kill")) {	// Kill
+		if (argv[1] != NULL)
+			kill(atoi(argv[1]));
+	}	
+	else if (strcmp(argv[0], "changePrio")) {	// Change Priority
+		if (argv[1] != NULL && argv[2] != NULL)
+			changePrio(atoi(argv[1]), atoi(argv[2]));
+	}	
+	else if (strcmp(argv[0], "top")) {	// Top
+		top();
+	}	
+	else if (strcmp(argv[0], "block")) {	// Block
+		if (argv[1] != NULL) {
+			if (block(atoi(argv[1])) == -1)
+				putsln("Error: Blocking couldn't be performed");
+		}
+	}	
+	else if (strcmp(argv[0], "unblock")) {	// Block
+		if (argv[1] != NULL) {
+			if (unblock(atoi(argv[1])) == -1)
+				putsln("Error: Unblocking couldn't be performed");
+		}
 	}
 	else
 		putsln("Error: Command unknown!");

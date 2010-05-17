@@ -80,8 +80,89 @@ int newPCB(int prio, int PC, char* name, uint32_t arg, State state, int sleep) {
 	return (int)pcb;
 }
 
+void top() {
+	int i;
+	char buf[10];
+	
+	for (i = 1; i <= PRIORITIES; i++) {
+		PCB* current = PriorityArray[i].current; 
+		PCB* first = current;
+		
+		while (current != NULL) {
+			puts("Process ID: ");
+			puts(itoa(current->PID, buf, 10));
+			puts(", Priority: ");
+			puts(itoa(i, buf, 10));
+			puts(", State: ");
 
+			switch (current->state) {
+				case New:
+					puts("New");
+					break;
+				case Running:
+					puts("Running");
+					break;
+				case Waiting:
+					puts("Waiting");
+					break;
+				case Blocked:
+					puts("Blocked");
+					break;
+				case Ready:
+					puts("Ready");
+					break; 
+			}
 
+			puts(", Name: ");
+			putsln(current->name);
+			
+			if (current->next == first)
+				break;
+			else
+				current = current->next;
+		}
+	}
+}
+
+void changePrio(int PID, int prio) {
+	// 
+	PCB* entry = getPCB(PID);
+	
+	PCB* prev = entry->prev;
+	PCB* next = entry->next;
+	
+	if (entry != next) {
+		PriorityArray[entry->prio].current = next;
+		prev->next = next;
+		next->prev = prev;
+	} else
+		PriorityArray[entry->prio].current = NULL;
+	
+	entry->next = NULL;
+	entry->prev = NULL;
+	
+	entry->prio = prio;
+
+	insertPCB(entry);
+}
+
+int block(int PID) {
+	PCB* entry = getPCB(PID);
+	
+	if ( (entry->state = Blocked) )
+		return 1;
+	else
+		return -1;
+}
+
+int unblock(int PID) {
+	PCB* entry = getPCB(PID);
+	
+	if ( (entry->state = Ready) )
+		return 1;
+	else
+		return -1;
+}
 
 
 

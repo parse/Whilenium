@@ -1,10 +1,7 @@
 #ifndef __UPROGRAMS__
 #define __UPROGRAMS__
 
-#include "Structs.h"
-#include "IOHandler.h"
-#include "_Boot.h"
-#include "stdlib.h"
+#include "API.h"
 #include "Shell.h"
 
 // User programs
