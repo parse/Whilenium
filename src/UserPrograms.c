@@ -6,7 +6,7 @@ void increment(int i);
 void HelloWorld() {
 	putsln("\n----------Hello World");
 	putsln("Hello World!");
-	putsln("------------Hello World done!\n");
+	putsln("------------Hello World done!\n\n\r");
 	
 	/*char c;
 	char i;
@@ -19,7 +19,23 @@ void HelloWorld() {
 }
 
 void Scroller(char* msg) {
+	/*
+	int i = 0;
+	int count = 0;
+	int len;
+	char text[8];
 	
+	for (len = 0; msg[len] != '\0' && len < 8; len++);
+		text[len] = msg[len];
+		
+	len++;
+	
+	while (1) {
+		for (i = 0; i < len; i++)
+			displayC(msg[i], (i+count)%8);
+		
+		count = (count + 1) % 8;
+	}*/
 }
 
 void Increment(int a) {

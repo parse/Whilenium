@@ -330,7 +330,7 @@ syscall_unblock:
 	jr ra
 
 syscall_kill:
-	la v0, kSleep
+	la v0, kKill
 	syscall
 	jr ra
 

@@ -91,7 +91,7 @@ void kUnblock(int pid) {
 }
 
 void kKill(int pid) {
-	putsDebug("Kill!\n");
+	putsDebug("----------Kill!\n");
 }
 
 void kSleep(int pid, int sleepTime) {

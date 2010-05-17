@@ -1,21 +1,23 @@
 #include "Shell.h"
 
 // PILAR FUNKAR EJ! (inte chars)
-#define RIGHTARROW 0x1b5b43
-#define LEFTARROW 0x1b5b44
-#define UPARROW 0x1b5b41
-#define DOWNARROW 0x1b5b42
+#define RIGHTARROW 0x43
+#define LEFTARROW 0x44
+#define UPARROW 0x41
+#define DOWNARROW 0x42
 
 #define ESCAPE 0x1b
+#define SKIP 0x5b
 #define BACKSPACE 0x8
 #define TAB 0x9
 
 void Shell() {
-	syscall_kill(1);
-	putsln("\nShell");
-
 	char c;
+	
 	char buf[200];
+	char lastBuf[200];
+	lastBuf[0] = '\0';
+	
 	int i = 0;
 	char buf2[10];
 	char backSpace[4] = {0x8, ' ', 0x8, '\0'};
@@ -23,12 +25,44 @@ void Shell() {
 	while (1) {
 		c = 0;
 		puts(">");
-		while (c != '\n') {
+		
+		
+		while (1) {
+			// Get next char
 			c = getc();
 			
-			if (c == BACKSPACE) {
-				puts(backSpace);
-				i--;
+			// If char is escape sequence, we don't want to do any action
+			while (c == ESCAPE) {
+				c = getc();
+
+				if (c == SKIP) {
+					c = getc();
+					
+					if (c == UPARROW && lastBuf[0] != '\0') {
+						while (i > 0) {
+							puts(backSpace);
+							i--;
+						}
+						puts(lastBuf);
+						strcpy(buf, lastBuf);
+						i = strlen(buf);
+					}
+					
+					c = getc();
+				}
+			}
+			
+			// Line feed => break loop and parse command
+			if (c == '\n')
+				break;
+			
+			if (c == '\r' || c == TAB)
+				;
+			else if (c == BACKSPACE) {
+				if (i > 0) {
+					puts(backSpace);
+					i--;
+				}
 			} else {
 				putc(c);
 				buf[i] = c;
@@ -37,19 +71,40 @@ void Shell() {
 		}
 		
 		buf[i] = '\0';
+		putc('\n');
+		
+		if (i > 0)
+			strcpy(lastBuf, buf);
 		
 		parseCommand(buf);
 		
 		i = 0;
 	}
-	
-	putsln("Shell ending!");
 }
 
 void parseCommand(char* str) {
 	char* argv[512];
 	
 	split(str, argv);
+	
+	/*
+	int i = 0;
+	char* j;
+	char buf[10];
+	
+	while (argv[i] != NULL) {
+		j = argv[i];
+		
+		while (*j != '\0') {
+			putc(*j);
+			puts(" - ");
+			putsln(itoa(*j, buf, 16));
+			j++;
+		}
+		
+		i++;
+	}
+	*/
 	
 	if (argv[0] == NULL)	
 		return;
@@ -117,22 +172,32 @@ char* skipwhite(char* s)
 }
 
 void split(char* cmd, char* args[512]) {
+	// Points to first char != space
 	cmd = skipwhite(cmd);
+	
+	// Find a pointer to the next space char in the string
 	char* next = strchr(cmd, ' ');
 	int i = 0;
-
-	while(next != NULL) {		
-		next[0] = '\0';
-		args[i] = cmd;
-		++i;
-		cmd = skipwhite(next + 1);
-		next = strchr(cmd, ' ');
+	
+	while (next != NULL) {
+		next[0] = '\0';		// "Hello World" => "Hello\0World"
+		args[i] = cmd;		// Sets pointer of i arg to same as cur cmd
+		
+		i++;
+		
+		cmd = skipwhite(next + 1);	// Jump to next char after \0 and skip all spaces
+		next = strchr(cmd, ' ');	// Set next to next white space
 	}
 	
+	// If the next command doesn't start with a \0 there is another argument
 	if (cmd[0] != '\0') {
+		// Set next argument to cmd
 		args[i] = cmd;
-		++i; 
+		// Increment i
+		i++;
 	}
 	
+	// Set the i:th arg to NULL so that we can check for the NULL token when parsing arguments
 	args[i] = NULL;
 }
+
