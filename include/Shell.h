@@ -8,7 +8,8 @@
 
 // User programs
 void Shell();
-char* split(char* cmd);
+void parseCommand(char* str);
+void split(char* cmd, char* args[512]);
 char* skipwhite(char* s);
 int isspace(char s);
 

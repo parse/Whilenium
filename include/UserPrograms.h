@@ -12,5 +12,6 @@ void HelloWorld();
 void Scroller(char* msg);
 void Increment(int a);
 void Fibonacci(int a);
+void initUserPrograms();
 
 #endif
