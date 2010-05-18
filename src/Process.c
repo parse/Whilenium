@@ -60,6 +60,9 @@ void exitProcess() {
 int newPCB(int prio, int PC, char* name, uint32_t arg, State state, int sleep) {
 	PCB* pcb = getFreePCB();
 	
+	if ((int)pcb == -1)
+		return -1;
+		
 	pcb->prio = prio;
 	
 	strcpy(pcb->name, name);
@@ -77,6 +80,8 @@ int newPCB(int prio, int PC, char* name, uint32_t arg, State state, int sleep) {
 	pcb->state = state;
 	pcb->sleep = timeCount + sleep;
 	insertPCB(pcb);
+	
+	syscall_schedule();
 	
 	return (int)pcb;
 }

@@ -24,6 +24,7 @@ void top();
 void changePrio(int PID, int prio);
 int block(int PID);
 int unblock(int PID);
+
 void Idle();
 
 #endif

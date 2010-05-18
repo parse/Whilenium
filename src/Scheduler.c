@@ -214,6 +214,10 @@ int insertPCB (PCB* entry) {
  */
 PCB* getFreePCB() {
 	PCB* ret = PriorityArray[0].current;
+	
+	if (ret == NULL)
+		return (PCB*)-1;
+	
 	PCB* prev = ret->prev;
 	PCB* next = ret->next;
 	 
@@ -225,7 +229,6 @@ PCB* getFreePCB() {
 		PriorityArray[0].current = NULL;
 	}
 		
-	
 	ret->next = NULL;
 	ret->prev = NULL;
 	
