@@ -82,36 +82,32 @@ void die() {
 }
 
 
-void kBlock(int PID) {
+int kBlock(int PID) {
 	PCB* entry = getPCB(PID);
-
+	
+	if ( (int)entry == -1 )
+		return -1;
+		
 	entry->state = Blocked;
+	
 	if (previousPCB->PID == PID)
 		run();
 		
-	/*
-	if ( (entry->state = Blocked) ) {
-		if (previousPCB)
-		return 1;
-	}
-	else
-		return -1; */
+	return 1;
 }
 
-void kUnblock(int PID) {
+int kUnblock(int PID) {
 	PCB* entry = getPCB(PID);
 	
+	if ( (int)entry == -1 )
+		return -1;
+		
 	entry->state = Ready;
 	
 	if (entry->prio > previousPCB->prio)
 		run();
-		
-	/*
-	if ( (entry->state = Ready) )
-		return 1;
-	else
-		return -1;
-		*/
+	
+	return 1;
 }
 
 void kKill(int PID) {
@@ -126,19 +122,27 @@ void kKill(int PID) {
 	//return 1;
 }
 
-void kSleep(int PID, int sleepTime) {
+int kSleep(int PID, int sleepTime) {
 	PCB* entry = getPCB(PID);
+	
+	if ( (int)entry == -1 )
+		return -1;
 	
 	entry->state = Waiting;
 	entry->sleep = timeCount + sleepTime;
 	
 	if (previousPCB == entry)
 		run();
+		
+	return 1;
 }
 
-void kChangePrio(int PID, int prio) {
+int kChangePrio(int PID, int prio) {
 	PCB* entry = getPCB(PID);
 
+	if ( (int)entry == -1 )
+		return -1;
+		
 	PCB* prev = entry->prev;
 	PCB* next = entry->next;
 
@@ -158,6 +162,8 @@ void kChangePrio(int PID, int prio) {
 	
 	if (prio > previousPCB->prio)
 		run();
+		
+	return 1;
 }
 
 
@@ -173,7 +179,7 @@ void copyRegisters(registers_t *target, registers_t *source) {
 	for (i = 0; i < 30; i++) {
 		_target[i] = _source[i];
 	}
-}
+	}
 
 /**
  * insertPCB(PCB* entry)
@@ -195,6 +201,7 @@ int insertPCB (PCB* entry) {
 		entry->prev = current->prev;
 		current->prev = entry;
 	}
+	
 	return 0;
 }
 
@@ -268,16 +275,6 @@ Process getProcess(int PID) {
 	
 	return p;
 }
-
-/**
- * getProcessTable()
- * Get the Process table
- * @return First process in PriorityQueue
- * TODO!
-
-ProcessTable getProcessTable() {
-	PCB* entry = getPCB(PID);
-} */
 
 /**
  * freePID(int PID)

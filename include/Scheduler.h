@@ -31,10 +31,10 @@ void preparePCB(PCB* entry);
 // TODO: ProcessTable* getProcessTable();
 
 
-void kBlock(int pid);
-void kUnblock(int pid);
+int kBlock(int pid);
+int kUnblock(int pid);
 void kKill(int pid);
-void kSleep(int pid, int sleepTime);
-void kChangePrio(int pid, int prio);
+int kSleep(int pid, int sleepTime);
+int kChangePrio(int pid, int prio);
 
 #endif

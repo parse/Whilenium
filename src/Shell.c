@@ -19,7 +19,7 @@ void Shell() {
 	lastBuf[0] = '\0';
 	
 	int i = 0;
-	char buf2[10];
+//	char buf2[10];
 	char backSpace[4] = {0x8, ' ', 0x8, '\0'};
 	
 	while (1) {
