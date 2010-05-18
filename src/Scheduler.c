@@ -82,29 +82,82 @@ void die() {
 }
 
 
-void kBlock(int pid) {
-	putsDebug("----------Block\n");
+void kBlock(int PID) {
+	PCB* entry = getPCB(PID);
+
+	entry->state = Blocked;
+	if (previousPCB->PID = PID)
+		run();
+		
+	/*
+	if ( (entry->state = Blocked) ) {
+		if (previousPCB)
+		return 1;
+	}
+	else
+		return -1; */
 }
 
-void kUnblock(int pid) {
-	;
+void kUnblock(int PID) {
+	PCB* entry = getPCB(PID);
+	
+	entry->state = Ready;
+	
+	if (entry->prio > previousPCB->prio)
+		run();
+		
+	/*
+	if ( (entry->state = Ready) )
+		return 1;
+	else
+		return -1;
+		*/
 }
 
-void kKill(int pid) {
+void kKill(int PID) {
+	//if (freePID(PID) == -1)
+	//	return -1; //putsln("Error: Could not kill process with given PID");*/
+		
 	putsDebug("----------Kill!\n");
+	freePID(PID);
+	
+	if (previousPCB->PID == PID)
+		run();
+	//return 1;
 }
 
-void kSleep(int pid, int sleepTime) {
-	;
+void kSleep(int PID, int sleepTime) {
+	PCB* entry = getPCB(PID);
+	
+	entry->state = Waiting;
+	entry->sleep = timeCount + sleepTime;
+	
+	if (previousPCB == entry)
+		run();
 }
 
-void kChangePrio(int pid, int prio) {
-	;
-}
+void kChangePrio(int PID, int prio) {
+	PCB* entry = getPCB(PID);
 
-void setSleep(PCB* entry, int sleepTime) {
-	int cpuTime = timer_msec;
-	entry->sleep = cpuTime + sleepTime;
+	PCB* prev = entry->prev;
+	PCB* next = entry->next;
+
+	if (entry != next) {
+		PriorityArray[entry->prio].current = next;
+		prev->next = next;
+		next->prev = prev;
+	} else
+		PriorityArray[entry->prio].current = NULL;
+
+	entry->next = NULL;
+	entry->prev = NULL;
+
+	entry->prio = prio;
+
+	insertPCB(entry);
+	
+	if (prio > previousPCB->prio)
+		run();
 }
 
 

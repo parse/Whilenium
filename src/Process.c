@@ -9,7 +9,8 @@ void initOS(int memoryMin) {
 	
 	initPCBTable(memoryMin);
 	
-	newPCB(PRIORITIES, (int)&Shell, "Shell", (int)NULL, Ready, 0);
+	newPCB(PRIORITIES, (int)&Idle, "Idle process",  (int)NULL, Ready, 0);
+	newPCB(PRIORITIES-1, (int)&Shell, "Shell", (int)NULL, Ready, 0);
 }
 
 /**
@@ -125,45 +126,19 @@ void top() {
 }
 
 void changePrio(int PID, int prio) {
-	// 
-	PCB* entry = getPCB(PID);
-	
-	PCB* prev = entry->prev;
-	PCB* next = entry->next;
-	
-	if (entry != next) {
-		PriorityArray[entry->prio].current = next;
-		prev->next = next;
-		next->prev = prev;
-	} else
-		PriorityArray[entry->prio].current = NULL;
-	
-	entry->next = NULL;
-	entry->prev = NULL;
-	
-	entry->prio = prio;
-
-	insertPCB(entry);
+	syscall_prio();
 }
 
 int block(int PID) {
-	PCB* entry = getPCB(PID);
-	
-	if ( (entry->state = Blocked) )
-		return 1;
-	else
-		return -1;
+	syscall_block(PID);
 }
 
 int unblock(int PID) {
-	PCB* entry = getPCB(PID);
-	
-	if ( (entry->state = Ready) )
-		return 1;
-	else
-		return -1;
+	syscall_unblock(PID);
 }
 
-
+void Idle() {
+	while(1);
+}
 
 

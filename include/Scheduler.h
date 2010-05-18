@@ -27,7 +27,6 @@ Process getProcess(int PID);
 void freePID(int PID);
 void freePCB(PCB* entry);
 void initScheduler(registers_t *regs, int mem);
-void setSleep(PCB* entry, int sleepTime);
 void preparePCB(PCB* entry);
 // TODO: ProcessTable* getProcessTable();
 

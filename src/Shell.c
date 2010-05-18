@@ -132,7 +132,7 @@ void parseCommand(char* str) {
 			putsln("Error: Not sufficient arguments!");
 	}
 	else if (strcmp(argv[0], userProgramsNames[4])) {	// Shell
-		newPCB(3, userProgramsAddresses[4], userProgramsNames[4], 0, New, 0);
+		newPCB(PRIORITIES-1, userProgramsAddresses[4], userProgramsNames[4], 0, New, 0);
 	}	
 	else if (strcmp(argv[0], "kill")) {	// Kill
 		if (argv[1] != NULL)
