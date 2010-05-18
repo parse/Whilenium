@@ -26,5 +26,6 @@ int changePriority(int PID, int priority);
 int sleep(int PID, int sleepTime);
 int block(int PID);
 int unblock(int PID);
+void sleep(int PID, int sleep);
 
 #endif
