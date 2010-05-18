@@ -47,7 +47,6 @@ typedef struct _Process {
 	char* name; // Name of the program
 	int prio; // Integer value describing the process priority
 	State state;// State of the PCB-entry (New, Running, Waiting, Blocked, Ready, Terminated)
-	char* programName; // Name of the program
 } Process;
 
 /* A simple FIFO queue of bounded size. */

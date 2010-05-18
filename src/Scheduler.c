@@ -265,7 +265,6 @@ Process getProcess(int PID) {
 	p.name = entry->name;
 	p.prio = entry->prio;
 	p.state = entry->state;
-	p.programName = entry->name;
 	
 	return p;
 }

@@ -26,5 +26,8 @@ int changePriority(int PID, int priority);
 int block(int PID);
 int unblock(int PID);
 void sleep(int PID, int sleep);
+int getPrio(int PID);
+State getState(int PID);
+char* getName(int PID);
 
 #endif
