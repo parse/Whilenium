@@ -56,6 +56,10 @@ void exitProcess() {
  * @param int prio - The priority to set
  * @param int PC - Program counter to set
  * @param char* name - Program name to set
+ * @param uint32_t arg - Argument to pass to process
+ * @param State state - State to start the process in
+ * @param int sleep - If state is Waiting, the sleeptime is how long the process waits
+ * @return The PCB created with above values
  */
 int newPCB(int prio, int PC, char* name, uint32_t arg, State state, int sleep) {
 	PCB* pcb = getFreePCB();
@@ -86,6 +90,10 @@ int newPCB(int prio, int PC, char* name, uint32_t arg, State state, int sleep) {
 	return (int)pcb;
 }
 
+/*
+ * top()
+ * Show process information for the whole system
+ */
 void top() {
 	int i;
 	char buf[10];
@@ -133,18 +141,38 @@ void top() {
 	}
 }
 
+/*
+ * changePrio(int PID, int prio)
+ * Change priority for process PID
+ * @param int PID - Process to change
+ * @param int prio - New priority
+ */
 void changePrio(int PID, int prio) {
 	syscall_prio(PID, prio);
 }
 
+/*
+ * block(int PID)
+ * Block process PID
+ * @param int PID - Process to block
+ */
 int block(int PID) {
 	syscall_block(PID);
 }
 
+/*
+ * unblock(int PID)
+ * Unblock process PID
+ * @param int PID - Process to unblock
+ */
 int unblock(int PID) {
 	syscall_unblock(PID);
 }
 
+/*
+ * Idle()
+ * An idle process that the OS always keep running
+ */
 void Idle() {
 	while(1);
 }

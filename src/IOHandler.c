@@ -1,8 +1,8 @@
 #include "IOHandler.h"
 
 /**
- * putc(char c)
- * Output character c
+ * putcDebug(char c)
+ * Output character c, debug mode
  * @param char c - Character to output
  */
 void putcDebug(char c) {
@@ -17,8 +17,8 @@ void putcDebug(char c) {
 }
 
 /**
- * puts(char* text)
- * Output string text
+ * putsDebug(char* text)
+ * Output string text, debug mode
  * @param const char* text - String to output
  */
 void putsDebug(char* text)
@@ -66,6 +66,7 @@ void putsln(char* text) {
 /**
  * getc()
  * If there is a char on the buffer it is returned, else while loop until char ready
+ * @return The char on the buffer
  */
 char getc() {
 	while (bFifoIn.length == 0);
@@ -73,8 +74,10 @@ char getc() {
 	return bfifo_get(&bFifoIn);
 }
 
-/* displayC:
- *   Display a char on the Malta display.
+/* displayC(uint8_t word, uint8_t pos)
+ * Display a char on the Malta display.
+ * @param uint8_t word - Word to display
+ * @param uint8_t pos - Position on the display
  */
 void displayC(uint8_t word, uint8_t pos)
 {
@@ -83,8 +86,9 @@ void displayC(uint8_t word, uint8_t pos)
     malta->asciipos[pos].value = word;
 }
 
-/* displayNumber
- *   Display a value on the Malta display.
+/* displayNumber(uint32_t word)
+ * Display a value on the Malta display.
+ * @param uint32_t word - Number to show on the Malta display
  */
 void displayNumber(uint32_t word) {
 	int i;
@@ -95,7 +99,13 @@ void displayNumber(uint32_t word) {
 	}
 }
 
-/* bfifo_put: Inserts a character at the end of the queue. */
+/*
+ * bfifo_put(struct bounded_fifo* bfifo, uint8_t ch, char output)
+ * Put ch into buffer bfifo
+ * @param struct bounded_fifo* bfifo - Queue to use
+ * @param uint8_t ch - Char to insert
+ * @param char output - Output
+ */
 void bfifo_put(struct bounded_fifo* bfifo, uint8_t ch, char output) {
 	/* Make sure the 'bfifo' pointer is not 0. */
 	kdebug_assert(bfifo != 0);
@@ -113,6 +123,12 @@ void bfifo_put(struct bounded_fifo* bfifo, uint8_t ch, char output) {
 	}
 }
 
+/*
+ * bfifo_puts(struct bounded_fifo* bfifo, uint32_t s)
+ * Put string s into bfifo buffer
+ * @param struct bounded_fifo* bfifo - Queue to use
+ * @param uint32_t s - Char to insert
+ */
 void bfifo_puts(struct bounded_fifo* bfifo, uint32_t s) {
 	char* str = (char*)s;
 	int i = 0;
@@ -123,7 +139,12 @@ void bfifo_puts(struct bounded_fifo* bfifo, uint32_t s) {
 	}
 }
 
-/* bfifo_get: Returns a character removed from the front of the queue. */
+/*
+ * bfifo_get(struct bounded_fifo* bfifo)
+ * Returns a character removed from the front of the queue.
+ * @param struct bounded_fifo* bfifo - Queue to use
+ * @return Character from the front of the queue
+ */
 uint8_t bfifo_get(struct bounded_fifo* bfifo)
 {
   int i;
@@ -138,6 +159,7 @@ uint8_t bfifo_get(struct bounded_fifo* bfifo)
   for (i = 0; i < bfifo->length; i++) {
     bfifo->buf[i] = bfifo->buf[i+1];
   }
+
   return ch;
 }
 
