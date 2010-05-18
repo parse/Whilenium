@@ -151,11 +151,17 @@ void parseCommand(char* str) {
 				putsln("Error: Blocking couldn't be performed");
 		}
 	}	
-	else if (strcmp(argv[0], "unblock")) {	// Block
+	else if (strcmp(argv[0], "unblock")) {	// Unblock
 		if (argv[1] != NULL) {
 			if (unblock(atoi(argv[1])) == -1)
 				putsln("Error: Unblocking couldn't be performed");
 		}
+	}
+	else if (strcmp(argv[0], "sleep")) {	// Sleeå
+		if (argv[1] != NULL && argv[2] != NULL) {
+			sleep(atoi(argv[1]), atoi(argv[2]));
+		} else
+			putsln("Error: Not sufficient arguments!");
 	}
 	else
 		putsln("Error: Command unknown!");

@@ -86,7 +86,7 @@ void kBlock(int PID) {
 	PCB* entry = getPCB(PID);
 
 	entry->state = Blocked;
-	if (previousPCB->PID = PID)
+	if (previousPCB->PID == PID)
 		run();
 		
 	/*

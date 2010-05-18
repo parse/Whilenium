@@ -112,6 +112,9 @@ void top() {
 				case Ready:
 					puts("Ready");
 					break; 
+				case Terminated:
+				case Undefined:
+					break;
 			}
 
 			puts(", Name: ");
@@ -126,7 +129,7 @@ void top() {
 }
 
 void changePrio(int PID, int prio) {
-	syscall_prio();
+	syscall_prio(PID, prio);
 }
 
 int block(int PID) {
