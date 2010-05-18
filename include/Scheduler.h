@@ -30,10 +30,10 @@ void initScheduler(registers_t *regs, int mem);
 void preparePCB(PCB* entry);
 // TODO: ProcessTable* getProcessTable();
 
-
+int kExec(char* program, int priority, uint32_t arg);
 int kBlock(int pid);
 int kUnblock(int pid);
-void kKill(int pid);
+int kKill(int pid);
 int kSleep(int pid, int sleepTime);
 int kChangePrio(int pid, int prio);
 

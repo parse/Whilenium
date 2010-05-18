@@ -8,6 +8,9 @@ static registers_t regs;
  * This function will never reach its end, since run is a non terminating function.
  */
 int OS(int memoryMin) {
+	// Interrupts are disabled
+	interruptsEnabled = 0;
+	
 	// Initiate spot for registers to be saved
  	kset_registers(&regs);
 	

@@ -110,7 +110,7 @@ int kUnblock(int PID) {
 	return 1;
 }
 
-void kKill(int PID) {
+int kKill(int PID) {
 	//if (freePID(PID) == -1)
 	//	return -1; //putsln("Error: Could not kill process with given PID");*/
 		
@@ -119,7 +119,8 @@ void kKill(int PID) {
 	
 	if (previousPCB->PID == PID)
 		run();
-	//return 1;
+	
+	return 0;
 }
 
 int kSleep(int PID, int sleepTime) {
@@ -166,6 +167,9 @@ int kChangePrio(int PID, int prio) {
 	return 1;
 }
 
+int kExec(char* program, int priority, uint32_t arg) {
+	return -1;
+}
 
 /*
  * copyRegisters (registers_t *target, registers_t *source)

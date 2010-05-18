@@ -67,5 +67,7 @@ char* userProgramsNames[USERPROGRAMS];
 
 char maltaText[8];
 
+char interruptsEnabled;
+
 #endif
 

@@ -31,6 +31,11 @@ void putsDebug(char* text)
 	}
 }
 
+void putslnDebug(char* text) {
+	putsDebug(text);
+	putcDebug('\n');
+}
+
 /**
  * putc(char c)
  * Output character c

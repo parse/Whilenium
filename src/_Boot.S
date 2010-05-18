@@ -26,7 +26,6 @@ memory_min:
 		.space MEMORY_SIZE
 memory_max:
 
-# --------- ADDED FROM EXAMPLE FILES! ---------
 
 #define	EXCN_STACK_SIZE		0x8000
 
@@ -38,7 +37,6 @@ cause_reg:  .word	0
 	.space	EXCN_STACK_SIZE
 excn_stack:
 
-# --------- END OF ADD ----------------
 
 # -------------------------------------------------------------------------
 # Code segment
@@ -49,7 +47,7 @@ excn_stack:
 
 .globl	_start
 
-# --------- ADDED FROM EXAMPLE FILES! ---------
+
 .globl  kget_sr
 .globl  kset_sr
 .globl  kget_cause
@@ -57,7 +55,6 @@ excn_stack:
 .globl  kload_timer
 .globl  kset_registers
 .globl  kget_registers
-.globl  kexception
 .globl	kdebug_magic_break
 .globl	syscall_display_c
 .globl	syscall_display_number
@@ -73,7 +70,6 @@ excn_stack:
 .globl  syscall_put
 .globl	syscall_puts
 .globl 	ksyscall_handler
-# --------- END OF ADD ----------------
 
 # -------------------------------------------------------------------------
 # Set cpu status register
@@ -286,6 +282,10 @@ exception_handler:
 	.set at
 	.set reorder
 
+# -------------------------------------------------------------------------
+# Redirects our syscall to the correct function in Scheduler.c
+# -------------------------------------------------------------------------
+
 syscall_display_c:
 	la v0, displayC			# Load adress of syscall implementation in v0.
 	syscall					# Enter kernel mode by 'syscall' exception.
@@ -296,9 +296,6 @@ syscall_display_number:
 	syscall					# Enter kernel mode by 'syscall' exception.
 	jr ra					# Back in user mode, return to caller
 
-# -------------------------------------------------------------------------
-# Redirects our syscall to the correct function in Scheduler.c
-# -------------------------------------------------------------------------
 syscall_die:
 	la v0, die
 	syscall

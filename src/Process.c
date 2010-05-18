@@ -85,7 +85,8 @@ int newPCB(int prio, int PC, char* name, uint32_t arg, State state, int sleep) {
 	pcb->sleep = timeCount + sleep;
 	insertPCB(pcb);
 	
-	syscall_schedule();
+	if (interruptsEnabled)
+		syscall_schedule();
 	
 	return (int)pcb;
 }
@@ -147,8 +148,8 @@ void top() {
  * @param int PID - Process to change
  * @param int prio - New priority
  */
-void changePrio(int PID, int prio) {
-	syscall_prio(PID, prio);
+int changePrio(int PID, int prio) {
+	return syscall_prio(PID, prio);
 }
 
 /*
@@ -157,7 +158,7 @@ void changePrio(int PID, int prio) {
  * @param int PID - Process to block
  */
 int block(int PID) {
-	syscall_block(PID);
+	return syscall_block(PID);
 }
 
 /*
@@ -166,7 +167,7 @@ int block(int PID) {
  * @param int PID - Process to unblock
  */
 int unblock(int PID) {
-	syscall_unblock(PID);
+	return syscall_unblock(PID);
 }
 
 /*

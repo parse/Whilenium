@@ -6,7 +6,7 @@
  * @param int PID - Process to kill
  */
 int kill(int PID) {
-	syscall_kill(PID);
+	return syscall_kill(PID);
 }
 
 /*
