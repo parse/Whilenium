@@ -343,7 +343,12 @@ syscall_prio:
 	la v0, kChangePrio
 	syscall
 	jr ra	
-	
+
+syscall_exec:
+	la v0, kExec
+	syscall
+	jr ra
+
 # syscall_handler:
 #   Enables argument passing for up
 #   to four parameters of a system call.

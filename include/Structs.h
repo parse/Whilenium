@@ -65,5 +65,7 @@ int timeCount;
 int userProgramsAddresses[USERPROGRAMS];
 char* userProgramsNames[USERPROGRAMS];
 
+char maltaText[8];
+
 #endif
 

@@ -21,7 +21,7 @@ Process* getProcess(int PID);
 Process** getProcessTable();
 */
 
-int exec(char* program);
+int exec(char* program, int priority, uint32_t arg, State state, int sleepTime);
 int changePriority(int PID, int priority);
 int block(int PID);
 int unblock(int PID);
