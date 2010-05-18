@@ -87,24 +87,6 @@ void parseCommand(char* str) {
 	
 	split(str, argv);
 	
-	/*
-	int i = 0;
-	char* j;
-	char buf[10];
-	
-	while (argv[i] != NULL) {
-		j = argv[i];
-		
-		while (*j != '\0') {
-			putc(*j);
-			puts(" - ");
-			putsln(itoa(*j, buf, 16));
-			j++;
-		}
-		
-		i++;
-	}
-	*/
 	
 	if (argv[0] == NULL)	
 		return;
