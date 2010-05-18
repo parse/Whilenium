@@ -5,8 +5,14 @@
  * Initiates the OS essentials (including the first process)
  */
 void initOS(int memoryMin) {
-	putsDebug("ALERT ALERT!!! INITIALIZING THE WHILENIUM!\n\n");
-	
+	putslnDebug(" __      __.__    .__.__                  .__");               
+	putslnDebug("/  \\    /  \\  |__ |__|  |    ____    ____ |__|__ __  _____ "); 
+	putslnDebug("\\   \\/\\/   /  |  \\|  |  |  _/ __ \\  /    \\|  |  |  \\/     \\ ");
+	putslnDebug(" \\        /|   Y  \\  |  |__\\  ___/ |   |  \\  |  |  /  Y Y  \\");
+	putslnDebug("  \\__/\\  / |___|  /__|____/ \\___  >|___|  /__|____/|__|_|  /");
+	putslnDebug("       \\/       \\/              \\/      \\/               \\/ ");
+	putslnDebug(" Authors: Jesper Friberg, Anders Hassis, Daniel Lervik & Oskar Wiren");
+	putslnDebug(" Uppsala University 2010.\n");
 	initPCBTable(memoryMin);
 	
 	newPCB(PRIORITIES, (int)&Idle, "Idle process",  (int)NULL, Ready, 0);

@@ -24,7 +24,7 @@ void Shell() {
 	
 	while (1) {
 		c = 0;
-		puts(">");
+		puts(">> ");
 		
 		
 		while (1) {
