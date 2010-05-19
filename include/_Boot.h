@@ -16,6 +16,7 @@ int syscall_unblock();
 int syscall_kill(uint32_t pid);
 void syscall_sleep(uint32_t pid, uint32_t sleepTime);
 int syscall_prio(uint32_t pid, uint32_t prio);
+int syscall_spawn(NewPCBArgs* newPCBArgs);
 
 #endif
 

@@ -18,7 +18,8 @@
 
 void initOS(int memoryMin);
 void initPCBTable(int memoryMin);
-int newPCB(int prio, int PC, char* name, uint32_t arg, State state, int sleep);
+int kNewPCB(NewPCBArgs* newPCBArgs);
+int kNewPCBWithArgs(int prio, int PC, char* name, uint32_t arg, State state, int sleep);
 void exitProcess();
 void top();
 

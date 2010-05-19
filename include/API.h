@@ -31,4 +31,6 @@ int getPrio(int PID);
 State getState(int PID);
 char* getName(int PID);
 
+int spawn(int prio, int PC, char* name, uint32_t arg, State state, int sleep);
+
 #endif

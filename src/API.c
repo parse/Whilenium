@@ -82,3 +82,14 @@ int block(int PID) {
 int unblock(int PID) {
 	return syscall_unblock(PID);
 }
+
+int spawn(int prio, int PC, char* name, uint32_t arg, State state, int sleep) {
+	newPCBArgs.prio = prio;
+	newPCBArgs.PC = PC;
+	newPCBArgs.name = name;
+	newPCBArgs.arg = arg;
+	newPCBArgs.state = state;
+	newPCBArgs.sleep = sleep;
+	
+	return syscall_spawn(&newPCBArgs);
+}

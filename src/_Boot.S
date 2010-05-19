@@ -69,6 +69,7 @@ excn_stack:
 .globl	syscall_exec
 .globl  syscall_put
 .globl	syscall_puts
+.globl	syscall_spawn
 .globl 	ksyscall_handler
 
 # -------------------------------------------------------------------------
@@ -346,6 +347,11 @@ syscall_prio:
 
 syscall_exec:
 	la v0, kExec
+	syscall
+	jr ra
+
+syscall_spawn:
+	la v0, kNewPCB
 	syscall
 	jr ra
 

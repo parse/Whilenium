@@ -15,8 +15,8 @@ void initOS(int memoryMin) {
 	putslnDebug(" Uppsala University 2010.\n");
 	initPCBTable(memoryMin);
 	
-	newPCB(PRIORITIES, (int)&Idle, "Idle process",  (int)NULL, Ready, 0);
-	newPCB(PRIORITIES-1, (int)&Shell, "Shell", (int)NULL, Ready, 0);
+	kNewPCBWithArgs(PRIORITIES, (int)&Idle, "Idle process",  (int)NULL, Ready, 0);
+	kNewPCBWithArgs(PRIORITIES-1, (int)&Shell, "Shell", (int)NULL, Ready, 0);
 }
 
 /**
@@ -67,37 +67,48 @@ void exitProcess() {
  * @param int sleep - If state is Waiting, the sleeptime is how long the process waits
  * @return The PCB created with above values
  */
-int newPCB(int prio, int PC, char* name, uint32_t arg, State state, int sleep) {
+int kNewPCB(NewPCBArgs* newPCBArgs) {
 	PCB* pcb = getFreePCB();
 
 	if ((int)pcb == -1)
 		return -1;
 		
-	pcb->prio = prio;
+	pcb->prio = newPCBArgs->prio;
 	
-	strcpy(pcb->name, name);
+	strcpy(pcb->name, newPCBArgs->name);
 	
 	currentPID++;
 	pcb->PID = currentPID;
-	pcb->registers.epc_reg = PC;
+	pcb->registers.epc_reg = newPCBArgs->PC;
 	pcb->registers.sp_reg = (uint32_t)&(pcb->stackHighEnd);
-	pcb->registers.a_reg[0] = arg;
+	pcb->registers.a_reg[0] = newPCBArgs->arg;
 	pcb->registers.a_reg[1] = 0;
 	pcb->registers.a_reg[2] = 0;
 	pcb->registers.a_reg[3] = 0;
 	pcb->registers.ra_reg = (uint32_t)&exitProcess;
 	
-	pcb->state = state;
-	pcb->sleep = timeCount + sleep;
+	pcb->state = newPCBArgs->state;
+	pcb->sleep = timeCount + newPCBArgs->sleep;
 	
 	insertPCB(pcb);
 	
 	if (interruptsEnabled) {
-		putslnDebug("newPCB: interruptsEnabled = 1");
-		syscall_schedule();
+		putslnDebug("newPCB: interruptsEnabled = 1. Do run!");
+		run();
 	}
 	
 	return (int)pcb;
+}
+
+int kNewPCBWithArgs(int prio, int PC, char* name, uint32_t arg, State state, int sleep) {
+	newPCBArgs.prio = prio;
+	newPCBArgs.PC = PC;
+	newPCBArgs.name = name;
+	newPCBArgs.arg = arg;
+	newPCBArgs.state = state;
+	newPCBArgs.sleep = sleep;
+
+	return kNewPCB(&newPCBArgs);
 }
 
 /*

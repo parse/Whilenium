@@ -12,6 +12,8 @@ int memoryMin;
  */
 void run() {
  	// Setup storage-area for saving registers on exception. 
+	if (newPCBFlag)
+		putslnDebug("run: newPCB is running!");
 	if (previousPCB != NULL) {
 		copyRegisters(&(previousPCB->registers), regSpace);
 		
@@ -49,8 +51,10 @@ void run() {
 	char buf[10];
 	if (cur != previousPCB) {
 		if (previousPCB != NULL) {
-			putsDebug("run: Previous = ");
-			putslnDebug(itoa((int)previousPCB, buf, 16));
+			putsDebug("run: previousPCB = ");
+			putslnDebug(itoa((int)previousPCB, buf, 10));
+			putsDebug("run: previousPCB->prev = ");
+			putslnDebug(itoa((int)previousPCB->prev, buf, 16));
 			putsDebug("run: Previous->PID = ");
 			putslnDebug(itoa(previousPCB->PID, buf, 16));
 			putsDebug("run: Previous->prio = ");
@@ -61,6 +65,8 @@ void run() {
 		
 		putsDebug("run: cur = ");
 		putslnDebug(itoa((int)cur, buf, 16));
+		putsDebug("run: cur->prev = ");
+		putslnDebug(itoa((int)cur->prev, buf, 16));
 		putsDebug("run: cur->PID = ");
 		putslnDebug(itoa(cur->PID, buf, 16));
 		putsDebug("run: cur->prio = ");
@@ -238,7 +244,7 @@ int insertPCB (PCB* entry) {
 		entry->next = entry;
 		entry->prev = entry;
 	} else {	
-		current->prev->next = entry;
+		(current->prev)->next = entry;
 		entry->next = current;
 		entry->prev = current->prev;
 		current->prev = entry;
@@ -365,6 +371,14 @@ void freePCB(PCB* entry) {
 		putslnDebug(entry->name);
 		putsDebug("freePCB: previousPCB = ");
 		putslnDebug(itoa((int)previousPCB, buf, 16));
+		putsDebug("freePCB: previousPCB->prev = ");
+		putslnDebug(itoa((int)previousPCB->prev, buf, 16));
+		putsDebug("freePCB: previousPCB->PID = ");
+		putslnDebug(itoa((int)previousPCB->PID, buf, 16));
+		putsDebug("freePCB: previousPCB->prio = ");
+		putslnDebug(itoa((int)previousPCB->prio, buf, 16));
+		putsDebug("freePCB: previousPCB->name = ");
+		putslnDebug(previousPCB->name);
 		
 		PriorityArray[entry->prio].current = next;
 		prev->next = next;

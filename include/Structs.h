@@ -55,6 +55,15 @@ typedef struct bounded_fifo {
   uint32_t length;
 } BFifo;
 
+typedef struct _newPCBArgs {
+	int prio;
+	int PC;
+	char* name;
+	uint32_t arg;
+	State state; 
+	int sleep;
+} NewPCBArgs;
+
 BFifo bFifoOut;
 BFifo bFifoIn;
 
@@ -68,6 +77,9 @@ char* userProgramsNames[USERPROGRAMS];
 char maltaText[8];
 
 char interruptsEnabled;
+char newPCBFlag;
+
+NewPCBArgs newPCBArgs;
 
 #endif
 
