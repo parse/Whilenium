@@ -94,7 +94,7 @@ int kNewPCB(NewPCBArgs* newPCBArgs) {
 	
 	if (interruptsEnabled) {
 		putslnDebug("newPCB: interruptsEnabled = 1. Do run!");
-		//run();
+		run();
 	}
 	
 	return (int)pcb;
