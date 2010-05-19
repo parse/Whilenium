@@ -21,9 +21,6 @@ void initPCBTable(int memoryMin);
 int newPCB(int prio, int PC, char* name, uint32_t arg, State state, int sleep);
 void exitProcess();
 void top();
-int changePrio(int PID, int prio);
-int block(int PID);
-int unblock(int PID);
 
 void Idle();
 

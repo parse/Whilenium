@@ -22,10 +22,11 @@ Process** getProcessTable();
 */
 
 int exec(char* program, int priority, uint32_t arg);
-int changePriority(int PID, int priority);
+void sleep(int PID, int sleep);
+int changePrio(int PID, int prio);
 int block(int PID);
 int unblock(int PID);
-void sleep(int PID, int sleep);
+
 int getPrio(int PID);
 State getState(int PID);
 char* getName(int PID);

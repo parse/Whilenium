@@ -126,11 +126,17 @@ int kKill(int PID) {
 int kSleep(int PID, int sleepTime) {
 	PCB* entry = getPCB(PID);
 	
+	putslnDebug("----------Jag ska sova1!\n");
+	
 	if ( (int)entry == -1 )
 		return -1;
+		
+	putsDebug("----------Jag ska sova!\n");
 	
 	entry->state = Waiting;
 	entry->sleep = timeCount + sleepTime;
+	
+	putsDebug("----------Installd på sova!\n");
 	
 	if (previousPCB == entry)
 		run();

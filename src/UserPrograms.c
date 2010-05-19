@@ -8,23 +8,28 @@ void HelloWorld() {
 }
 
 void Scroller(char* msg) {
-	/*
 	int i = 0;
 	int count = 0;
 	int len;
 	char text[8];
-	
+	//sleep(3, 10);
 	for (len = 0; msg[len] != '\0' && len < 8; len++);
 		text[len] = msg[len];
 		
 	len++;
 	
 	while (1) {
-		for (i = 0; i < len; i++)
-			displayC(msg[i], (i+count)%8);
+		for (i = 0; i < len; i++) {
+			if (msg[i] == NULL)
+				displayC(' ', (i+count)%8);
+			else
+				displayC(msg[i], (i+count)%8);
+			
+			
+		}
 		
 		count = (count + 1) % 8;
-	}*/
+	}
 }
 
 void Increment(int a) {

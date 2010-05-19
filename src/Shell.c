@@ -97,7 +97,7 @@ void parseCommand(char* str) {
 	}
 	else if (strcmp(argv[0], userProgramsNames[1])) { // Scroller
 		if (argv[1] != NULL)
-			newPCB(1, userProgramsAddresses[1], userProgramsNames[1], (int)&argv[1], New, 0);
+			newPCB(1, userProgramsAddresses[1], userProgramsNames[1], (int)argv[1], New, 0);
 		else
 			putsln("Error: Not sufficient arguments!");
 	}
@@ -117,8 +117,10 @@ void parseCommand(char* str) {
 		newPCB(PRIORITIES-1, userProgramsAddresses[4], userProgramsNames[4], 0, New, 0);
 	}	
 	else if (strcmp(argv[0], "kill")) {	// Kill
-		if (argv[1] != NULL)
-			kill(atoi(argv[1]));
+		if (argv[1] != NULL) {
+			if (kill(atoi(argv[1])) == -1)
+				putsln("Error: Process couldn't be destroyed");
+		}
 	}	
 	else if (strcmp(argv[0], "changePrio")) {	// Change Priority
 		if (argv[1] != NULL && argv[2] != NULL)

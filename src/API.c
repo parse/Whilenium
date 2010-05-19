@@ -2,16 +2,19 @@
 
 /*
  * kill(int PID)
- * Kill the process with the given PID with a syscall
+ * Kill the process with the given PID with a syscall, process 1 can't be destroyed
  * @param int PID - Process to kill
  */
 int kill(int PID) {
-	return syscall_kill(PID);
+	if (PID != 1)
+		return syscall_kill(PID);
+	else
+		return -1;
 }
 
 /*
  * sleep(int PID, int sleep)
- * Sleep the process PID for sleep iterations
+ * Sleep the process PID for sleep iterations, if PID == 0: sleep on current process
  * @param int PID - Process to sleep
  * @param int sleep - Time to sleep
  */
@@ -50,4 +53,32 @@ char* getName(int PID) {
 	Process p = getProcess(PID);
 	
 	return p.name;
+}
+
+/*
+ * changePrio(int PID, int prio)
+ * Change priority for process PID
+ * @param int PID - Process to change
+ * @param int prio - New priority
+ */
+int changePrio(int PID, int prio) {
+	return syscall_prio(PID, prio);
+}
+
+/*
+ * block(int PID)
+ * Block process PID
+ * @param int PID - Process to block
+ */
+int block(int PID) {
+	return syscall_block(PID);
+}
+
+/*
+ * unblock(int PID)
+ * Unblock process PID
+ * @param int PID - Process to unblock
+ */
+int unblock(int PID) {
+	return syscall_unblock(PID);
 }
