@@ -152,34 +152,6 @@ void top() {
 }
 
 /*
- * changePrio(int PID, int prio)
- * Change priority for process PID
- * @param int PID - Process to change
- * @param int prio - New priority
- */
-int changePrio(int PID, int prio) {
-	return syscall_prio(PID, prio);
-}
-
-/*
- * block(int PID)
- * Block process PID
- * @param int PID - Process to block
- */
-int block(int PID) {
-	return syscall_block(PID);
-}
-
-/*
- * unblock(int PID)
- * Unblock process PID
- * @param int PID - Process to unblock
- */
-int unblock(int PID) {
-	return syscall_unblock(PID);
-}
-
-/*
  * Idle()
  * An idle process that the OS always keep running
  */
