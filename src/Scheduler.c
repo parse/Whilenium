@@ -19,7 +19,6 @@ void run() {
 			previousPCB->state = Ready;
 	}
 	
-	
 	PCB* cur = NULL;
 	PCB* firstCheck = NULL;
 	int first;
@@ -47,20 +46,38 @@ void run() {
 	}
 	
 	
+	char buf[10];
+	if (cur != previousPCB) {
+		if (previousPCB != NULL) {
+			putsDebug("run: Previous = ");
+			putslnDebug(itoa((int)previousPCB, buf, 16));
+			putsDebug("run: Previous->PID = ");
+			putslnDebug(itoa(previousPCB->PID, buf, 16));
+			putsDebug("run: Previous->prio = ");
+			putslnDebug(itoa(previousPCB->prio, buf, 16));
+			putsDebug("run: Previous->name = ");
+			putslnDebug(previousPCB->name);
+		}
+		
+		putsDebug("run: cur = ");
+		putslnDebug(itoa((int)cur, buf, 16));
+		putsDebug("run: cur->PID = ");
+		putslnDebug(itoa(cur->PID, buf, 16));
+		putsDebug("run: cur->prio = ");
+		putslnDebug(itoa(cur->prio, buf, 16));
+		putsDebug("run: cur->name = ");
+		putslnDebug(cur->name);
+	}
+	
 	if (cur != NULL) {
 		preparePCB(cur);
 		
 		// Sets previous to the one that is to be run
-		previousPCB = PriorityArray[i].current;
-
+		previousPCB = cur;
 		// Current changes to the next PCB in queue to be run next time
 		PriorityArray[i].current = cur->next;
 	} else {
 		previousPCB = NULL;
-		//char buf[10];
-		//puts("Ready: ");
-		//puts(itoa(currentPID, buf, 10));
-		//putsln("");
 	}
 }
 
@@ -75,10 +92,12 @@ void preparePCB(PCB* entry) {
  * Takes care of a dying process by removing it from our queue and update state
  */
 void die() {
+	putslnDebug("die start!");
 	if (previousPCB != NULL) {
 		freePCB(previousPCB);
 		previousPCB->state = Terminated;
 	}
+	putslnDebug("die done!");
 }
 
 
@@ -113,8 +132,7 @@ int kUnblock(int PID) {
 int kKill(int PID) {
 	//if (freePID(PID) == -1)
 	//	return -1; //putsln("Error: Could not kill process with given PID");*/
-		
-	putsDebug("----------Kill!\n");
+	
 	freePID(PID);
 	
 	if (previousPCB->PID == PID)
@@ -189,7 +207,7 @@ void copyRegisters(registers_t *target, registers_t *source) {
 	for (i = 0; i < 30; i++) {
 		_target[i] = _source[i];
 	}
-	}
+}
 
 /**
  * insertPCB(PCB* entry)
@@ -199,13 +217,27 @@ void copyRegisters(registers_t *target, registers_t *source) {
  */
 int insertPCB (PCB* entry) {
 	PCB* current = PriorityArray[entry->prio].current;
+	char buf[10];
 	
+	putsDebug("insertPCB: entry = ");
+	putslnDebug(itoa((int)entry, buf, 16));
+	putsDebug("insertPCB: entry->PID = ");
+	putslnDebug(itoa(entry->PID, buf, 16));
+	putsDebug("insertPCB: entry->prio = ");
+	putslnDebug(itoa(entry->prio, buf, 16));
+	putsDebug("insertPCB: entry->name = ");
+	putslnDebug(entry->name);
+	
+	if (current == NULL)
+		putslnDebug("insertPCB: current == NULL");
+	if (entry == NULL)
+		putslnDebug("insertPCB: entry == NULL");
+		
 	if (current == NULL) {
 		PriorityArray[entry->prio].current = entry;
 		entry->next = entry;
 		entry->prev = entry;
-	} else {
-		//PCB* last = current->prev;
+	} else {	
 		current->prev->next = entry;
 		entry->next = current;
 		entry->prev = current->prev;
@@ -233,15 +265,25 @@ PCB* getFreePCB() {
 	 
 	if (ret != next) {
 		PriorityArray[0].current = next;
+		
+		char buf[10];
+		if (prev == NULL)
+			putslnDebug("getFreePCB: prev == NULL");
+		if (next == NULL)
+			putslnDebug("getFreePCB: next == NULL");
+		putsDebug("getFreePCB: ret = ");
+		putslnDebug(itoa((int)ret, buf, 16));
+		
 		prev->next = next;
 		next->prev = prev;
 	} else {
 		PriorityArray[0].current = NULL;
 	}
-		
+	
 	ret->next = NULL;
 	ret->prev = NULL;
 	
+	putslnDebug("getFreePCB done!");
 	return ret;
 }
 
@@ -305,12 +347,25 @@ void freePID(int PID) {
  * Reset prio, pid for PCB
  * @param PCB* entry - The PCB to free
  */
-void freePCB(PCB* entry) {	
+void freePCB(PCB* entry) {
 	// Remove PCB from queue
 	PCB* prev = entry->prev;
 	PCB* next = entry->next;
-	
+	char buf[10];
 	if (entry != next) {
+		putsDebug("freePCB: entry = ");
+		putslnDebug(itoa((int)entry, buf, 16));
+		putsDebug("freePCB: entry->prev = ");
+		putslnDebug(itoa((int)prev, buf, 16));
+		putsDebug("freePCB: entry->PID = ");
+		putslnDebug(itoa((int)entry->PID, buf, 16));
+		putsDebug("freePCB: entry->prio = ");
+		putslnDebug(itoa((int)entry->prio, buf, 16));
+		putsDebug("freePCB: entry->name = ");
+		putslnDebug(entry->name);
+		putsDebug("freePCB: previousPCB = ");
+		putslnDebug(itoa((int)previousPCB, buf, 16));
+		
 		PriorityArray[entry->prio].current = next;
 		prev->next = next;
 		next->prev = prev;
@@ -324,6 +379,8 @@ void freePCB(PCB* entry) {
 	entry->PID = -1;
 
 	insertPCB(entry);
+	
+	putslnDebug("freePCB done!");
 }
 
 State getPrevState() {

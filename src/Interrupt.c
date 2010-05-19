@@ -16,6 +16,7 @@ void enableInterrupt() {
  	// Update the status register to enable timer interrupts.
  	kset_sr(0xFFBF00E8, 0x10008001);
 	
+	putslnDebug("enableInterrupt: interruptsEnabled = 1");
 	interruptsEnabled = 1;
 	//putsln("enableInterrupt(): Interrupts are now enabled!\n\n");
 }

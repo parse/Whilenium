@@ -15,7 +15,7 @@ void initOS(int memoryMin) {
 	putslnDebug(" Uppsala University 2010.\n");
 	initPCBTable(memoryMin);
 	
-	newPCB(PRIORITIES, (int)&Idle, "Whilenium",  (int)NULL, Ready, 0);
+	newPCB(PRIORITIES, (int)&Idle, "Idle process",  (int)NULL, Ready, 0);
 	newPCB(PRIORITIES-1, (int)&Shell, "Shell", (int)NULL, Ready, 0);
 }
 
@@ -37,7 +37,7 @@ void initPCBTable(int memoryMin) {
 		PCBTable[i].memMin = pcb;
 		PCBTable[i].prio = 0;
 		PCBTable[i].state = New;
-		
+			
 		insertPCB(&PCBTable[i]);
 	}
 }
@@ -69,7 +69,7 @@ void exitProcess() {
  */
 int newPCB(int prio, int PC, char* name, uint32_t arg, State state, int sleep) {
 	PCB* pcb = getFreePCB();
-	
+
 	if ((int)pcb == -1)
 		return -1;
 		
@@ -89,10 +89,13 @@ int newPCB(int prio, int PC, char* name, uint32_t arg, State state, int sleep) {
 	
 	pcb->state = state;
 	pcb->sleep = timeCount + sleep;
+	
 	insertPCB(pcb);
 	
-	/*if (interruptsEnabled)
-		syscall_schedule();*/
+	if (interruptsEnabled) {
+		putslnDebug("newPCB: interruptsEnabled = 1");
+		syscall_schedule();
+	}
 	
 	return (int)pcb;
 }
@@ -146,6 +149,34 @@ void top() {
 				current = current->next;
 		}
 	}
+}
+
+/*
+ * changePrio(int PID, int prio)
+ * Change priority for process PID
+ * @param int PID - Process to change
+ * @param int prio - New priority
+ */
+int changePrio(int PID, int prio) {
+	return syscall_prio(PID, prio);
+}
+
+/*
+ * block(int PID)
+ * Block process PID
+ * @param int PID - Process to block
+ */
+int block(int PID) {
+	return syscall_block(PID);
+}
+
+/*
+ * unblock(int PID)
+ * Unblock process PID
+ * @param int PID - Process to unblock
+ */
+int unblock(int PID) {
+	return syscall_unblock(PID);
 }
 
 /*

@@ -316,6 +316,9 @@ syscall_schedule:
 	syscall
 	jr ra
 
+syscall_nop:
+	jr ra
+
 syscall_block:
 	la v0, kBlock
 	syscall

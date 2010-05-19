@@ -22,9 +22,13 @@ void Shell() {
 //	char buf2[10];
 	char backSpace[4] = {0x8, ' ', 0x8, '\0'};
 	
+	newPCB(2, userProgramsAddresses[2], userProgramsNames[2], 16, New, 0);
+	putsln("shell");
+	newPCB(2, userProgramsAddresses[2], userProgramsNames[2], 160, New, 0);
+	
 	while (1) {
 		c = 0;
-		puts(">> ");
+		puts("shell> ");
 		
 		
 		while (1) {
@@ -76,8 +80,9 @@ void Shell() {
 		if (i > 0)
 			strcpy(lastBuf, buf);
 		
+		putsln("\n---Going to parse command---");
 		parseCommand(buf);
-		
+		putsln("---Command parsed---");
 		i = 0;
 	}
 }

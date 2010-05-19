@@ -9,7 +9,7 @@
 
 #define PROCESSES 15
 #define MEMORY_SIZE 3000000
-#define FIFO_SIZE 100
+#define FIFO_SIZE 1000
 
 // Number of priorities in the system
 #define PRIORITIES 4

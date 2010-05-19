@@ -38,6 +38,8 @@ void Increment(int a) {
 	putsln(itoa(a, buf, 10));
 	
 	increment(a);
+	
+	putsln("Increment done!");
 }
 
 void Fibonacci(int a) {
