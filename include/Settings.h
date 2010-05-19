@@ -12,7 +12,7 @@
 #define FIFO_SIZE 1000
 
 // Number of priorities in the system
-#define PRIORITIES 4
+#define PRIORITIES 30
 
 // Names of available user programs are stored in the tables at the bottom
 #define USERPROGRAMS 5

@@ -91,12 +91,13 @@ void displayC(uint8_t word, uint8_t pos)
     malta->asciipos[pos].value = word;
 }
 
-void displayS(uint32_t str, uint8_t offset) {
+void kDisplayS(uint32_t str, uint8_t offset) {
 	int i;
+	char* string = (char*)str;
 	
 	malta->ledbar.reg = 0xFF;
 	for (i = 0; i < 8; i++) {
-		malta->asciipos[i].value = str[(i+offset)%8];
+		malta->asciipos[i].value = string[(i+offset)%8];
 	}
 }
 

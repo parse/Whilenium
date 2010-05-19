@@ -83,6 +83,15 @@ int unblock(int PID) {
 	return syscall_unblock(PID);
 }
 
+/*
+ * unblock(int PID)
+ * Unblock process PID
+ * @param int PID - Process to unblock
+ */
+int displayS(uint32_t str, uint8_t offset) {
+	return syscall_displayS(str, offset);
+}
+
 int spawn(int prio, int PC, char* name, uint32_t arg, State state, int sleep) {
 	newPCBArgs.prio = prio;
 	newPCBArgs.PC = PC;

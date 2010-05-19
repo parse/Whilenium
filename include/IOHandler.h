@@ -12,6 +12,7 @@ void puts(char* text);
 void putsln(char* text);
 char getc();
 void displayC(uint8_t c, uint8_t pos);
+void displayS(uint32_t str, uint8_t offset);
 void displayNumber(uint32_t word);
 void putcDebug(char c);
 void putsDebug(char* text);

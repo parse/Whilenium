@@ -98,8 +98,12 @@ void preparePCB(PCB* entry) {
  * Takes care of a dying process by removing it from our queue and update state
  */
 void die() {
+	char buf[10];
 	putslnDebug("die start!");
+	
 	if (previousPCB != NULL) {
+		putsDebug("previousPCB: entry = ");
+		putslnDebug(itoa((int)previousPCB, buf, 16));
 		freePCB(previousPCB);
 		previousPCB->state = Terminated;
 	}
