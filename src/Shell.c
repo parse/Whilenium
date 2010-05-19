@@ -24,7 +24,7 @@ void Shell() {
 	
 	spawn(2, userProgramsAddresses[2], userProgramsNames[2], 4, New, 0);
 	putsln("shellDebug");
-	spawn(2, userProgramsAddresses[2], userProgramsNames[2], 5, New, 0);
+	//spawn(2, userProgramsAddresses[2], userProgramsNames[2], 5, New, 0);
 	
 	while (1) {
 		c = 0;
