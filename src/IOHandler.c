@@ -79,6 +79,13 @@ char getc() {
 	return bfifo_get(&bFifoIn);
 }
 
+char* kGets(char* space) {
+	return NULL;
+}
+char kGetc() {
+	return 0;
+}
+
 /* 
  * displayC(uint8_t word, uint8_t pos)
  * Display a char on the Malta display.

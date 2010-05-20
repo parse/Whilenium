@@ -17,8 +17,8 @@ typedef enum _State {
 } State;
 
 typedef struct _IOQueue {
-	PCB* last;
-	PCB* current;
+	struct _PCB* last;
+	struct _PCB* current;
 } IOQueue;
 
 IOQueue ioqueue;

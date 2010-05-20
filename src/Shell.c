@@ -12,12 +12,67 @@
 #define TAB 0x9
 
 void Shell() {
+	char c;
+	
 	char buf[200];
+	char lastBuf[200];
+	lastBuf[0] = '\0';
+	
+	int i = 0;
+	char backSpace[4] = {0x8, ' ', 0x8, '\0'};
 	
 	while (1) {
+		c = 0;
 		puts("shell> ");
 		
-		buf = gets(buf);
+		while (1) {
+			// Get next char
+			c = getc();
+			
+			// If char is escape sequence, we don't want to do any action
+			while (c == ESCAPE) {
+				c = getc();
+
+				if (c == SKIP) {
+					c = getc();
+					
+					if (c == UPARROW && lastBuf[0] != '\0') {
+						while (i > 0) {
+							puts(backSpace);
+							i--;
+						}
+						puts(lastBuf);
+						strcpy(buf, lastBuf);
+						i = strlen(buf);
+					}
+					
+					c = getc();
+				}
+			}
+			
+			// Line feed => break loop and parse command
+			if (c == '\n')
+				break;
+			
+			if (c == '\r' || c == TAB)
+				;
+			else if (c == BACKSPACE) {
+				if (i > 0) {
+					puts(backSpace);
+					i--;
+				}
+			} else {
+				putc(c);
+				buf[i] = c;
+				i++;
+			}
+		}
+		
+		buf[i] = '\0';
+		putc('\n');
+		
+		if (i > 0)
+			strcpy(lastBuf, buf);
 
 		if (DEBUG)
 			putsln("\n---Going to parse command---");
@@ -26,6 +81,7 @@ void Shell() {
 
 		if (DEBUG)
 			putsln("---Command parsed---");
+		i = 0;
 	}
 }
 
@@ -42,6 +98,12 @@ void parseCommand(char* str) {
 	if (strcmp(argv[0], userProgramsNames[0])) { // HelloWorld
 		spawn(2, userProgramsAddresses[0], userProgramsNames[0], (int)NULL, New, 0);
 	}
+	/*else if (strcmp(argv[0], userProgramsNames[1])) { // Scroller
+		if (argv[1] != NULL)
+			spawn(1, userProgramsAddresses[1], userProgramsNames[1], (int)argv[1], New, 0);
+		else
+			putsln("Error: Not sufficient arguments!");
+	}*/
 	else if (strcmp(argv[0], userProgramsNames[2])) {	// Increment
 		if (argv[1] != NULL)
 			spawn(2, userProgramsAddresses[2], userProgramsNames[2], atoi(argv[1]), New, 0);
@@ -57,9 +119,6 @@ void parseCommand(char* str) {
 	else if (strcmp(argv[0], userProgramsNames[4])) {	// Shell
 		spawn(PRIORITIES-2, userProgramsAddresses[4], userProgramsNames[4], 0, New, 0);
 	}	
-	else if (strcmp(argv[0], userProgramsNames[5])) {	// ASCII
-		spawn(PRIORITIES-2, userProgramsAddresses[5], userProgramsNames[5], 0, New, 0);
-	}
 	else if (strcmp(argv[0], "kill")) {	// Kill
 		if (argv[1] != NULL) {
 			if (kill(atoi(argv[1])) == -1)
@@ -97,6 +156,9 @@ void parseCommand(char* str) {
 			scroller(argv[1]);
 		else
 			scroller("");
+	}
+	else if (strcmp(argv[0], "ASCII")) {
+		spawn(PRIORITIES-2, (int)&ASCII, "Chick", (int)NULL, New, 0);
 	}
 	else
 		putsln("Error: Command unknown!");
