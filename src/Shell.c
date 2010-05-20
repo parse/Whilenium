@@ -157,6 +157,8 @@ void parseCommand(char* str) {
 		else
 			scroller("");
 	}
+	else if (strcmp(argv[0], "quit") || strcmp(argv[0], "exit"))
+		kdebug_magic_break();
 	else if (strcmp(argv[0], "ASCII")) {
 		spawn(PRIORITIES-2, (int)&ASCII, "Chick", (int)NULL, New, 0);
 	}

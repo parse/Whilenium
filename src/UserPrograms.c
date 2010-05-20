@@ -147,7 +147,7 @@ void ASCII() {
 	putsln("               8I     ,8I'                8  (8;");
 	putsln("               8I    ,8\"                  I   88,");
 	putsln("              .8I   ,8'                       8\"8,");
-	putsln("              (PI   '8                        8,`8,");/*
+	putsln("              (PI   '8                        8,`8,");
 	putsln("             .8I'            ,@@              `8,`8,");
 	putsln("             (PI             @@@               `8,`8,");
 	putsln("            (RI'  .          @@'        .       \"b `8,");
@@ -248,5 +248,5 @@ void ASCII() {
 	putsln("                           `8,   \\-\\I8'  ");
 	putsln("                            `8,,--\\I8'   ");
 	putsln("                             `Ib,,I8'     ");
-	putsln("                              `I8I'");*/
+	putsln("                              `I8I'");
 }
