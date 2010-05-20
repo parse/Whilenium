@@ -22,8 +22,7 @@ void Shell() {
 //	char buf2[10];
 	char backSpace[4] = {0x8, ' ', 0x8, '\0'};
 	
-	spawn(2, userProgramsAddresses[2], userProgramsNames[2], 4, New, 0);
-	putsln("shellDebug");
+	spawn(2, userProgramsAddresses[0], userProgramsNames[0], 4, Ready, 0);
 	//spawn(2, userProgramsAddresses[2], userProgramsNames[2], 5, New, 0);
 	
 	while (1) {
@@ -79,10 +78,14 @@ void Shell() {
 		
 		if (i > 0)
 			strcpy(lastBuf, buf);
+
+		if (DEBUG)
+			putsln("\n---Going to parse command---");
 		
-		putsln("\n---Going to parse command---");
 		parseCommand(buf);
-		putsln("---Command parsed---");
+
+		if (DEBUG)
+			putsln("---Command parsed---");
 		i = 0;
 	}
 }
@@ -100,12 +103,12 @@ void parseCommand(char* str) {
 	if (strcmp(argv[0], userProgramsNames[0])) { // HelloWorld
 		spawn(2, userProgramsAddresses[0], userProgramsNames[0], 0, New, 0);
 	}
-	else if (strcmp(argv[0], userProgramsNames[1])) { // Scroller
+	/*else if (strcmp(argv[0], userProgramsNames[1])) { // Scroller
 		if (argv[1] != NULL)
 			spawn(1, userProgramsAddresses[1], userProgramsNames[1], (int)argv[1], New, 0);
 		else
 			putsln("Error: Not sufficient arguments!");
-	}
+	}*/
 	else if (strcmp(argv[0], userProgramsNames[2])) {	// Increment
 		if (argv[1] != NULL)
 			spawn(2, userProgramsAddresses[2], userProgramsNames[2], atoi(argv[1]), New, 0);
@@ -119,7 +122,7 @@ void parseCommand(char* str) {
 			putsln("Error: Not sufficient arguments!");
 	}
 	else if (strcmp(argv[0], userProgramsNames[4])) {	// Shell
-		spawn(PRIORITIES-1, userProgramsAddresses[4], userProgramsNames[4], 0, New, 0);
+		spawn(PRIORITIES-2, userProgramsAddresses[4], userProgramsNames[4], 0, New, 0);
 	}	
 	else if (strcmp(argv[0], "kill")) {	// Kill
 		if (argv[1] != NULL) {
@@ -144,6 +147,7 @@ void parseCommand(char* str) {
 		if (argv[1] != NULL) {
 			if (unblock(atoi(argv[1])) == -1)
 				putsln("Error: Unblocking couldn't be performed");
+			putslnDebug("UNBLOCK DONE!");
 		}
 	}
 	else if (strcmp(argv[0], "sleep")) {	// Sleeå
@@ -151,6 +155,12 @@ void parseCommand(char* str) {
 			sleep(atoi(argv[1]), atoi(argv[2]));
 		} else
 			putsln("Error: Not sufficient arguments!");
+	}
+	else if (strcmp(argv[0], "scroller")) {
+		if (argv[1] != NULL)
+			scroller(argv[1]);
+		else
+			scroller("");
 	}
 	else
 		putsln("Error: Command unknown!");

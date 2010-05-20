@@ -4,29 +4,31 @@ int _fibonacci(int n_1, int n_2, int i);
 void increment(int i);
 
 void HelloWorld() {
+	block(3);
 	putsln("\nHello World!");
 }
 
-void Scroller(char* msg) {
-	
-	int i = 0, count = 0, strEnd = 0;
-	char text[8];
+void Scroller(char* msg) {	
+	int i = 0, count = 0, strEnd = -1;
 	
 	for (i = 0; i <= 7; i++) {
 		if (msg[i] == '\0') {
 			strEnd = i;
 			break;
 		} else
-			text[i] = msg[i];
+			maltaText[i] = msg[i];
 	}
 	
+	if (strEnd == -1)
+		strEnd = 8;
+		
 	for (i = strEnd; i <= 7; i++)
-		text[i] = ' ';
+		maltaText[i] = ' ';
 	
 	while (1) {
-		displayS(text, (count%8) );
-		
-		count = (count + 1) % 8;
+		displayS((uint32_t)maltaText, (uint8_t)(count%8) );
+		sleep(2, 1000);
+		count = (count - 1) % 8;
 	}
 }
 

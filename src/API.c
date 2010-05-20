@@ -88,8 +88,8 @@ int unblock(int PID) {
  * Unblock process PID
  * @param int PID - Process to unblock
  */
-int displayS(uint32_t str, uint8_t offset) {
-	return syscall_displayS(str, offset);
+void displayS(uint32_t str, uint8_t offset) {
+	syscall_displayS(str, offset);
 }
 
 int spawn(int prio, int PC, char* name, uint32_t arg, State state, int sleep) {
@@ -102,3 +102,77 @@ int spawn(int prio, int PC, char* name, uint32_t arg, State state, int sleep) {
 	
 	return syscall_spawn(&newPCBArgs);
 }
+
+int scroller(char* msg) {
+	int i = 0, strEnd = -1;
+
+	for (i = 0; i <= 7; i++) {
+		if (msg[i] == '\0') {
+			strEnd = i;
+			break;
+		} else
+			maltaText[i] = msg[i];
+	}
+
+	if (strEnd == -1)
+		strEnd = 8;
+
+	for (i = strEnd; i <= 7; i++)
+		maltaText[i] = ' ';
+		
+	return 0;
+}
+
+
+
+/*
+ * top()
+ * Show process information for the whole system
+ */
+void top() {
+	int i;
+	char buf[10];
+	
+	for (i = 1; i <= PRIORITIES; i++) {
+		PCB* current = PriorityArray[i].current; 
+		PCB* first = current;
+		
+		while (current != NULL) {
+			puts("Process ID: ");
+			puts(itoa(current->PID, buf, 10));
+			puts(", Priority: ");
+			puts(itoa(i, buf, 10));
+			puts(", State: ");
+
+			switch (current->state) {
+				case New:
+					puts("New");
+					break;
+				case Running:
+					puts("Running");
+					break;
+				case Waiting:
+					puts("Waiting");
+					break;
+				case Blocked:
+					puts("Blocked");
+					break;
+				case Ready:
+					puts("Ready");
+					break; 
+				case Terminated:
+				case Undefined:
+					break;
+			}
+
+			puts(", Name: ");
+			putsln(current->name);
+			
+			if (current->next == first)
+				break;
+			else
+				current = current->next;
+		}
+	}
+}
+

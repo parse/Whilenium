@@ -9,7 +9,6 @@ static registers_t regs;
  */
 int OS(int memoryMin) {
 	// Interrupts are disabled
-	newPCBFlag = 0;
 	interruptsEnabled = 0;
 	
 	// Initiate spot for registers to be saved

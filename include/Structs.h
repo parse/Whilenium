@@ -77,7 +77,6 @@ char* userProgramsNames[USERPROGRAMS];
 char maltaText[8];
 
 char interruptsEnabled;
-char newPCBFlag;
 
 NewPCBArgs newPCBArgs;
 

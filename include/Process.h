@@ -21,7 +21,6 @@ void initPCBTable(int memoryMin);
 int kNewPCB(NewPCBArgs* newPCBArgs);
 int kNewPCBWithArgs(int prio, int PC, char* name, uint32_t arg, State state, int sleep);
 void exitProcess();
-void top();
 
 void Idle();
 

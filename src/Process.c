@@ -1,5 +1,7 @@
 #include "Process.h"
 
+char scroll[] = "While(1)";
+
 /**
  * initOS()
  * Initiates the OS essentials (including the first process)
@@ -15,7 +17,9 @@ void initOS(int memoryMin) {
 	putslnDebug(" Uppsala University 2010.\n");
 	initPCBTable(memoryMin);
 	
+	// Create base processes for the OS
 	kNewPCBWithArgs(PRIORITIES, (int)&Idle, "Idle process",  (int)NULL, Ready, 0);
+	//kNewPCBWithArgs(2, (int)&Scroller, "Scroller", (int)&scroll, Waiting, 100);
 	kNewPCBWithArgs(PRIORITIES-1, (int)&Shell, "Shell", (int)NULL, Ready, 0);
 }
 
@@ -47,11 +51,10 @@ void initPCBTable(int memoryMin) {
  * Takes care of the process ended
  */
 void exitProcess() {
-	//putsln("\n\t------ Process ended ------");
-	
 	// Kill the process by making the die syscall
 	syscall_die();
 	
+	// Error safety, making sure we never fall out into outer space
 	while (1);
 }
 
@@ -93,8 +96,10 @@ int kNewPCB(NewPCBArgs* newPCBArgs) {
 	insertPCB(pcb);
 	
 	if (interruptsEnabled) {
-		putslnDebug("newPCB: interruptsEnabled = 1. Do run!");
-		//run();
+		if (DEBUG)
+			putslnDebug("newPCB: interruptsEnabled = 1. Do run!");
+			
+		run();
 	}
 	
 	return (int)pcb;
@@ -109,57 +114,6 @@ int kNewPCBWithArgs(int prio, int PC, char* name, uint32_t arg, State state, int
 	newPCBArgs.sleep = sleep;
 
 	return kNewPCB(&newPCBArgs);
-}
-
-/*
- * top()
- * Show process information for the whole system
- */
-void top() {
-	int i;
-	char buf[10];
-	
-	for (i = 1; i <= PRIORITIES; i++) {
-		PCB* current = PriorityArray[i].current; 
-		PCB* first = current;
-		
-		while (current != NULL) {
-			puts("Process ID: ");
-			puts(itoa(current->PID, buf, 10));
-			puts(", Priority: ");
-			puts(itoa(i, buf, 10));
-			puts(", State: ");
-
-			switch (current->state) {
-				case New:
-					puts("New");
-					break;
-				case Running:
-					puts("Running");
-					break;
-				case Waiting:
-					puts("Waiting");
-					break;
-				case Blocked:
-					puts("Blocked");
-					break;
-				case Ready:
-					puts("Ready");
-					break; 
-				case Terminated:
-				case Undefined:
-					break;
-			}
-
-			puts(", Name: ");
-			putsln(current->name);
-			
-			if (current->next == first)
-				break;
-			else
-				current = current->next;
-		}
-	}
 }
 
 /*

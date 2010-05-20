@@ -16,7 +16,9 @@ void enableInterrupt() {
  	// Update the status register to enable timer interrupts.
  	kset_sr(0xFFBF00E8, 0x10008001);
 	
-	putslnDebug("enableInterrupt: interruptsEnabled = 1");
+	if (DEBUG)
+		putslnDebug("enableInterrupt: interruptsEnabled = 1");
+		
 	interruptsEnabled = 1;
 	//putsln("enableInterrupt(): Interrupts are now enabled!\n\n");
 }
@@ -62,13 +64,10 @@ void kexception()
 	} //Make sure that we are here because of a timer interrupt.
 	else if ( cause.field.exc == 0 ) {
 			run();
-
 			/* Reload timer for another 100 ms (simulated time) */
-			kload_timer(1 * timer_msec);
+			//kload_timer(1 * timer_msec);
 	} // Make sure we're here because of a syscall
 	else if (cause.field.exc == 8) {
-		//putsDebug("---SYSCALL!\n");
-		
 		/* Get pointer to stored registers. */
 		reg = kget_registers();
 
@@ -80,15 +79,18 @@ void kexception()
 
 		/* Acknowledge syscall exception. */
 		kset_cause(~0x60, 0);
-		
+		/*
 		// Get state of running process and get a new PCB if current is Terminated. Reload the timer to reset the next timer interrupt.
 		State prevState = getPrevState();
 		if (prevState == Terminated) {
-			/* Reload timer for another 100 ms (simulated time) */
-			putslnDebug("kexception: Terminated!");
-			kload_timer(1 * timer_msec);
+			if (DEBUG)
+				putslnDebug("kexception: Terminated!");
+				
 			
 			run();
-		}
+			
+			// Reload timer for another 100 ms (simulated time) 
+			kload_timer(1 * timer_msec);
+		}*/
 	}
 }

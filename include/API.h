@@ -26,11 +26,14 @@ void sleep(int PID, int sleep);
 int changePrio(int PID, int prio);
 int block(int PID);
 int unblock(int PID);
+void top();
 
 int getPrio(int PID);
 State getState(int PID);
 char* getName(int PID);
 
 int spawn(int prio, int PC, char* name, uint32_t arg, State state, int sleep);
+int scroller(char* msg);
+void displayS(uint32_t str, uint8_t offset);
 
 #endif
