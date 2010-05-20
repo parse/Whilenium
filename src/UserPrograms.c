@@ -9,7 +9,7 @@ void HelloWorld() {
 
 void Scroller(char* msg) {	
 	int i = 0, count = 0, strEnd = -1;
-	putslnDebug("Scroll");
+	
 	for (i = 0; i <= 7; i++) {
 		if (msg[i] == '\0') {
 			strEnd = i;

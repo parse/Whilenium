@@ -17,7 +17,7 @@
 // Names of available user programs are stored in the tables at the bottom
 #define USERPROGRAMS 5
 
-#define SCROLLWAIT 400
+#define SCROLLWAIT 500
 
 #define DEBUG 0
 
