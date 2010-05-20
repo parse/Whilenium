@@ -172,7 +172,12 @@ int kKill(int PID) {
 }
 
 int kSleep(int PID, int sleepTime) {
-	PCB* entry = getPCB(PID);
+	PCB* entry;
+	
+	if (PID == 0) 
+		entry = currentPCB;
+	else
+		entry = getPCB(PID);
 	
 	if ( (int)entry == -1 )
 		return -1;
