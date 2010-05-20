@@ -119,6 +119,9 @@ void parseCommand(char* str) {
 	else if (strcmp(argv[0], userProgramsNames[4])) {	// Shell
 		spawn(PRIORITIES-2, userProgramsAddresses[4], userProgramsNames[4], 0, New, 0);
 	}	
+	else if (strcmp(argv[0], userProgramsNames[5])) {	// ASCII
+		spawn(PRIORITIES-2, userProgramsAddresses[5], userProgramsNames[5], 0, New, 0);
+	}
 	else if (strcmp(argv[0], "kill")) {	// Kill
 		if (argv[1] != NULL) {
 			if (kill(atoi(argv[1])) == -1)
@@ -156,11 +159,6 @@ void parseCommand(char* str) {
 			scroller(argv[1]);
 		else
 			scroller("");
-	}
-	else if (strcmp(argv[0], "quit") || strcmp(argv[0], "exit"))
-		kdebug_magic_break();
-	else if (strcmp(argv[0], "ASCII")) {
-		spawn(PRIORITIES-2, (int)&ASCII, "Chick", (int)NULL, New, 0);
 	}
 	else
 		putsln("Error: Command unknown!");

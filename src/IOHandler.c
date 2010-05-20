@@ -1,6 +1,6 @@
 #include "IOHandler.h"
 
-/**
+/*
  * putcDebug(char c)
  * Output character c, debug mode
  * @param char c - Character to output
@@ -16,7 +16,7 @@ void putcDebug(char c) {
     }	   	  
 }
 
-/**
+/*
  * putsDebug(char* text)
  * Output string text, debug mode
  * @param const char* text - String to output
@@ -36,7 +36,7 @@ void putslnDebug(char* text) {
 	putcDebug('\n');
 }
 
-/**
+/*
  * putc(char c)
  * Output character c
  * @param char c - Character to output
@@ -48,7 +48,7 @@ void putc(char c) {
 		syscall_put(&bFifoOut, '\r');
 }
 
-/**
+/*
  * puts(char* text)
  * Output string text
  * @param const char* text - String to output
@@ -58,7 +58,7 @@ void puts(char* text)
 	syscall_puts(&bFifoOut, text);
 }
 
-/**
+/*
  * putsln(char* text)
  * Output text with line-break
  * @param const char* text - String to output
@@ -68,7 +68,7 @@ void putsln(char* text) {
 	putc('\n');
 }
 
-/**
+/*
  * getc()
  * If there is a char on the buffer it is returned, else while loop until char ready
  * @return The char on the buffer
@@ -79,7 +79,8 @@ char getc() {
 	return bfifo_get(&bFifoIn);
 }
 
-/* displayC(uint8_t word, uint8_t pos)
+/* 
+ * displayC(uint8_t word, uint8_t pos)
  * Display a char on the Malta display.
  * @param uint8_t word - Word to display
  * @param uint8_t pos - Position on the display
@@ -101,7 +102,8 @@ void kDisplayS(uint32_t str, uint8_t offset) {
 	}
 }
 
-/* displayNumber(uint32_t word)
+/* 
+ * displayNumber(uint32_t word)
  * Display a value on the Malta display.
  * @param uint32_t word - Number to show on the Malta display
  */
@@ -178,7 +180,7 @@ uint8_t bfifo_get(struct bounded_fifo* bfifo)
   return ch;
 }
 
-/**
+/*
  * initIO()
  * Initialize I/O
  */

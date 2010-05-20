@@ -1,12 +1,18 @@
 #include "UserPrograms.h"
 
-int _fibonacci(int n_1, int n_2, int i);
-void increment(int i);
-
+/*
+ * HelloWorld()
+ * Simple program to illustrate output
+ */
 void HelloWorld() {
 	putsln("\nHello World!");
 }
 
+/*
+ * Scroller(char* msg)
+ * Execute Scroller and set Malta contents to msg
+ * @param char* msg - New malta text
+ */
 void Scroller(char* msg) {	
 	int i = 0, count = 0, strEnd = -1;
 	
@@ -31,16 +37,25 @@ void Scroller(char* msg) {
 	}
 }
 
+/*
+ * Increment (int a)
+ * Increment all numbers up to a
+ * @param int a - Upper limit
+ */
 void Increment(int a) {
 	char buf[10];
 	puts("\nIncrement to ");
 	putsln(itoa(a, buf, 10));
-	
-	increment(a);
+	_increment(a);
 	
 	putsln("Increment done!");
 }
 
+/*
+ * Fibonacci (int a)
+ * Sum Fibonacci numbers up to a
+ * @param int a - Upper limit
+ */
 void Fibonacci(int a) {
 	char buf[10];
 	puts("\nFibonacci to ");
@@ -48,6 +63,15 @@ void Fibonacci(int a) {
 	_fibonacci(1, 1, a);
 }
 
+/*
+ * _fibonacci
+ * Help function for Fibonacci
+ * "Fibonacci" up to i
+ * @param int n_1 - Previous sum
+ * @param int n_2 - New sum
+ * @param int i - Limiter
+ * @return New sum
+ */
 int _fibonacci(int n_1, int n_2, int i) {
 	char buf[10];
 	
@@ -63,7 +87,12 @@ int _fibonacci(int n_1, int n_2, int i) {
 	return 0;
 }
 
-void increment(int n) {
+/*
+ * _increment(int n)
+ * Help function for Increment, iterate up to n
+ * @param int n - Int to iterate up to
+ */
+void _increment(int n) {
 	int i;
 	char buf[10];
 
@@ -73,20 +102,31 @@ void increment(int n) {
 	}
 }
 
+/*
+ * initUserPrograms()
+ * Initialize our main "user programs" that the user can execute
+ * Setup all programs addresses and titles
+ */
 void initUserPrograms() {
 	userProgramsAddresses[0] = (int)&HelloWorld;
 	userProgramsAddresses[1] = (int)&Scroller;
 	userProgramsAddresses[2] = (int)&Increment;
 	userProgramsAddresses[3] = (int)&Fibonacci;
 	userProgramsAddresses[4] = (int)&Shell;
+	userProgramsAddresses[5] = (int)&ASCII;
 	
 	userProgramsNames[0] = "HelloWorld";
 	userProgramsNames[1] = "Scroller";
 	userProgramsNames[2] = "Increment";
 	userProgramsNames[3] = "Fibonacci";
 	userProgramsNames[4] = "Shell";
+	userProgramsNames[5] = "ASCII";
 }
 
+/*
+ * ASCII()
+ * Easter egg
+ */
 void ASCII() {
 	putsln("                 ____________");
 	putsln("            ,ad8888888888888888ba,");

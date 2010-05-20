@@ -33,9 +33,5 @@ int OS(int memoryMin) {
 		
 	while (1);
 	
-	// Run the scheduler
-	// Module: Scheduler
-	//run(memoryMin);
-	
 	return memoryMin;
 }

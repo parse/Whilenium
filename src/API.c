@@ -84,14 +84,26 @@ int unblock(int PID) {
 }
 
 /*
- * unblock(int PID)
- * Unblock process PID
- * @param int PID - Process to unblock
+ * displayS(uint32_t str, uint8_t offset)
+ * Display string S on malta with offset
+ * @param uint32_t str - String to display
+ * @param uint8_t offset - Offset to use
  */
 void displayS(uint32_t str, uint8_t offset) {
 	syscall_displayS(str, offset);
 }
 
+/*
+ * spawn(int prio, int PC, char* name, uint32_t arg, State state, int sleep) 
+ * Spawn a new process with given parameters and run it with a syscall
+ * @param int prio - Priority to use, from 0-PRIORITIES 
+ * @param int PC - Address to the program
+ * @param char* name - Name of the program
+ * @param uint32_t arg - Argument to pass to our program
+ * @param State state - State of the process
+ * @param int sleep - If state is Waiting, enter sleeptime here
+ * @return -1 if fails
+ */
 int spawn(int prio, int PC, char* name, uint32_t arg, State state, int sleep) {
 	newPCBArgs.prio = prio;
 	newPCBArgs.PC = PC;
@@ -103,6 +115,12 @@ int spawn(int prio, int PC, char* name, uint32_t arg, State state, int sleep) {
 	return syscall_spawn(&newPCBArgs);
 }
 
+/*
+ * scroller(char* msg)
+ * Display string msg on Malta display
+ * @param char* msg - String to display
+ * @return -1
+ */
 int scroller(char* msg) {
 	int i = 0, strEnd = -1;
 
@@ -122,8 +140,6 @@ int scroller(char* msg) {
 		
 	return 0;
 }
-
-
 
 /*
  * top()
