@@ -72,6 +72,7 @@ excn_stack:
 .globl	syscall_spawn
 .globl	syscall_displayS
 .globl 	ksyscall_handler
+.globl	syscall_bfifo_get
 
 # -------------------------------------------------------------------------
 # Set cpu status register
@@ -358,6 +359,11 @@ syscall_spawn:
 
 syscall_displayS:
 	la v0, kDisplayS
+	syscall
+	jr ra
+
+syscall_bfifo_get:
+	la v0, bfifo_get
 	syscall
 	jr ra
 

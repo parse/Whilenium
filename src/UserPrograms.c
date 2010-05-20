@@ -4,13 +4,12 @@ int _fibonacci(int n_1, int n_2, int i);
 void increment(int i);
 
 void HelloWorld() {
-	block(3);
 	putsln("\nHello World!");
 }
 
 void Scroller(char* msg) {	
 	int i = 0, count = 0, strEnd = -1;
-	
+	putslnDebug("Scroll");
 	for (i = 0; i <= 7; i++) {
 		if (msg[i] == '\0') {
 			strEnd = i;
@@ -27,7 +26,7 @@ void Scroller(char* msg) {
 	
 	while (1) {
 		displayS((uint32_t)maltaText, (uint8_t)(count%8) );
-		sleep(2, 1000);
+		sleep(2, SCROLLWAIT);
 		count = (count - 1) % 8;
 	}
 }

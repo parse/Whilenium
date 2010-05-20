@@ -19,16 +19,11 @@ void Shell() {
 	lastBuf[0] = '\0';
 	
 	int i = 0;
-//	char buf2[10];
 	char backSpace[4] = {0x8, ' ', 0x8, '\0'};
-	
-	spawn(2, userProgramsAddresses[0], userProgramsNames[0], 4, Ready, 0);
-	//spawn(2, userProgramsAddresses[2], userProgramsNames[2], 5, New, 0);
 	
 	while (1) {
 		c = 0;
 		puts("shell> ");
-		
 		
 		while (1) {
 			// Get next char
@@ -101,7 +96,7 @@ void parseCommand(char* str) {
 	
 	
 	if (strcmp(argv[0], userProgramsNames[0])) { // HelloWorld
-		spawn(2, userProgramsAddresses[0], userProgramsNames[0], 0, New, 0);
+		spawn(2, userProgramsAddresses[0], userProgramsNames[0], (int)NULL, New, 0);
 	}
 	/*else if (strcmp(argv[0], userProgramsNames[1])) { // Scroller
 		if (argv[1] != NULL)

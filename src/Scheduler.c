@@ -1,6 +1,6 @@
 #include "Scheduler.h"
 
-PCB* previousPCB = NULL;
+PCB* currentPCB = NULL;
 registers_t *regSpace;
 int memoryMin;
 
@@ -12,13 +12,18 @@ int memoryMin;
  */
 void run() {
 	if (DEBUG)
-		putslnDebug("run: Start");
+		putslnDebug("Run!");
+	//char buf[10];
+	//putslnDebug("Entering run:");
+	//putslnDebug(itoa(timeCount, buf, 10));	
+	//top();
+	//putslnDebug("------------------------------");
  	// Setup storage-area for saving registers on exception. 
-	if (previousPCB != NULL) {
-		copyRegisters(&(previousPCB->registers), regSpace);
+	if (currentPCB != NULL) {
+		copyRegisters(&(currentPCB->registers), regSpace);
 		
-		if (previousPCB->state == Running)
-			previousPCB->state = Ready;
+		if (currentPCB->state == Running)
+			currentPCB->state = Ready;
 	}
 	
 	PCB* cur = NULL;
@@ -47,19 +52,19 @@ void run() {
 		}
 	}
 	
-	if (cur != previousPCB && DEBUG) {
+	if (cur != NULL && cur != currentPCB && DEBUG) {
 		char buf[10];
-		if (previousPCB != NULL) {
-			putsDebug("run: previousPCB = ");
-			putslnDebug(itoa((int)previousPCB, buf, 10));
-			putsDebug("run: previousPCB->prev = ");
-			putslnDebug(itoa((int)previousPCB->prev, buf, 16));
+		if (currentPCB != NULL) {
+			putsDebug("run: currentPCB = ");
+			putslnDebug(itoa((int)currentPCB, buf, 10));
+			putsDebug("run: currentPCB->prev = ");
+			putslnDebug(itoa((int)currentPCB->prev, buf, 16));
 			putsDebug("run: Previous->PID = ");
-			putslnDebug(itoa(previousPCB->PID, buf, 16));
+			putslnDebug(itoa(currentPCB->PID, buf, 16));
 			putsDebug("run: Previous->prio = ");
-			putslnDebug(itoa(previousPCB->prio, buf, 16));
+			putslnDebug(itoa(currentPCB->prio, buf, 16));
 			putsDebug("run: Previous->name = ");
-			putslnDebug(previousPCB->name);
+			putslnDebug(currentPCB->name);
 		}
 		
 		putsDebug("run: cur = ");
@@ -82,12 +87,16 @@ void run() {
 		preparePCB(cur);
 		
 		// Sets previous to the one that is to be run
-		previousPCB = cur;
+		currentPCB = cur;
 		// Current changes to the next PCB in queue to be run next time
 		PriorityArray[i].current = cur->next;
 	} else {
-		previousPCB = NULL;
+		currentPCB = NULL;
 	}
+		
+	//putslnDebug("Exiting run:");
+	//top();
+	//putslnDebug("-------------------");
 	
 	kload_timer(1 * timer_msec);
 }
@@ -107,13 +116,13 @@ void die() {
 	if (DEBUG)
 		putslnDebug("die start!");
 	
-	if (previousPCB != NULL) {
+	if (currentPCB != NULL) {
 		if (DEBUG) {
-			putsDebug("previousPCB: entry = ");
-			putslnDebug(itoa((int)previousPCB, buf, 16));
+			putsDebug("currentPCB: entry = ");
+			putslnDebug(itoa((int)currentPCB, buf, 16));
 		}
-		freePCB(previousPCB);
-		previousPCB->state = Terminated;
+		freePCB(currentPCB);
+		currentPCB->state = Terminated;
 	}
 
 	run();
@@ -131,7 +140,7 @@ int kBlock(int PID) {
 		
 	entry->state = Blocked;
 	
-	if (previousPCB->PID == PID)
+	if (currentPCB->PID == PID)
 		run();
 		
 	return 1;
@@ -145,7 +154,7 @@ int kUnblock(int PID) {
 		
 	entry->state = New;
 	
-	if (entry->prio < previousPCB->prio)
+	if (entry->prio < currentPCB->prio)
 		run();
 	
 	return 1;
@@ -156,7 +165,7 @@ int kKill(int PID) {
 	//	return -1; //putsln("Error: Could not kill process with given PID");*/
 	freePID(PID);
 
-	if (previousPCB->PID == PID)
+	if (currentPCB->PID == PID)
 		run();
 	
 	return 0;
@@ -171,7 +180,7 @@ int kSleep(int PID, int sleepTime) {
 	entry->state = Waiting;
 	entry->sleep = timeCount + sleepTime;
 	
-	if (previousPCB == entry)
+	if (currentPCB == entry)
 		run();
 		
 	return 1;
@@ -200,7 +209,7 @@ int kChangePrio(int PID, int prio) {
 
 	insertPCB(entry);
 	
-	if (prio < previousPCB->prio)
+	if (prio < currentPCB->prio)
 		run();
 		
 	return 1;
@@ -218,6 +227,36 @@ void copyRegisters(registers_t *target, registers_t *source) {
 	int i;
 	uint32_t *_target = (uint32_t *)target;
 	uint32_t *_source = (uint32_t *)source;
+	/*target->at_reg = source->at_reg;
+	target->v_reg[0] = source->v_reg[0];
+	target->v_reg[1] = source->v_reg[1];
+	target->a_reg[0] = source->a_reg[0];
+	target->a_reg[1] = source->a_reg[1];
+	target->a_reg[2] = source->a_reg[2];
+	target->a_reg[3] = source->a_reg[3];
+	target->t_reg[0] = source->t_reg[0];
+	target->t_reg[1] = source->t_reg[1];
+	target->t_reg[2] = source->t_reg[2];
+	target->t_reg[3] = source->t_reg[3];
+	target->t_reg[4] = source->t_reg[4];
+	target->t_reg[5] = source->t_reg[5];
+	target->t_reg[6] = source->t_reg[6];
+	target->t_reg[7] = source->t_reg[7];
+	target->t_reg[8] = source->t_reg[8];
+	target->t_reg[9] = source->t_reg[9];
+	target->s_reg[0] = source->s_reg[0];
+	target->s_reg[1] = source->s_reg[1];
+	target->s_reg[2] = source->s_reg[2];
+	target->s_reg[3] = source->s_reg[3];
+	target->s_reg[4] = source->s_reg[4];
+	target->s_reg[5] = source->s_reg[5];
+	target->s_reg[6] = source->s_reg[6];
+	target->s_reg[7] = source->s_reg[7];
+	target->sp_reg = source->sp_reg;
+	target->fp_reg = source->fp_reg;
+	target->ra_reg = source->ra_reg;
+	target->epc_reg = source->epc_reg;
+	target->gp_reg = source->gp_reg;*/
 	
 	for (i = 0; i < 30; i++) {
 		_target[i] = _source[i];
@@ -387,16 +426,16 @@ void freePCB(PCB* entry) {
 			putslnDebug(itoa((int)entry->prio, buf, 16));
 			putsDebug("freePCB: entry->name = ");
 			putslnDebug(entry->name);
-			putsDebug("freePCB: previousPCB = ");
-			putslnDebug(itoa((int)previousPCB, buf, 16));
-			putsDebug("freePCB: previousPCB->prev = ");
-			putslnDebug(itoa((int)previousPCB->prev, buf, 16));
-			putsDebug("freePCB: previousPCB->PID = ");
-			putslnDebug(itoa((int)previousPCB->PID, buf, 16));
-			putsDebug("freePCB: previousPCB->prio = ");
-			putslnDebug(itoa((int)previousPCB->prio, buf, 16));
-			putsDebug("freePCB: previousPCB->name = ");
-			putslnDebug(previousPCB->name);
+			putsDebug("freePCB: currentPCB = ");
+			putslnDebug(itoa((int)currentPCB, buf, 16));
+			putsDebug("freePCB: currentPCB->prev = ");
+			putslnDebug(itoa((int)currentPCB->prev, buf, 16));
+			putsDebug("freePCB: currentPCB->PID = ");
+			putslnDebug(itoa((int)currentPCB->PID, buf, 16));
+			putsDebug("freePCB: currentPCB->prio = ");
+			putslnDebug(itoa((int)currentPCB->prio, buf, 16));
+			putsDebug("freePCB: currentPCB->name = ");
+			putslnDebug(currentPCB->name);
 		}
 		PriorityArray[entry->prio].current = next;
 		prev->next = next;
@@ -417,8 +456,8 @@ void freePCB(PCB* entry) {
 }
 
 State getPrevState() {
-	if (previousPCB != NULL)
-		return previousPCB->state;
+	if (currentPCB != NULL)
+		return currentPCB->state;
 	else
 		return Undefined;
 }
