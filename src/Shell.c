@@ -98,12 +98,6 @@ void parseCommand(char* str) {
 	if (strcmp(argv[0], userProgramsNames[0])) { // HelloWorld
 		spawn(2, userProgramsAddresses[0], userProgramsNames[0], (int)NULL, New, 0);
 	}
-	/*else if (strcmp(argv[0], userProgramsNames[1])) { // Scroller
-		if (argv[1] != NULL)
-			spawn(1, userProgramsAddresses[1], userProgramsNames[1], (int)argv[1], New, 0);
-		else
-			putsln("Error: Not sufficient arguments!");
-	}*/
 	else if (strcmp(argv[0], userProgramsNames[2])) {	// Increment
 		if (argv[1] != NULL)
 			spawn(2, userProgramsAddresses[2], userProgramsNames[2], atoi(argv[1]), New, 0);

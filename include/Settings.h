@@ -15,7 +15,7 @@
 #define PRIORITIES 400
 
 // Names of available user programs are stored in the tables at the bottom
-#define USERPROGRAMS 5
+#define USERPROGRAMS 6
 
 #define SCROLLWAIT 500
 
