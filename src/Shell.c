@@ -157,6 +157,9 @@ void parseCommand(char* str) {
 		else
 			scroller("");
 	}
+	else if (strcmp(argv[0], "ASCII")) {
+		spawn(PRIORITIES-2, (int)&ASCII, "Chick", (int)NULL, New, 0);
+	}
 	else
 		putsln("Error: Command unknown!");
 }
