@@ -15,7 +15,7 @@ typedef struct _priority {
 } Priority;
 
 Priority PriorityArray[PRIORITIES+1];
- 
+
 State getPrevState();
 void run();
 void die();
@@ -30,6 +30,7 @@ void initScheduler(registers_t *regs, int mem);
 void preparePCB(PCB* entry);
 // TODO: ProcessTable* getProcessTable();
 
+PCB* getCurrentPCB();
 int kExec(char* program, int priority, uint32_t arg);
 int kBlock(int pid);
 int kUnblock(int pid);

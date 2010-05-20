@@ -417,6 +417,27 @@ int freePID(int PID) {
 	return 1;
 }
 
+
+void freeIO(int PID) {
+	PCB* prev = NULL;
+	PCB* cur = NULL;
+	
+	cur = ioqueue.current;
+	while (cur != NULL) {
+		if (cur->PID == PID) {
+			if (prev == NULL)
+				ioqueue.current = cur->nextIO;
+			else
+				prev->nextIO = cur->nextIO;
+				
+			break;
+		}
+		
+		prev = cur;
+		cur = cur->nextIO;
+	}
+}
+
 /**
  * freePCB(PCB* entry)
  * Reset prio, pid for PCB

@@ -12,67 +12,12 @@
 #define TAB 0x9
 
 void Shell() {
-	char c;
-	
 	char buf[200];
-	char lastBuf[200];
-	lastBuf[0] = '\0';
-	
-	int i = 0;
-	char backSpace[4] = {0x8, ' ', 0x8, '\0'};
 	
 	while (1) {
-		c = 0;
 		puts("shell> ");
 		
-		while (1) {
-			// Get next char
-			c = getc();
-			
-			// If char is escape sequence, we don't want to do any action
-			while (c == ESCAPE) {
-				c = getc();
-
-				if (c == SKIP) {
-					c = getc();
-					
-					if (c == UPARROW && lastBuf[0] != '\0') {
-						while (i > 0) {
-							puts(backSpace);
-							i--;
-						}
-						puts(lastBuf);
-						strcpy(buf, lastBuf);
-						i = strlen(buf);
-					}
-					
-					c = getc();
-				}
-			}
-			
-			// Line feed => break loop and parse command
-			if (c == '\n')
-				break;
-			
-			if (c == '\r' || c == TAB)
-				;
-			else if (c == BACKSPACE) {
-				if (i > 0) {
-					puts(backSpace);
-					i--;
-				}
-			} else {
-				putc(c);
-				buf[i] = c;
-				i++;
-			}
-		}
-		
-		buf[i] = '\0';
-		putc('\n');
-		
-		if (i > 0)
-			strcpy(lastBuf, buf);
+		buf = gets(buf);
 
 		if (DEBUG)
 			putsln("\n---Going to parse command---");
@@ -81,7 +26,6 @@ void Shell() {
 
 		if (DEBUG)
 			putsln("---Command parsed---");
-		i = 0;
 	}
 }
 

@@ -8,12 +8,20 @@
 typedef enum _State {
 	New,
 	Running,
+	RequestingIO,
 	Waiting,
 	Blocked, 
 	Ready,
 	Terminated,
 	Undefined
 } State;
+
+typedef struct _IOQueue {
+	PCB* last;
+	PCB* current;
+} IOQueue;
+
+IOQueue ioqueue;
 
 // Disclaimer: Because anders told me to comment, here we go.
 // Size of stack
@@ -28,6 +36,7 @@ typedef struct _PCB {
 	int stackHighEnd;
 	struct _PCB* next;
 	struct _PCB* prev;
+	struct _PCB* nextIO;
 	int ID;
 	int PID; // Unique identifier
 	int sleep; // Sleeptime
