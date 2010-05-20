@@ -6,10 +6,12 @@
  * @param int PID - Process to kill
  */
 int kill(int PID) {
-	if (PID != 1)
-		return syscall_kill(PID);
-	else
-		return -1;
+	if ( (syscall_kill(PID) == -1) || PID == 1) {
+		putsln("Error: Couldn't terminate process");
+		return 0;
+	}
+	
+	return 1;
 }
 
 /*

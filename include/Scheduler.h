@@ -24,7 +24,7 @@ int insertPCB(PCB* entry);
 PCB* getFreePCB();
 PCB* getPCB(int PID);
 Process getProcess(int PID);
-void freePID(int PID);
+int freePID(int PID);
 void freePCB(PCB* entry);
 void initScheduler(registers_t *regs, int mem);
 void preparePCB(PCB* entry);

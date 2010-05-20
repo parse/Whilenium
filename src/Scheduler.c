@@ -161,10 +161,13 @@ int kUnblock(int PID) {
 }
 
 int kKill(int PID) {
-	//if (freePID(PID) == -1)
-	//	return -1; //putsln("Error: Could not kill process with given PID");*/
-	freePID(PID);
-
+	if (freePID(PID) == -1) {
+		 // TODO!!!!!!!!!!!!!!!
+		putslnDebug("Error: Couldn't terminate process"); // TODO!!!!!!!!!!!!!!!
+		 // TODO!!!!!!!!!!!!!!!
+		return -1;
+	}
+		
 	if (currentPCB->PID == PID)
 		run();
 	
@@ -403,10 +406,15 @@ Process getProcess(int PID) {
  * Reset prio, pid for PID
  * @param int PID - The PID to free
  */
-void freePID(int PID) {
+int freePID(int PID) {
 	PCB* entry = getPCB(PID);
 	
+	if ( (int)entry == -1)
+		return -1;
+		
 	freePCB(entry);
+	
+	return 1;
 }
 
 /**
