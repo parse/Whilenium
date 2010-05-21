@@ -89,64 +89,6 @@ void exitProcess() {
 	while (1);
 }
 
-/**
- * newPCB(int prio, int PC, char* name)
- * Important! We must insert the PCB from getFreePCB into a new queue with insertPCB
- * Pre: prio > 0
- * @param int prio - The priority to set
- * @param int PC - Program counter to set
- * @param char* name - Program name to set
- * @param uint32_t arg - Argument to pass to process
- * @param State state - State to start the process in
- * @param int sleep - If state is Waiting, the sleeptime is how long the process waits
- * @return The PCB created with above values
- */
-int kNewPCB(NewPCBArgs* newPCBArgs) {
-	PCB* pcb = getFreePCB();
-
-	if ((int)pcb == -1)
-		return -1;
-		
-	pcb->prio = newPCBArgs->prio;
-	
-	strcpy(pcb->name, newPCBArgs->name);
-	
-	currentPID++;
-	pcb->PID = currentPID;
-	pcb->registers.epc_reg = newPCBArgs->PC;
-	pcb->registers.sp_reg = (uint32_t)&(pcb->stackHighEnd);
-	pcb->registers.a_reg[0] = newPCBArgs->arg;
-	pcb->registers.a_reg[1] = 0;
-	pcb->registers.a_reg[2] = 0;
-	pcb->registers.a_reg[3] = 0;
-	pcb->registers.ra_reg = (uint32_t)&exitProcess;
-	
-	pcb->state = newPCBArgs->state;
-	pcb->sleep = timeCount + newPCBArgs->sleep;
-	
-	insertPCB(pcb);
-	
-	if (interruptsEnabled) {
-		if (DEBUG)
-			putslnDebug("newPCB: interruptsEnabled = 1. Do run!");
-			
-		run();
-	}
-	
-	return pcb->PID;
-}
-
-int kNewPCBWithArgs(int prio, int PC, char* name, uint32_t arg, State state, int sleep) {
-	newPCBArgs.prio = prio;
-	newPCBArgs.PC = PC;
-	newPCBArgs.name = name;
-	newPCBArgs.arg = arg;
-	newPCBArgs.state = state;
-	newPCBArgs.sleep = sleep;
-
-	return kNewPCB(&newPCBArgs);
-}
-
 /*
  * Idle()
  * An idle process that the OS always keep running

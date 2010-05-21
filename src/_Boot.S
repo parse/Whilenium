@@ -348,11 +348,6 @@ syscall_prio:
 	syscall
 	jr ra	
 
-syscall_exec:
-	la v0, kExec
-	syscall
-	jr ra
-
 syscall_spawn:
 	la v0, kNewPCB
 	syscall

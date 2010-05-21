@@ -16,6 +16,8 @@ int kUnblock(int pid);
 int kKill(int pid);
 int kSleep(int pid, int sleepTime);
 int kChangePrio(int pid, int prio);
-void die();
+
+int kNewPCB(NewPCBArgs* newPCBArgs);
+int kNewPCBWithArgs(int prio, int PC, char* name, uint32_t arg, State state, int sleep);
 
 #endif

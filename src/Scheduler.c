@@ -335,6 +335,37 @@ void freePCB(PCB* entry) {
 		putslnDebug("freePCB done!");
 }
 
+/*
+ * die()
+ * Takes care of a dying process by removing it from our queue and update state
+ */
+void die() {
+	char buf[10];
+	PCB* currentPCB = getCurrentPCB();
+	
+	if (DEBUG)
+		putslnDebug("die start!");
+	
+	if (currentPCB != NULL) {
+		if (DEBUG) {
+			putsDebug("currentPCB: entry = ");
+			putslnDebug(itoa((int)currentPCB, buf, 16));
+		}
+		freePCB(currentPCB);
+		currentPCB->state = Terminated;
+	}
+
+	run();
+	
+	if (DEBUG)
+		putslnDebug("die done!");
+}
+
+/*
+ * getPrevState()
+ * Get the state of the currentPCB
+ * @return State of the process
+ */
 State getPrevState() {
 	if (currentPCB != NULL)
 		return currentPCB->state;
@@ -342,6 +373,12 @@ State getPrevState() {
 		return Undefined;
 }
 
+/*
+ * initScheduler(registers_t *regs, int mem)
+ * Initialise scheduler
+ * @param registers_t *regs - Memory register to use
+ * @param int mem - Lower memory limit
+ */
 void initScheduler(registers_t *regs, int mem) {
 	regSpace = regs;
 	memoryMin = mem;

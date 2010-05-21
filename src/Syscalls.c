@@ -1,5 +1,11 @@
 #include "Syscalls.h"
 
+/*
+ * kBlock (int PID)
+ * Block process PID
+ * @param int PID - Process to block
+ * @return -1 if fails, else 1
+ */
 int kBlock(int PID) {
 	PCB* entry = getPCB(PID);
 	PCB* currentPCB = getCurrentPCB();
@@ -15,6 +21,12 @@ int kBlock(int PID) {
 	return 1;
 }
 
+/*
+ * kUnblock (int PID)
+ * Unblock process PID
+ * @param int PID - Process to unblock
+ * @return -1 if fails, else 1
+ */
 int kUnblock(int PID) {
 	PCB* entry = getPCB(PID);
 	PCB* currentPCB = getCurrentPCB();
@@ -30,6 +42,12 @@ int kUnblock(int PID) {
 	return 1;
 }
 
+/*
+ * kKill (int PID)
+ * Terminate process PID
+ * @param int PID - Process to terminate
+ * @return -1 if fails, else 1
+ */
 int kKill(int PID) {
 	if (freePID(PID) == -1) {
 					// TODO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -43,9 +61,16 @@ int kKill(int PID) {
 	if (currentPCB->PID == PID)
 		run();
 	
-	return 0;
+	return 1;
 }
 
+/*
+ * kSleep (int PID, int sleepTime)
+ * Sleep process, if PID = 0 - use the current process
+ * @param int PID - Process to sleep
+ * @param int sleepTime - Time to sleep
+ * @return -1 if fails, else 1
+ */
 int kSleep(int PID, int sleepTime) {
 	PCB* entry;
 	PCB* currentPCB = getCurrentPCB();
@@ -67,6 +92,13 @@ int kSleep(int PID, int sleepTime) {
 	return 1;
 }
 
+/*
+ * kChangePrio (int PID, int prio)
+ * Change priority for process PID
+ * @param int PID - Process to change priority for
+ * @param int prio - New priority
+ * @return -1 if fails, else 1
+ */
 int kChangePrio(int PID, int prio) {
 	PCB* entry = getPCB(PID);
 	PCB* currentPCB = getCurrentPCB();
@@ -97,32 +129,67 @@ int kChangePrio(int PID, int prio) {
 	return 1;
 }
 
-int kExec(char* program, int priority, uint32_t arg) {
-	return -1;
+
+/**
+ * kNewPCB(NewPCBArgs* newPCBArgs)
+ * Important! We must insert the PCB from getFreePCB into a new queue with insertPCB
+ * Pre: prio > 0
+ * @param NewPCBArgs* newPCBArgs - Program to queue
+ * @return The newly created process PID
+ */
+int kNewPCB(NewPCBArgs* newPCBArgs) {
+	PCB* pcb = getFreePCB();
+
+	if ((int)pcb == -1)
+		return -1;
+		
+	pcb->prio = newPCBArgs->prio;
+	
+	strcpy(pcb->name, newPCBArgs->name);
+	
+	currentPID++;
+	pcb->PID = currentPID;
+	pcb->registers.epc_reg = newPCBArgs->PC;
+	pcb->registers.sp_reg = (uint32_t)&(pcb->stackHighEnd);
+	pcb->registers.a_reg[0] = newPCBArgs->arg;
+	pcb->registers.a_reg[1] = 0;
+	pcb->registers.a_reg[2] = 0;
+	pcb->registers.a_reg[3] = 0;
+	pcb->registers.ra_reg = (uint32_t)&exitProcess;
+	
+	pcb->state = newPCBArgs->state;
+	pcb->sleep = timeCount + newPCBArgs->sleep;
+	
+	insertPCB(pcb);
+	
+	if (interruptsEnabled) {
+		if (DEBUG)
+			putslnDebug("newPCB: interruptsEnabled = 1. Do run!");
+			
+		run();
+	}
+	
+	return pcb->PID;
 }
 
-/*
- * die()
- * Takes care of a dying process by removing it from our queue and update state
+/**
+ * kNewPCBWithArgs(iN)
+ * Construct a "holder" for all arguments to use later
+ * @param int prio - The priority to set
+ * @param int PC - Program counter to set
+ * @param char* name - Program name to set
+ * @param uint32_t arg - Argument to pass to process
+ * @param State state - State to start the process in
+ * @param int sleep - If state is Waiting, the sleeptime is how long the process waits
+ * @return The PCB created with above values
  */
-void die() {
-	char buf[10];
-	PCB* currentPCB = getCurrentPCB();
-	
-	if (DEBUG)
-		putslnDebug("die start!");
-	
-	if (currentPCB != NULL) {
-		if (DEBUG) {
-			putsDebug("currentPCB: entry = ");
-			putslnDebug(itoa((int)currentPCB, buf, 16));
-		}
-		freePCB(currentPCB);
-		currentPCB->state = Terminated;
-	}
+int kNewPCBWithArgs(int prio, int PC, char* name, uint32_t arg, State state, int sleep) {
+	newPCBArgs.prio = prio;
+	newPCBArgs.PC = PC;
+	newPCBArgs.name = name;
+	newPCBArgs.arg = arg;
+	newPCBArgs.state = state;
+	newPCBArgs.sleep = sleep;
 
-	run();
-	
-	if (DEBUG)
-		putslnDebug("die done!");
+	return kNewPCB(&newPCBArgs);
 }
