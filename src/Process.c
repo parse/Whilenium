@@ -133,7 +133,7 @@ int kNewPCB(NewPCBArgs* newPCBArgs) {
 		run();
 	}
 	
-	return (int)pcb;
+	return pcb->PID;
 }
 
 int kNewPCBWithArgs(int prio, int PC, char* name, uint32_t arg, State state, int sleep) {

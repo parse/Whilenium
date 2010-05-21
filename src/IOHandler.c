@@ -93,9 +93,7 @@ char kGetc() {
  * @param uint8_t pos - Position on the display
  */
 void displayC(uint8_t word, uint8_t pos)
-{
-	malta->ledbar.reg = 0xFF;
-	
+{	
     malta->asciipos[pos].value = word;
 }
 
@@ -103,7 +101,6 @@ void kDisplayS(uint32_t str, uint8_t offset) {
 	int i;
 	char* string = (char*)str;
 	
-	malta->ledbar.reg = 0xFF;
 	for (i = 0; i < 8; i++) {
 		malta->asciipos[i].value = string[(i+offset)%8];
 	}
@@ -116,8 +113,8 @@ void kDisplayS(uint32_t str, uint8_t offset) {
  */
 void displayNumber(uint32_t word) {
 	int i;
-	malta->ledbar.reg = 0xFF;
-		for (i = 7; i >= 0; --i) {
+	
+	for (i = 7; i >= 0; --i) {
     		malta->asciipos[i].value = '0' + word % 10;	
 			word /= 10;
 	}
@@ -193,6 +190,7 @@ uint8_t bfifo_get(struct bounded_fifo* bfifo)
  */
 void initIO() {
 	// If there are any commands needed to be executed for IO to work, do them here...
+	malta->ledbar.reg = 0xFF;
 	
 	status_reg_t and, or;
 	bFifoOut.length = 0;
