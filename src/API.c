@@ -7,7 +7,7 @@
  */
 int kill(int PID) {
 	
-	if ( syscall_kill(PID) == -1 || PID == 1 ) {
+	if ( PID == 1 || syscall_kill(PID) == -1 ) {
 		return -1;
 	}
 	
@@ -64,7 +64,11 @@ char* getName(int PID) {
  * @param int prio - New priority
  */
 int changePrio(int PID, int prio) {
-	return syscall_prio(PID, prio);
+	if ( PID == 1 || syscall_prio(PID, prio) == -1 ) {
+		return -1;
+	}
+	
+	return 1;
 }
 
 /*
