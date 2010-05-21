@@ -182,6 +182,9 @@ void top() {
 				case Ready:
 					puts("Ready");
 					break; 
+				case RequestingIO:
+					puts("RequestingIO");
+					break;
 				case Terminated:
 				case Undefined:
 					break;

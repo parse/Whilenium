@@ -49,8 +49,6 @@ void initOS(int memoryMin) {
 	initPCBTable(memoryMin);
 	
 	// Create base processes for the OS
-	char buf[10];
-	
 	kNewPCBWithArgs(PRIORITIES, (int)&Idle, "Idle process",  (int)NULL, New, 0);
 	kNewPCBWithArgs(2, (int)&Scroller, "Scroller", (int)&scroll, Waiting, 0);
 	kNewPCBWithArgs(PRIORITIES-1, (int)&Shell, "Shell", (int)NULL, New, 0);

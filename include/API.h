@@ -34,6 +34,13 @@ void putsln(char* text); // From IOHandler
  */
 char getc(); // From IOHandler
 
+/*
+ * gets()
+ * Requests a string from input. The process is not running until string is completed with a '\n'
+ * @return char* to the buffer where input is saved for the process
+ */
+char* gets(); // From IOHandler
+
 /* 
  * displayC(uint8_t word, uint8_t pos)
  * Display a char on the Malta display.

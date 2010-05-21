@@ -61,7 +61,7 @@ int kKill(int PID) {
 		kget_registers()->v_reg[0] = -1;
 		return (int)NULL;
 	}
-		
+	
 	PCB* currentPCB = getCurrentPCB();
 	
 	kget_registers()->v_reg[0] = 1;
@@ -212,3 +212,128 @@ int kNewPCBWithArgs(int prio, int PC, char* name, uint32_t arg, State state, int
 
 	return kNewPCB(&newPCBArgs);
 }
+
+
+/*
+ *
+ *
+ */
+char* kGets() {
+	PCB* curPCB = getCurrentPCB();
+	
+	if (ioqueue.current == NULL) {
+		ioqueue.current = curPCB;
+		ioqueue.last = curPCB;
+	} else {
+		(ioqueue.last)->nextIO = curPCB;
+		ioqueue.last = curPCB;
+	}
+	
+	curPCB->state = RequestingIO;
+	
+	// Return the string with v0 of the tmp pcb
+	kget_registers()->v_reg[0] = (int)curPCB->inputBuf;
+	
+	run();
+	
+	return (int)NULL;
+}
+
+
+/*
+ *
+ *
+ */
+char lastCommand[200] = "";
+void kInput(char c) {
+	if (ioqueue.current == NULL)
+		return;
+	
+	char backSpace[4] = {0x8, ' ', 0x8, '\0'};
+	PCB* current = ioqueue.current;
+	char* buf = current->inputBuf;
+	
+	static char escape1 = 0;
+	static char escape2 = 0;
+	static char escape3 = 0;
+	//static char lastCommand[200] = "";
+			
+	// We got an escape char
+	if (c == ESCAPE) {
+	//	putslnDebug("c=escape");
+		escape1 = c;
+	}
+	else if (escape1 == ESCAPE) {
+		//putslnDebug("escape1=escape");
+		// We have escape char stored
+		if (escape2 == SKIP) {
+			// We have an escape key stored (e.g. an arrow)
+			escape3 = c;
+		}
+		else if (c == SKIP) {
+			// We have the second sign of an escape sequence
+			escape2 = c;
+		}
+	} 
+	else if (escape3 == 0) {
+		// We have no escape char
+		// This is a good one. Put on buffer and check if '\n'
+		if (c == '\n') {
+			bfifo_put(&bFifoOut, '\n', 1);
+			bfifo_put(&bFifoOut, '\r', 1);
+			buf[current->inputLength] = '\0';
+		} 
+		else if (c == '\r' || c == TAB)
+			;
+		else if (c == BACKSPACE) {
+			if (current->inputLength > 0) {
+				bfifo_puts(&bFifoOut, (int)backSpace);
+				buf[current->inputLength] = '\0';
+				current->inputLength--;
+			}
+		}
+		else {
+			bfifo_put(&bFifoOut, c, 1);
+			buf[current->inputLength] = c;
+			buf[current->inputLength+1] = '\0';
+			current->inputLength++;
+		}
+	}
+	
+	if (escape3 != 0) {
+		if (c == UPARROW && lastCommand[0] != '\0') {
+			while (current->inputLength > 0) {
+				bfifo_puts(&bFifoOut, (int)backSpace);
+				current->inputLength--;
+            }
+
+			bfifo_puts(&bFifoOut, (int)lastCommand);
+			strcpy(buf, lastCommand);
+			current->inputLength = strlen(buf);
+		}
+		escape3 = 0;
+		escape2 = 0;
+		escape1 = 0;
+	}
+	
+	// UNBLOCK PROCESS AND DO RUN IF NEEDED
+	if (c == '\n') {
+		strcpy(lastCommand, buf);
+		
+		if (ioqueue.last == current) {
+			ioqueue.current = NULL;
+			ioqueue.last = NULL;
+		} 
+		else {
+			ioqueue.current = current->nextIO;
+		}
+		
+		current->inputLength = 0;
+		current->state = Ready;
+		
+		if (current->prio < getCurrentPCB()->prio) {
+			run();
+		}
+	}
+}
+

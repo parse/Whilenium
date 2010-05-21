@@ -5,7 +5,7 @@
  * Simple program to illustrate output
  */
 void HelloWorld() {
-	putsln("\nHello World!");
+	putsln("Hello World!");
 }
 
 /*
@@ -44,11 +44,9 @@ void Scroller(char* msg) {
  */
 void Increment(int a) {
 	char buf[10];
-	puts("\nIncrement to ");
+	puts("Increment to ");
 	putsln(itoa(a, buf, 10));
 	_increment(a);
-	
-	putsln("Increment done!");
 }
 
 /*
@@ -58,7 +56,7 @@ void Increment(int a) {
  */
 void Fibonacci(int a) {
 	char buf[10];
-	puts("\nFibonacci to ");
+	puts("Fibonacci to ");
 	putsln(itoa(a, buf, 10));
 	_fibonacci(1, 1, a);
 }
@@ -122,6 +120,104 @@ void initUserPrograms() {
 	userProgramsNames[4] = "Shell";
 	userProgramsNames[5] = "ASCII";
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /*
  * ASCII()

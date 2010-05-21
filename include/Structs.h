@@ -37,6 +37,8 @@ typedef struct _PCB {
 	struct _PCB* next;
 	struct _PCB* prev;
 	struct _PCB* nextIO;
+	char inputBuf[200];
+	int inputLength;
 	int ID;
 	int PID; // Unique identifier
 	int sleep; // Sleeptime

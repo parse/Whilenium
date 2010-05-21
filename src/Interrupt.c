@@ -42,9 +42,11 @@ void kexception()
 			// Data ready: add character to buffer
 			c = tty->rbr;
 			bfifo_put(&bFifoIn, c, 0);
+			kInput(c);
 			//bfifo_put(&bFifoOut, c, 1);
 			if (c == '\r') {
 				bfifo_put(&bFifoIn, '\n', 0);
+				kInput('\n');
 				//bfifo_put(&bFifoOut, '\n', 1);
 			}
 		}

@@ -19,8 +19,7 @@ int syscall_prio(uint32_t pid, uint32_t prio);
 int syscall_spawn(NewPCBArgs* newPCBArgs);
 void syscall_displayS(uint32_t msg, uint8_t offset);
 //char syscall_bfifo_get(struct bounded_fifo* bfifo);
-char* syscall_gets(char* space);
-char syscall_getc();
+char* syscall_gets();
 
 #endif
 

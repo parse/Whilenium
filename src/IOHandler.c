@@ -79,11 +79,13 @@ char getc() {
 	return bfifo_get(&bFifoIn);
 }
 
-char* kGets(char* space) {
-	return NULL;
-}
-char kGetc() {
-	return 0;
+/*
+ * gets()
+ * Requests a string from input. The process is not running until string is completed with a '\n'
+ * @return char* to the buffer where input is saved for the process
+ */
+char* gets() {
+	return syscall_gets();
 }
 
 /* 
@@ -131,7 +133,7 @@ void bfifo_put(struct bounded_fifo* bfifo, uint8_t ch, char output) {
 	/* Make sure the 'bfifo' pointer is not 0. */
 	kdebug_assert(bfifo != 0);
 
-	while (bfifo->length > FIFO_SIZE);
+	while (bfifo->length >= FIFO_SIZE);
 	
 	bfifo->buf[(bfifo->length)++] = ch;
 
