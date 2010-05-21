@@ -5,6 +5,7 @@
 #include "mips/malta.h"
 
 #include "Structs.h"
+#include "Syscalls.h"
 #include "Process.h"
 #include "IOHandler.h"
 #include "Settings.h"
@@ -18,9 +19,9 @@ Priority PriorityArray[PRIORITIES+1];
 
 State getPrevState();
 void run();
-void die();
 void copyRegisters(registers_t *target, registers_t *source);
 int insertPCB(PCB* entry);
+PCB* getCurrentPCB();
 PCB* getFreePCB();
 PCB* getPCB(int PID);
 Process getProcess(int PID);
@@ -31,11 +32,5 @@ void preparePCB(PCB* entry);
 // TODO: ProcessTable* getProcessTable();
 
 PCB* getCurrentPCB();
-int kExec(char* program, int priority, uint32_t arg);
-int kBlock(int pid);
-int kUnblock(int pid);
-int kKill(int pid);
-int kSleep(int pid, int sleepTime);
-int kChangePrio(int pid, int prio);
 
 #endif

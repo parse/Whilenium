@@ -13,11 +13,7 @@ int memoryMin;
 void run() {
 	if (DEBUG)
 		putslnDebug("Run!");
-	//char buf[10];
-	//putslnDebug("Entering run:");
-	//putslnDebug(itoa(timeCount, buf, 10));	
-	//top();
-	//putslnDebug("------------------------------");
+
  	// Setup storage-area for saving registers on exception. 
 	if (currentPCB != NULL) {
 		copyRegisters(&(currentPCB->registers), regSpace);
@@ -93,10 +89,6 @@ void run() {
 	} else {
 		currentPCB = NULL;
 	}
-		
-	//putslnDebug("Exiting run:");
-	//top();
-	//putslnDebug("-------------------");
 	
 	kload_timer(1 * timer_msec);
 }
@@ -108,126 +100,6 @@ void preparePCB(PCB* entry) {
 }
 
 /*
- * die()
- * Takes care of a dying process by removing it from our queue and update state
- */
-void die() {
-	char buf[10];
-	if (DEBUG)
-		putslnDebug("die start!");
-	
-	if (currentPCB != NULL) {
-		if (DEBUG) {
-			putsDebug("currentPCB: entry = ");
-			putslnDebug(itoa((int)currentPCB, buf, 16));
-		}
-		freePCB(currentPCB);
-		currentPCB->state = Terminated;
-	}
-
-	run();
-	
-	if (DEBUG)
-		putslnDebug("die done!");
-}
-
-
-int kBlock(int PID) {
-	PCB* entry = getPCB(PID);
-	
-	if ( (int)entry == -1 )
-		return -1;
-		
-	entry->state = Blocked;
-	
-	if (currentPCB->PID == PID)
-		run();
-		
-	return 1;
-}
-
-int kUnblock(int PID) {
-	PCB* entry = getPCB(PID);
-	
-	if ( (int)entry == -1 )
-		return -1;
-		
-	entry->state = New;
-	
-	if (entry->prio < currentPCB->prio)
-		run();
-	
-	return 1;
-}
-
-int kKill(int PID) {
-	if (freePID(PID) == -1) {
-		 // TODO!!!!!!!!!!!!!!!
-		putslnDebug("Error: Couldn't terminate process"); // TODO!!!!!!!!!!!!!!!
-		 // TODO!!!!!!!!!!!!!!!
-		return -1;
-	}
-		
-	if (currentPCB->PID == PID)
-		run();
-	
-	return 0;
-}
-
-int kSleep(int PID, int sleepTime) {
-	PCB* entry;
-	
-	if (PID == 0) 
-		entry = currentPCB;
-	else
-		entry = getPCB(PID);
-	
-	if ( (int)entry == -1 )
-		return -1;
-	
-	entry->state = Waiting;
-	entry->sleep = timeCount + sleepTime;
-	
-	if (currentPCB == entry)
-		run();
-		
-	return 1;
-}
-
-int kChangePrio(int PID, int prio) {
-	PCB* entry = getPCB(PID);
-
-	if ( (int)entry == -1 )
-		return -1;
-		
-	PCB* prev = entry->prev;
-	PCB* next = entry->next;
-
-	if (entry != next) {
-		PriorityArray[entry->prio].current = next;
-		prev->next = next;
-		next->prev = prev;
-	} else
-		PriorityArray[entry->prio].current = NULL;
-
-	entry->next = NULL;
-	entry->prev = NULL;
-
-	entry->prio = prio;
-
-	insertPCB(entry);
-	
-	if (prio < currentPCB->prio)
-		run();
-		
-	return 1;
-}
-
-int kExec(char* program, int priority, uint32_t arg) {
-	return -1;
-}
-
-/*
  * copyRegisters (registers_t *target, registers_t *source)
  * Copy one register to another register, uses a max size of 30
  */
@@ -235,36 +107,6 @@ void copyRegisters(registers_t *target, registers_t *source) {
 	int i;
 	uint32_t *_target = (uint32_t *)target;
 	uint32_t *_source = (uint32_t *)source;
-	/*target->at_reg = source->at_reg;
-	target->v_reg[0] = source->v_reg[0];
-	target->v_reg[1] = source->v_reg[1];
-	target->a_reg[0] = source->a_reg[0];
-	target->a_reg[1] = source->a_reg[1];
-	target->a_reg[2] = source->a_reg[2];
-	target->a_reg[3] = source->a_reg[3];
-	target->t_reg[0] = source->t_reg[0];
-	target->t_reg[1] = source->t_reg[1];
-	target->t_reg[2] = source->t_reg[2];
-	target->t_reg[3] = source->t_reg[3];
-	target->t_reg[4] = source->t_reg[4];
-	target->t_reg[5] = source->t_reg[5];
-	target->t_reg[6] = source->t_reg[6];
-	target->t_reg[7] = source->t_reg[7];
-	target->t_reg[8] = source->t_reg[8];
-	target->t_reg[9] = source->t_reg[9];
-	target->s_reg[0] = source->s_reg[0];
-	target->s_reg[1] = source->s_reg[1];
-	target->s_reg[2] = source->s_reg[2];
-	target->s_reg[3] = source->s_reg[3];
-	target->s_reg[4] = source->s_reg[4];
-	target->s_reg[5] = source->s_reg[5];
-	target->s_reg[6] = source->s_reg[6];
-	target->s_reg[7] = source->s_reg[7];
-	target->sp_reg = source->sp_reg;
-	target->fp_reg = source->fp_reg;
-	target->ra_reg = source->ra_reg;
-	target->epc_reg = source->epc_reg;
-	target->gp_reg = source->gp_reg;*/
 	
 	for (i = 0; i < 30; i++) {
 		_target[i] = _source[i];
@@ -310,6 +152,10 @@ int insertPCB (PCB* entry) {
 	}
 	
 	return 0;
+}
+
+PCB* getCurrentPCB() {
+	return currentPCB;
 }
 
 /**

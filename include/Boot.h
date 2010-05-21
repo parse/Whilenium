@@ -7,6 +7,7 @@
 
 #include "Structs.h"
 #include "Scheduler.h"
+#include "Syscalls.h"
 #include "Process.h"
 #include "IOHandler.h"
 #include "Interrupt.h"
