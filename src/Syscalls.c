@@ -10,17 +10,19 @@ int kBlock(int PID) {
 	PCB* entry = getPCB(PID);
 	PCB* currentPCB = getCurrentPCB();
 	
-	if ( (int)entry == -1 )
+	if ( (int)entry == -1 ) {
 		kget_registers()->v_reg[0] = -1;
+		return (int)NULL;
+	}
 		
 	entry->state = Blocked;
 	
-	if (currentPCB->PID == PID)
-		run();
-	
 	kget_registers()->v_reg[0] = 1;	
 	
-	return NULL;
+	if (currentPCB->PID == PID)
+		run();
+		
+	return (int)NULL;
 }
 
 /*
@@ -33,15 +35,19 @@ int kUnblock(int PID) {
 	PCB* entry = getPCB(PID);
 	PCB* currentPCB = getCurrentPCB();
 	
-	if ( (int)entry == -1 )
-		return -1;
-		
+	if ( (int)entry == -1 ) {
+		kget_registers()->v_reg[0] = -1;
+		return (int)NULL;
+	}	
+	
 	entry->state = New;
+	
+	kget_registers()->v_reg[0] = 1;	
 	
 	if (entry->prio < currentPCB->prio)
 		run();
-	
-	return 1;
+
+	return (int)NULL;
 }
 
 /*
@@ -52,13 +58,8 @@ int kUnblock(int PID) {
  */
 int kKill(int PID) {
 	if (freePID(PID) == -1) {
-					// TODO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-/* // TODOOOOOO */ putslnDebug("Error: Couldn't terminate process"); // TODO!!!!!!!!!!!!!!!
- 					// TODO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		
 		kget_registers()->v_reg[0] = -1;
-		
-		return NULL;
+		return (int)NULL;
 	}
 		
 	PCB* currentPCB = getCurrentPCB();
@@ -68,7 +69,7 @@ int kKill(int PID) {
 	if (currentPCB->PID == PID)
 		run();
 	
-	return NULL;
+	return (int)NULL;
 }
 
 /*
@@ -87,16 +88,20 @@ int kSleep(int PID, int sleepTime) {
 	else
 		entry = getPCB(PID);
 	
-	if ( (int)entry == -1 )
-		return -1;
+	if ( (int)entry == -1 ) {
+		kget_registers()->v_reg[0] = -1;
+		return (int)NULL;
+	}
 	
 	entry->state = Waiting;
 	entry->sleep = timeCount + sleepTime;
 	
+	kget_registers()->v_reg[0] = 1;
+	
 	if (currentPCB == entry)
 		run();
 		
-	return 1;
+	return (int)NULL;
 }
 
 /*
@@ -110,8 +115,10 @@ int kChangePrio(int PID, int prio) {
 	PCB* entry = getPCB(PID);
 	PCB* currentPCB = getCurrentPCB();
 	
-	if ( (int)entry == -1 )
-		return -1;
+	if ( (int)entry == -1 ) {
+		kget_registers()->v_reg[0] = -1;
+		return (int)NULL;
+	}
 		
 	PCB* prev = entry->prev;
 	PCB* next = entry->next;
@@ -130,10 +137,12 @@ int kChangePrio(int PID, int prio) {
 
 	insertPCB(entry);
 	
+	kget_registers()->v_reg[0] = 1;
+	
 	if (prio < currentPCB->prio)
 		run();
 		
-	return 1;
+	return (int)NULL;
 }
 
 
@@ -147,8 +156,10 @@ int kChangePrio(int PID, int prio) {
 int kNewPCB(NewPCBArgs* newPCBArgs) {
 	PCB* pcb = getFreePCB();
 
-	if ((int)pcb == -1)
-		return -1;
+	if ((int)pcb == -1) {
+		kget_registers()->v_reg[0] = -1;
+		return (int)NULL;
+	}
 		
 	pcb->prio = newPCBArgs->prio;
 	

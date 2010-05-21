@@ -62,7 +62,7 @@ int kill(int PID);
  * @param int PID - Process to sleep
  * @param int sleep - Time to sleep
  */
-void sleep(int PID, int sleep);
+int sleep(int PID, int sleep);
 
 /*
  * changePrio(int PID, int prio)

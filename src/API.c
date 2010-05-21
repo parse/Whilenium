@@ -6,17 +6,10 @@
  * @param int PID - Process to kill
  */
 int kill(int PID) {
-	char buf[10];
 	
-	if ( PID == 1) {
-		putsln("Error: Couldn't terminate process");
-		return 0;
+	if ( syscall_kill(PID) == -1 || PID == 1 ) {
+		return -1;
 	}
-	
-	int ret = syscall_kill(PID);
-
-	puts("Ret: ");
-	putsln(itoa(ret, buf, 10));
 	
 	return 1;
 }
@@ -27,8 +20,8 @@ int kill(int PID) {
  * @param int PID - Process to sleep
  * @param int sleep - Time to sleep
  */
-void sleep(int PID, int sleep) {
-	syscall_sleep(PID, sleep);
+int sleep(int PID, int sleep) {
+	return syscall_sleep(PID, sleep);
 }
 
 /*
@@ -147,7 +140,7 @@ int scroller(char* msg) {
 	for (i = strEnd; i <= 7; i++)
 		maltaText[i] = ' ';
 		
-	return 0;
+	return 1;
 }
 
 /*

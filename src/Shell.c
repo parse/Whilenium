@@ -98,12 +98,6 @@ void parseCommand(char* str) {
 	if (strcmp(argv[0], userProgramsNames[0])) { // HelloWorld
 		spawn(2, userProgramsAddresses[0], userProgramsNames[0], (int)NULL, New, 0);
 	}
-	/*else if (strcmp(argv[0], userProgramsNames[1])) { // Scroller
-		if (argv[1] != NULL)
-			spawn(1, userProgramsAddresses[1], userProgramsNames[1], (int)argv[1], New, 0);
-		else
-			putsln("Error: Not sufficient arguments!");
-	}*/
 	else if (strcmp(argv[0], userProgramsNames[2])) {	// Increment
 		if (argv[1] != NULL)
 			spawn(2, userProgramsAddresses[2], userProgramsNames[2], atoi(argv[1]), New, 0);
@@ -126,8 +120,10 @@ void parseCommand(char* str) {
 		}
 	}	
 	else if (strcmp(argv[0], "changePrio")) {	// Change Priority
-		if (argv[1] != NULL && argv[2] != NULL)
-			changePrio(atoi(argv[1]), atoi(argv[2]));
+		if (argv[1] != NULL && argv[2] != NULL) {
+			if (changePrio(atoi(argv[1]), atoi(argv[2])) == -1)
+				putsln("Error: changePrio couldn't be performed");
+		}
 	}	
 	else if (strcmp(argv[0], "top")) {	// Top
 		top();
@@ -142,12 +138,12 @@ void parseCommand(char* str) {
 		if (argv[1] != NULL) {
 			if (unblock(atoi(argv[1])) == -1)
 				putsln("Error: Unblocking couldn't be performed");
-			putslnDebug("UNBLOCK DONE!");
 		}
 	}
-	else if (strcmp(argv[0], "sleep")) {	// Sleeå
+	else if (strcmp(argv[0], "sleep")) {	// Sleep
 		if (argv[1] != NULL && argv[2] != NULL) {
-			sleep(atoi(argv[1]), atoi(argv[2]));
+			if (sleep(atoi(argv[1]), atoi(argv[2])) == -1)
+				putsln("Error: Sleeping couldn't be performed");
 		} else
 			putsln("Error: Not sufficient arguments!");
 	}
