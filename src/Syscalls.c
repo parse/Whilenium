@@ -11,14 +11,16 @@ int kBlock(int PID) {
 	PCB* currentPCB = getCurrentPCB();
 	
 	if ( (int)entry == -1 )
-		return -1;
+		kget_registers()->v_reg[0] = -1;
 		
 	entry->state = Blocked;
 	
 	if (currentPCB->PID == PID)
 		run();
-		
-	return 1;
+	
+	kget_registers()->v_reg[0] = 1;	
+	
+	return NULL;
 }
 
 /*
@@ -53,15 +55,20 @@ int kKill(int PID) {
 					// TODO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 /* // TODOOOOOO */ putslnDebug("Error: Couldn't terminate process"); // TODO!!!!!!!!!!!!!!!
  					// TODO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		return -1;
+		
+		kget_registers()->v_reg[0] = -1;
+		
+		return NULL;
 	}
 		
 	PCB* currentPCB = getCurrentPCB();
 	
+	kget_registers()->v_reg[0] = 1;
+	
 	if (currentPCB->PID == PID)
 		run();
 	
-	return 1;
+	return NULL;
 }
 
 /*
@@ -165,7 +172,8 @@ int kNewPCB(NewPCBArgs* newPCBArgs) {
 	if (interruptsEnabled) {
 		if (DEBUG)
 			putslnDebug("newPCB: interruptsEnabled = 1. Do run!");
-			
+		
+		kget_registers()->v_reg[0] = pcb->PID;
 		run();
 	}
 	
