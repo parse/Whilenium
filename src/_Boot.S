@@ -398,7 +398,6 @@ _start:
 	la	sp, kernel_boot_stack_high_limit
 
 	la	a0, memory_min
-	li a1, MEMORY_SIZE
 
 	j	OS
 

@@ -42,8 +42,6 @@ typedef struct _PCB {
 	int ID;
 	int PID; // Unique identifier
 	int sleep; // Sleeptime
-	int memMax; // Max memory access space
-	int memMin; // Min memory access space, start value
 	int prio; // Integer value describing the process priority
 	char name[20]; // Human readable name
 	State state; // State of the PCB-entry (New, Running, Waiting, Blocked, Ready, Terminated)

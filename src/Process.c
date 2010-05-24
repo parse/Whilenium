@@ -64,12 +64,8 @@ void initPCBTable(int memoryMin) {
 	
 	int i;	
 	for (i = 0; i < PROCESSES; i++) {
-		int pcb = (int)&PCBTable[i];
-		
 		PCBTable[i].ID = i;
 		PCBTable[i].PID = -1;
-		PCBTable[i].memMax = 0;
-		PCBTable[i].memMin = pcb;
 		PCBTable[i].prio = 0;
 		PCBTable[i].state = New;
 			
