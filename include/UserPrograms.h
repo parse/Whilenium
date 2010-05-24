@@ -8,7 +8,7 @@
 void HelloWorld();
 void Scroller(char* msg);
 
-void Increment(int a);
+void Increment();
 void _increment(int n);
 
 void Fibonacci(int a);

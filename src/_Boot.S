@@ -12,24 +12,20 @@
 # -------------------------------------------------------------------------
 
 #define	KERNEL_BOOT_STACK_SIZE		0x50000
+#define	EXCN_STACK_SIZE		0x8000
 
 		.data
 
 kernel_boot_stack_low_limit:
 	# MUST ALIGN THE STACK on a 2^2 = 4 byte word bondary!	
 	.align 2   
-        .space  KERNEL_BOOT_STACK_SIZE
+    .space  KERNEL_BOOT_STACK_SIZE
 kernel_boot_stack_high_limit:
 
 memory_min:
 	.align 2
-		.space MEMORY_SIZE
+	.space MEMORY_SIZE
 memory_max:
-
-
-#define	EXCN_STACK_SIZE		0x8000
-
-	.data
 
 excn_regs:  .word	0
 cause_reg:  .word	0
@@ -59,8 +55,6 @@ excn_stack:
 .globl	syscall_display_c
 .globl	syscall_display_number
 .globl  syscall_die
-
-.globl	syscall_schedule
 .globl	syscall_block
 .globl	syscall_unblock
 .globl	syscall_kill
@@ -155,7 +149,6 @@ kdebug_magic_break:
 #     1. Copy 'exceptstub' to the MIPS exception vector
 #     2. Load the stackpointer 'sp' with top of initial stack.
 #     3. Load 'gp' with 0x80000000 (needed by the compiler).
-#     4. Jump to application-specific initialisation 'OS'.
 # -------------------------------------------------------------------------
 
 copyloop:
@@ -169,7 +162,6 @@ copyloop:
 	la gp, 0x80000000
 	
 	jr	ra
-	#j  OS
 
 # -------------------------------------------------------------------------
 # On exception: jump to exception handler.
@@ -312,14 +304,6 @@ syscall_put:
 syscall_puts:
 	la v0, bfifo_puts
 	syscall
-	jr ra
-
-syscall_schedule:
-	la v0, run
-	syscall
-	jr ra
-
-syscall_nop:
 	jr ra
 
 syscall_block:

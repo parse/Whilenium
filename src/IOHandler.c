@@ -69,17 +69,6 @@ void putsln(char* text) {
 }
 
 /*
- * getc()
- * If there is a char on the buffer it is returned, else while loop until char ready
- * @return The char on the buffer
- */
-char getc() {
-	while (bFifoIn.length == 0);
-	
-	return bfifo_get(&bFifoIn);
-}
-
-/*
  * gets()
  * Requests a string from input. The process is not running until string is completed with a '\n'
  * @return char* to the buffer where input is saved for the process
@@ -196,7 +185,6 @@ void initIO() {
 	
 	status_reg_t and, or;
 	bFifoOut.length = 0;
-	bFifoIn.length = 0;
 	
 	/* Set UART word length ('3' meaning 8 bits).
 	* Do this early to enable debug printouts (e.g. kdebug_print).

@@ -12,29 +12,29 @@ void Shell() {
 
 void parseCommand(char* str) {
 	char* argv[512];
-	
+	int pid = 0;
 	split(str, argv);
 
 	if (argv[0] == NULL)	
 		return;
 	
 	if (strcmp(argv[0], userProgramsNames[0])) { // HelloWorld
-		spawn(2, userProgramsAddresses[0], userProgramsNames[0], (int)NULL, New, 0);
+		pid = spawn(2, userProgramsAddresses[0], userProgramsNames[0], (int)NULL, New, 0);
 	}
 	else if (strcmp(argv[0], userProgramsNames[2])) {	// Increment
-		if (argv[1] != NULL)
-			spawn(2, userProgramsAddresses[2], userProgramsNames[2], atoi(argv[1]), New, 0);
-		else
-			putsln("Error: Not sufficient arguments!");
+		//if (argv[1] != NULL)
+		pid = spawn(2, userProgramsAddresses[2], userProgramsNames[2], (int)NULL, New, 0);
+		//else
+		//putsln("Error: Not sufficient arguments!");
 	}
 	else if (strcmp(argv[0], userProgramsNames[3])) {	// Fibonacci
 		if (argv[1] != NULL)
-			spawn(2, userProgramsAddresses[3], userProgramsNames[3], atoi(argv[1]), New, 0);
+			pid = spawn(2, userProgramsAddresses[3], userProgramsNames[3], atoi(argv[1]), New, 0);
 		else
 			putsln("Error: Not sufficient arguments!");
 	}
 	else if (strcmp(argv[0], userProgramsNames[4])) {	// Shell
-		spawn(PRIORITIES-2, userProgramsAddresses[4], userProgramsNames[4], 0, New, 0);
+		pid = spawn(PRIORITIES-2, userProgramsAddresses[4], userProgramsNames[4], 0, New, 0);
 	}	
 	else if (strcmp(argv[0], "kill")) {	// Kill
 		if (argv[1] != NULL) {
@@ -77,10 +77,13 @@ void parseCommand(char* str) {
 			scroller("");
 	}
 	else if (strcmp(argv[0], "ASCII")) {
-		spawn(PRIORITIES-2, (int)&ASCII, "Chick", (int)NULL, New, 0);
+		pid = spawn(PRIORITIES-2, (int)&ASCII, "Chick", (int)NULL, New, 0);
 	}
 	else
 		putsln("Error: Command unknown!");
+	
+	if (pid > 0)
+		while (getState(pid) != Undefined);
 }
 
 int isspace(char s) {

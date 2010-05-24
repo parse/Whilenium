@@ -23,23 +23,22 @@ typedef struct _IOQueue {
 
 IOQueue ioqueue;
 
-// Disclaimer: Because anders told me to comment, here we go.
 // Size of stack
 typedef struct _stack {
 	char space[(MEMORY_SIZE/PROCESSES)-200];
 } Stack;
 
 typedef struct _PCB {
-	registers_t registers;
-	int stackLowEnd;
+	registers_t registers; // Register base for the PCB to store state at scheduling
+	int stackLowEnd; // Low end of stack
 	Stack stack; //Stack program;
-	int stackHighEnd;
-	struct _PCB* next;
-	struct _PCB* prev;
-	struct _PCB* nextIO;
-	char inputBuf[200];
-	int inputLength;
-	int ID;
+	int stackHighEnd; // High end of the stack
+	struct _PCB* next; // Next PCB in prio-queue
+	struct _PCB* prev; // Previous PCB in prio-queue
+	struct _PCB* nextIO; // If PCB is in IOQueue, this pointer points to the next PCB in queue
+	char inputBuf[200]; // Input buffer
+	int inputLength; // Length of the noncompleted inputBuf
+	int ID; // PCB number
 	int PID; // Unique identifier
 	int sleep; // Sleeptime
 	int prio; // Integer value describing the process priority
@@ -58,12 +57,13 @@ typedef struct _Process {
 	State state;// State of the PCB-entry (New, Running, Waiting, Blocked, Ready, Terminated)
 } Process;
 
-/* A simple FIFO queue of bounded size. */
+// A simple FIFO queue of bounded size.
 typedef struct bounded_fifo {
   uint8_t  buf[FIFO_SIZE];
   uint32_t length;
 } BFifo;
 
+// Structure used to pass arguments to syscall, since we need more arguments than 4 and haven't implemented the syscall with a stack
 typedef struct _newPCBArgs {
 	int prio;
 	int PC;
@@ -72,22 +72,27 @@ typedef struct _newPCBArgs {
 	State state; 
 	int sleep;
 } NewPCBArgs;
+NewPCBArgs newPCBArgs;
 
+// Output fifo queue
 BFifo bFifoOut;
-BFifo bFifoIn;
 
+// Unique process id incremented int
 int currentPID;
+
+// Counter to indicate where we are in time
 int timeCount;
 
 // Tables of user programs and table containing addresses
 int userProgramsAddresses[USERPROGRAMS];
 char* userProgramsNames[USERPROGRAMS];
 
+// String for the malta
 char maltaText[8];
 
+// Interrupt enabled flag
 char interruptsEnabled;
 
-NewPCBArgs newPCBArgs;
 
 #endif
 

@@ -171,8 +171,13 @@ PCB* getPCB(int PID) {
  */
 Process getProcess(int PID) {
 	PCB* entry = getPCB(PID);
-	
 	Process p;
+	
+	if ((int)entry == -1) {
+		p.PID = -1;
+		return p;
+	}
+	
 	p.PID = entry->PID;
 	p.name = entry->name;
 	p.prio = entry->prio;
@@ -239,9 +244,10 @@ void freePCB(PCB* entry) {
 	entry->prev = NULL;
 	
 	entry->prio = 0;
-
 	freeIO(entry->PID);
-
+	
+	entry->state = Terminated;
+	
 	insertPCB(entry);
 }
 
@@ -254,7 +260,6 @@ void die() {
 	
 	if (currentPCB != NULL) {
 		freePCB(currentPCB);
-		currentPCB->state = Terminated;
 	}
 
 	run();

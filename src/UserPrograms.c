@@ -42,11 +42,12 @@ void Scroller(char* msg) {
  * Increment all numbers up to a
  * @param int a - Upper limit
  */
-void Increment(int a) {
-	char buf[10];
-	puts("Increment to ");
-	putsln(itoa(a, buf, 10));
-	_increment(a);
+void Increment() {
+	puts("Increment");
+	puts("Input maximum number and press enter: ");
+	_increment(atoi(gets()));
+	//putsln(itoa(a, buf, 10));
+	//_increment(a);
 }
 
 /*

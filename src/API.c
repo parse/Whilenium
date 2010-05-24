@@ -43,6 +43,9 @@ int getPrio(int PID) {
 State getState(int PID) {
 	Process p = getProcess(PID);
 	
+	if (p.PID == -1)
+		return Undefined;
+	
 	return p.state;	
 }
 

@@ -10,7 +10,6 @@
 void putc(char c);
 void puts(char* text);
 void putsln(char* text);
-char getc();
 char* gets();
 void displayC(uint8_t c, uint8_t pos);
 void kDisplayS(uint32_t str, uint8_t offset);

@@ -29,28 +29,26 @@ void enableInterrupt() {
  */
 void kexception()
 {
-	//static int i = 0;
 	cause_reg_t cause;
 	registers_t* reg;
 	cause.reg = kget_cause();
 	
-	// Check if we are here because of UART interrupt	
+	// Check if we are here because of UART interrupt (console in/out)
 	if (cause.field.ip & 4) {
 		uint8_t c;
 		
+		// Check if there is a char on the input
 		if (tty->lsr.field.dr) {
-			// Data ready: add character to buffer
+			// Data ready: get character from UART
 			c = tty->rbr;
-			bfifo_put(&bFifoIn, c, 0);
-			kInput(c);
-			//bfifo_put(&bFifoOut, c, 1);
+			kInput(c); // Send the character to the IOQueue
+			
 			if (c == '\r') {
-				bfifo_put(&bFifoIn, '\n', 0);
 				kInput('\n');
-				//bfifo_put(&bFifoOut, '\n', 1);
 			}
 		}
 		
+		// If chars in output buffer, we should put the next char to output if transmitter idle
 		if (bFifoOut.length > 0 && tty->lsr.field.thre) {
 			//Transmitter idle: transmit buffered character
 			tty->thr = bfifo_get(&bFifoOut);
@@ -59,14 +57,14 @@ void kexception()
 			tty->ier.field.etbei = (bFifoOut.length > 0);
 		}
 		
-		// Acknowledge UART interrupt.
+		// Acknowledge UART interrupt and return.
 		kset_cause(~0x1000, 0);
 	} //Make sure that we are here because of a timer interrupt.
 	else if ( cause.field.exc == 0 ) {
 		// Increase the timer (for sleeps)
 		timeCount++;
 		
-		// Schedule
+		// Schedule a new round
 		run();
 	} // Make sure we're here because of a syscall
 	else if (cause.field.exc == 8) {
