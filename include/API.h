@@ -28,13 +28,6 @@ void puts(char* text); // From IOHandler
 void putsln(char* text); // From IOHandler
 
 /*
- * getc()
- * If there is a char on the buffer it is returned, else while loop until char ready
- * @return The char on the buffer
- */
-char getc(); // From IOHandler
-
-/*
  * gets()
  * Requests a string from input. The process is not running until string is completed with a '\n'
  * @return char* to the buffer where input is saved for the process
@@ -58,7 +51,7 @@ void displayNumber(uint32_t word); // From IOHandler
 
 /*
  * kill(int PID)
- * Kill the process with the given PID with a syscall, process 1 can't be destroyed
+ * Kill the process with the given PID with a syscall, process 1 and 2 can't be destroyed
  * @param int PID - Process to kill
  */
 int kill(int PID);
