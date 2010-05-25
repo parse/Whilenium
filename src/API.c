@@ -5,6 +5,7 @@
  * Kill the process with the given PID with a syscall, process 1 and 2 can't be destroyed
  * If PID = 0, kill the current process
  * @param int PID - Process to kill
+ * @return -1 if PID = 1 or 2, or syscall_kill fails. Otherwise 1
  */
 int kill(int PID) {
 	
@@ -20,9 +21,13 @@ int kill(int PID) {
  * Sleep the process PID for sleep iterations, if PID == 0: sleep on current process
  * @param int PID - Process to sleep
  * @param int sleep - Time to sleep
+ * @return -1 if (PID == 1) else syscall_sleep
  */
 int sleep(int PID, int sleep) {
-	return syscall_sleep(PID, sleep);
+	if (PID != 1)
+		return syscall_sleep(PID, sleep);
+	
+	return -1;
 }
 
 /*
@@ -33,7 +38,11 @@ int sleep(int PID, int sleep) {
 int getPrio(int PID) {
 	Process p = getProcess(PID);
 	
+	if(p.PID == -1)
+		return -1;
+		
 	return p.prio;
+		
 }
 
 /*
@@ -57,6 +66,9 @@ State getState(int PID) {
  */
 char* getName(int PID) { 
 	Process p = getProcess(PID);
+	
+	if(p.PID == -1)
+		return (char*)-1;
 	
 	return p.name;
 }
@@ -100,8 +112,10 @@ int unblock(int PID) {
  * @param uint32_t str - String to display
  * @param uint8_t offset - Offset to use
  */
-void displayS(uint32_t str, uint8_t offset) {
+int displayS(uint32_t str, uint8_t offset) {
 	syscall_displayS(str, offset);
+	
+	return 1;
 }
 
 /*
@@ -156,7 +170,7 @@ int scroller(char* msg) {
  * top()
  * Show process information for the whole system
  */
-void top() {
+int top() {
 	int i;
 	char buf[10];
 	
@@ -204,5 +218,7 @@ void top() {
 				current = current->next;
 		}
 	}
+	
+	return 1;
 }
 

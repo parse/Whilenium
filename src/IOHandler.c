@@ -41,11 +41,13 @@ void putslnDebug(char* text) {
  * Output character c
  * @param char c - Character to output
  */
-void putc(char c) {	
+int putc(char c) {	
 	syscall_put(&bFifoOut, c);
 	
 	if (c == '\n')
 		syscall_put(&bFifoOut, '\r');
+
+	return 1;
 }
 
 /*
@@ -53,9 +55,11 @@ void putc(char c) {
  * Output string text
  * @param const char* text - String to output
  */
-void puts(char* text)
+int puts(char* text)
 {
 	syscall_puts(&bFifoOut, text);
+
+	return 1;
 }
 
 /*
@@ -63,9 +67,11 @@ void puts(char* text)
  * Output text with line-break
  * @param const char* text - String to output
  */
-void putsln(char* text) {
+int putsln(char* text) {
 	puts(text);
 	putc('\n');
+
+	return 1;
 }
 
 /*
@@ -83,9 +89,11 @@ char* gets() {
  * @param uint8_t word - Word to display
  * @param uint8_t pos - Position on the display
  */
-void displayC(uint8_t word, uint8_t pos)
+int displayC(uint8_t word, uint8_t pos)
 {	
     malta->asciipos[pos].value = word;
+
+	return 1;
 }
 
 void kDisplayS(uint32_t str, uint8_t offset) {
@@ -102,13 +110,15 @@ void kDisplayS(uint32_t str, uint8_t offset) {
  * Display a value on the Malta display.
  * @param uint32_t word - Number to show on the Malta display
  */
-void displayNumber(uint32_t word) {
+int displayNumber(uint32_t word) {
 	int i;
 	
 	for (i = 7; i >= 0; --i) {
     		malta->asciipos[i].value = '0' + word % 10;	
 			word /= 10;
 	}
+	
+	return 1;
 }
 
 /*

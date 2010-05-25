@@ -7,13 +7,13 @@
 #include "Structs.h"
 #include "Process.h"
 	
-void putc(char c);
-void puts(char* text);
-void putsln(char* text);
+int putc(char c);
+int puts(char* text);
+int putsln(char* text);
 char* gets();
-void displayC(uint8_t c, uint8_t pos);
+int displayC(uint8_t c, uint8_t pos);
 void kDisplayS(uint32_t str, uint8_t offset);
-void displayNumber(uint32_t word);
+int displayNumber(uint32_t word);
 void putcDebug(char c);
 void putsDebug(char* text);
 void putslnDebug(char* text);

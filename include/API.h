@@ -10,22 +10,25 @@
  * putc(char c)
  * Output character c
  * @param char c - Character to output
+ * @return 1 if success, -1 if fails
  */
-void putc(char c); // From IOHandler
+int putc(char c); // From IOHandler
 
 /*
  * puts(char* text)
  * Output string text
  * @param const char* text - String to output
+ * @return 1 if success, -1 if fails
  */
-void puts(char* text); // From IOHandler
+int puts(char* text); // From IOHandler
 
 /*
  * putsln(char* text)
  * Output text with line-break
  * @param const char* text - String to output
+ * @return 1 if success, -1 if fails
  */
-void putsln(char* text); // From IOHandler
+int putsln(char* text); // From IOHandler
 
 /*
  * gets()
@@ -39,21 +42,24 @@ char* gets(); // From IOHandler
  * Display a char on the Malta display.
  * @param uint8_t word - Word to display
  * @param uint8_t pos - Position on the display
+ * @return 1 if success, -1 if fails
  */
-void displayC(uint8_t c, uint8_t pos); // From IOHandler
+int displayC(uint8_t c, uint8_t pos); // From IOHandler
 
 /* 
  * displayNumber(uint32_t word)
  * Display a value on the Malta display.
  * @param uint32_t word - Number to show on the Malta display
+ * @return 1 if success, -1 if fails
  */
-void displayNumber(uint32_t word); // From IOHandler
+int displayNumber(uint32_t word); // From IOHandler
 
 /*
  * kill(int PID)
  * Kill the process with the given PID with a syscall, process 1 and 2 can't be destroyed
  * If PID = 0, kill the current process
  * @param int PID - Process to kill
+ * @return -1 if PID = 1 or 2, or syscall_kill fails. Otherwise 1
  */
 int kill(int PID);
 
@@ -62,6 +68,7 @@ int kill(int PID);
  * Sleep the process PID for sleep iterations, if PID == 0: sleep on current process
  * @param int PID - Process to sleep
  * @param int sleep - Time to sleep
+ * @return -1 if fails, 1 if success
  */
 int sleep(int PID, int sleep);
 
@@ -78,6 +85,7 @@ int changePrio(int PID, int prio);
  * block(int PID)
  * Block process PID
  * @param int PID - Process to block
+ * @return 1 if succeeded, else -1 for failing
  */
 int block(int PID);
 
@@ -85,19 +93,22 @@ int block(int PID);
  * unblock(int PID)
  * Unblock process PID
  * @param int PID - Process to unblock
+ * @return 1 if succeeded, else -1 for failing
  */
 int unblock(int PID);
 
 /*
  * top()
  * Show process information for the whole system
+ * @return 1 if succeeded, else -1 for failing
  */
-void top();
+int top();
 
 /*
  * getPrio(int PID)
  * Get priority for process PID
  * @param int PID - Process to get priority for
+ * @return 1 if succeeded, else -1 for failing
  */
 int getPrio(int PID);
 
@@ -105,6 +116,7 @@ int getPrio(int PID);
  * getState(int PID)
  * Get state for process PID
  * @param int PID - Process to get state for
+ * @return State Undefined if fails, otherwise it's state
  */
 State getState(int PID);
 
@@ -112,6 +124,7 @@ State getState(int PID);
  * getName(int PID)
  * Get name for process PID
  * @param int PID - Process to get name for
+ * @return 1 if succeeded, else -1 for failing
  */
 char* getName(int PID);
 
@@ -141,7 +154,8 @@ int scroller(char* msg);
  * Display string S on malta with offset
  * @param uint32_t str - String to display
  * @param uint8_t offset - Offset to use
+ * @return 1 if succeeded, else -1 for failing
  */
-void displayS(uint32_t str, uint8_t offset);
+int displayS(uint32_t str, uint8_t offset);
 
 #endif
