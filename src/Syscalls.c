@@ -56,13 +56,13 @@ int kUnblock(int PID) {
  * @param int PID - Process to terminate
  * @return -1 if fails, else 1
  */
-int kKill(int PID) {
-	if (freePID(PID) == -1) {
+int kKill(int PID) {	
+	PCB* currentPCB = getCurrentPCB();
+	
+	if ((PID == 0 && freePID(currentPCB->PID) == -1) || freePID(PID) == -1) {
 		kget_registers()->v_reg[0] = -1;
 		return (int)NULL;
 	}
-	
-	PCB* currentPCB = getCurrentPCB();
 	
 	kget_registers()->v_reg[0] = 1;
 	
