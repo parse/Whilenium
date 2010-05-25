@@ -66,7 +66,7 @@ int kKill(int PID) {
 	
 	kget_registers()->v_reg[0] = 1;
 	
-	if (currentPCB->PID == PID)
+	if (PID == 0 || currentPCB->PID == PID)
 		run();
 	
 	return (int)NULL;
