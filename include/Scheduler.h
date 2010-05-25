@@ -32,7 +32,7 @@ Process getProcess(int PID);
 int freePID(int PID);
 void freePCB(PCB* entry);
 
-void initScheduler(registers_t *regs, int mem);
+void initScheduler(registers_t *regs);
 void die();
 
 #endif

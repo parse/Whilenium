@@ -2,7 +2,6 @@
 
 PCB* currentPCB = NULL;
 registers_t *regSpace;
-int memoryMin;
 
 /**
  * run()
@@ -12,6 +11,7 @@ int memoryMin;
  */
 void run() {
  	// Setup storage-area for saving registers on exception. 
+	// currentPCB is the previously run process
 	if (currentPCB != NULL) {
 		copyRegisters(&(currentPCB->registers), regSpace);
 		
@@ -278,13 +278,11 @@ State getPrevState() {
 }
 
 /*
- * initScheduler(registers_t *regs, int mem)
+ * initScheduler(registers_t *regs)
  * Initialise scheduler
  * @param registers_t *regs - Memory register to use
- * @param int mem - Lower memory limit
  */
-void initScheduler(registers_t *regs, int mem) {
+void initScheduler(registers_t *regs) {
 	regSpace = regs;
-	memoryMin = mem;
 }
 

@@ -7,7 +7,7 @@
  */
 int kill(int PID) {
 	
-	if ( PID == 1 || syscall_kill(PID) == -1 ) {
+	if ( PID == 1 || PID == 2 || syscall_kill(PID) == -1 ) {
 		return -1;
 	}
 	

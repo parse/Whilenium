@@ -25,7 +25,7 @@ int OS(int memoryMin) {
 	// Module: Process
 	initOS(memoryMin);
 	
-	initScheduler(&regs, memoryMin);
+	initScheduler(&regs);
 	
 	// Enable the interrupt bit and the interrupt handler
 	// Module: Interrupt

@@ -10,7 +10,7 @@ void enableInterrupt() {
 		displayC(' ', i);	
 	}
 
- 	// Initialise timer to interrupt in 100 ms (simulated time).
+ 	// Initialise timer to interrupt in 1 ms (simulated time).
  	kload_timer(1 * timer_msec);
 
  	// Update the status register to enable timer interrupts.
