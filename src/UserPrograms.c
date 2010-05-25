@@ -43,7 +43,6 @@ void Scroller(char* msg) {
  * @param int a - Upper limit
  */
 void Increment() {
-	puts("Increment");
 	puts("Input maximum number and press enter: ");
 	_increment(atoi(gets()));
 	//putsln(itoa(a, buf, 10));

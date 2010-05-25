@@ -52,6 +52,7 @@ void displayNumber(uint32_t word); // From IOHandler
 /*
  * kill(int PID)
  * Kill the process with the given PID with a syscall, process 1 and 2 can't be destroyed
+ * If PID = 0, kill the current process
  * @param int PID - Process to kill
  */
 int kill(int PID);
