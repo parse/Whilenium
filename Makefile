@@ -37,11 +37,14 @@ SIMICS=${HOME}/simics-workspace
 
 #### RULE USED TO START SIMICS 
 
-doBoot: boot 
+doBoot: Whilenium-1.0.simics
+	./scripts/run.sh $(SIMICS) $<
+
+Whilenium: Whilenium-1.0.simics
 	./scripts/run.sh $(SIMICS) $<
 
 #### RULES TO BUILD BINARIES FROM OBJECT FILES
-boot: $(addprefix build/, _Boot.o Boot.o API.o Process.o Scheduler.o Interrupt.o IOHandler.o stdlib.o UserPrograms.o debug.o Shell.o Syscalls.o) 
+Whilenium-1.0.simics: $(addprefix build/, _Boot.o Boot.o API.o Process.o Scheduler.o Interrupt.o IOHandler.o stdlib.o UserPrograms.o debug.o Shell.o Syscalls.o) 
 	$(LD) $(ARCH) -o $@ $^
 
 #### Add dependency on headerfile of various tty.o files
