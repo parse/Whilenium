@@ -66,6 +66,7 @@ char* getName(int PID) {
  * Change priority for process PID
  * @param int PID - Process to change
  * @param int prio - New priority
+ * @return 1 if succeeded, else -1 for failing
  */
 int changePrio(int PID, int prio) {
 	if ( PID == 1 || syscall_prio(PID, prio) == -1 ) {
@@ -112,7 +113,7 @@ void displayS(uint32_t str, uint8_t offset) {
  * @param uint32_t arg - Argument to pass to our program
  * @param State state - State of the process
  * @param int sleep - If state is Waiting, enter sleeptime here
- * @return -1 if fails
+ * @return Newly created PID on success, else -1 when failing
  */
 int spawn(int prio, int PC, char* name, uint32_t arg, State state, int sleep) {
 	newPCBArgs.prio = prio;
@@ -129,7 +130,7 @@ int spawn(int prio, int PC, char* name, uint32_t arg, State state, int sleep) {
  * scroller(char* msg)
  * Display string msg on Malta display
  * @param char* msg - String to display
- * @return -1
+ * @return 1
  */
 int scroller(char* msg) {
 	int i = 0, strEnd = -1;
